@@ -131,7 +131,7 @@ class Audiomatrix880 extends utils.Adapter {
 	
 	send(cmd){
 		this.log.info('AudioMatrix send:' + cmd);
-		this.log.info('AudioMatrix send:' + toHexString(cmd));
+		this.log.info('AudioMatrix send:' + this.toHexString(cmd));
 		if (cmd !== undefined){
 			//cmd = cmd + '\n\r';
 			matrix.write(cmd);
