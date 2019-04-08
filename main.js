@@ -47,6 +47,11 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis = this;
 	}
 
+	function toHexString(byteArray) {
+	  return Array.from(byteArray, function(byte) {
+	    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+	  }).join('')
+	}
 
 	initmatrix(){
 		this.log.info('initMatrix().');
@@ -126,6 +131,7 @@ class Audiomatrix880 extends utils.Adapter {
 	
 	send(cmd){
 		this.log.info('AudioMatrix send:' + cmd);
+		this.log.info('AudioMatrix send:' + toHexString(cmd));
 		if (cmd !== undefined){
 			//cmd = cmd + '\n\r';
 			matrix.write(cmd);
