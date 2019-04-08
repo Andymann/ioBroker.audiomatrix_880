@@ -109,7 +109,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//}
 
 			if(in_msg.length > 50){
-				in_msg = '';
+			//	in_msg = '';
 			}
 		});
 
