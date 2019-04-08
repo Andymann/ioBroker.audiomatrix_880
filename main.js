@@ -10,6 +10,22 @@ const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
+var net = require('net');
+var matrix;
+var recnt;
+var connection = false;
+var tabu = false;
+var polling_time = 5000;
+var query = null;
+var cmdqversion = '/^Version;';
+var in_msg = '';
+
+var parentThis;
+
+var idDevice = 0x01;
+var cmdConnect =	new Array(0xf0, 0x45, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7);
+var cmdDisconnect =	new Array(0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7);
+
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -26,7 +42,124 @@ class Audiomatrix880 extends utils.Adapter {
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on("message", this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
+
+		parentThis = this;
 	}
+
+
+	initmatrix(){
+		this.log.info('initMatrix().');
+		this.connectmatrix();		
+	}
+
+	
+	reconnect(){
+		this.log.info('reconnectMatrix()');
+		clearInterval(query);
+		clearTimeout(recnt);
+		matrix.destroy();
+		this.setState('info.connection', false, true);
+		this.log.info('Reconnect after 15 sec...');
+		connection = false;
+		recnt = setTimeout(function() {
+			parentThis.initmatrix();
+		}, 15000);
+	}
+
+
+	connectmatrix(cb){
+		this.log.info('connectMatrix().');
+ 		
+		var host = this.config.host ? this.config.host : '192.168.1.56';
+		var port = this.config.port ? this.config.port : 23;
+		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
+
+		matrix = new net.Socket();
+		matrix.connect(this.config.port, this.config.host, function() {
+			clearInterval(query);
+			query = setInterval(function() {
+			    if(!tabu){
+				if(connection==false){
+					parentThis.send(cmdConnect);
+				}
+			    }
+			}, polling_time);
+			if(cb){cb();}
+	
+		});
+			
+		matrix.on('data', function(chunk) {
+			in_msg += chunk;
+			parentThis.log.info("AudioMatrix incomming: " + in_msg);
+			//----// Version: V2.6.152
+			//if(in_msg.toLowerCase().indexOf('version')>-1){
+				if(connection == false){
+					connection = true;
+					parentThis.log.info('Matrix CONNECTED');
+					parentThis.setState('info.connection', true, true);
+				}
+			//}
+
+			if(in_msg.length > 50){
+				in_msg = '';
+			}
+		});
+
+		matrix.on('error', function(e) {
+			if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
+				matrix.destroy();
+			}
+			parentThis.log.error(e);
+		});
+
+		matrix.on('close', function(e) {
+			if(connection){
+				parentThis.log.error('AudioMatrix disconnected');
+			}
+			parentThis.reconnect();
+		});
+
+	}
+
+	
+	send(cmd){
+		this.log.info('AudioMatrix send:' + cmd);
+		if (cmd !== undefined){
+			//cmd = cmd + '\n\r';
+			matrix.write(cmd);
+			tabu = false;
+		}
+	}
+	
+	//----Ein State wurde veraendert
+	matrixchanged(id, state){
+		//this.log.info('matrixChanged:' + id +' ' + state);
+
+		//----videomatrix.0.output_1 12
+		//if(id.toLowerCase().inlcudes('output')==true){
+            	//	this.log.info('matrixChanged: output changed');
+		//	var outputid = id.substring(id.lastIndexOf('_'));
+		//	this.log.info('matrixChanged: outputid:` + outputid +' cmd:' + state + 'V' + outputid + '.');
+		//}
+		//var n = id.includes(".output");
+		if(id.toString().includes('.output')){
+			this.log.info('matrixChanged: output changed');
+			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
+			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+			if(state==0){
+				this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
+				this.send(outputid + '$.');
+			}else{
+				this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
+				this.send(state + 'V' + outputid + '.');
+			}
+			
+		}else{
+			this.log.info('matrixChanged: kein Treffer');
+		}
+
+	}
+
 
 	/**
 	 * Is called when databases are connected and adapter received configuration.
@@ -123,6 +256,7 @@ class Audiomatrix880 extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			this.matrixchanged(id, state.val);
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
