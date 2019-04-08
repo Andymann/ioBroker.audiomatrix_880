@@ -80,6 +80,7 @@ class Audiomatrix880 extends utils.Adapter {
 			query = setInterval(function() {
 			    if(!tabu){
 				if(connection==false){
+					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect);
 				}
 			    }
