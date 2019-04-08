@@ -71,8 +71,6 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "42",
 		"host": "192.168.1.224",
         	"port": 1024
 	},

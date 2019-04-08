@@ -41,10 +41,26 @@ systemDictionary = {
 
 	'host':	{
 		'en': 'Host',
-		'de': 'Host'
+		'de': 'Host',
+		'ru': 'Host',
+		'pt': 'Host',
+		'nl': 'Host',
+		'fr': 'Host',
+		'it': 'Host',
+		'es': 'Host',
+		'pl': 'Host',
+		'zh-cn': 'Host'
 	},
 	'port': {
 		'en': 'Port',
-		'de': 'Port'
+		'de': 'Port',
+		'ru': 'Port',
+		'pt': 'Port',
+		'nl': 'Port',
+		'fr': 'Port',
+		'it': 'Port',
+		'es': 'Port',
+		'pl': 'Port',
+		'zh-cn': 'Port'
 	}
 };
