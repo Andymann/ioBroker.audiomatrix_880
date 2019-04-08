@@ -3,8 +3,8 @@
 
 systemDictionary = {
 	'audiomatrix_880 adapter settings': {
-		'en': 'Adapter settings for audiomatrix_880',
-		'de': 'Adaptereinstellungen für audiomatrix_880',
+		'en': 'Adapter settings for Audiomatrix_880',
+		'de': 'Adaptereinstellungen für Audiomatrix_880',
 		'ru': 'Настройки адаптера для audiomatrix_880',
 		'pt': 'Configurações do adaptador para audiomatrix_880',
 		'nl': 'Adapterinstellingen voor audiomatrix_880',
@@ -37,5 +37,14 @@ systemDictionary = {
 		'es': 'opcion 2',
 		'pl': 'Opcja 2',
 		'zh-cn': '选项2'
+	},
+
+	'host':	{
+		'en': 'Host',
+		'de': 'Host'
+	},
+	'port': {
+		'en': 'Port',
+		'de': 'Port'
 	}
 };
