@@ -160,8 +160,9 @@ class Audiomatrix880 extends utils.Adapter {
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
 			//var iVal = 
-			id+=8;	//
-			cmdGain[4] = id;
+			var channelID-=1;
+			channelID+=8;	//
+			cmdGain[4] = channelID;
 					
 			val*=13.9;
 			var loByte = val & 0xFF;
@@ -172,13 +173,7 @@ class Audiomatrix880 extends utils.Adapter {
 			
 			this.send(cmdGain);
 	
-			//if(state==0){
-			//	this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
-			//	this.send(outputid + '$.');
-			//}else{
-			//	this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
-			//	this.send(val + 'V' + outputid + '.');
-			//}
+			
 			
 			
 		}
@@ -186,17 +181,22 @@ class Audiomatrix880 extends utils.Adapter {
 		if(id.toString().includes('.inputgain')){
 			this.log.info('matrixChanged: inputgain changed');
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
-			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+			var channelID = id;
+			channelID-=1;	//
+			cmdGain[4] = channelID;
+					
+			val*=13.9;
+			var loByte = val & 0xFF;
+			var hiByte = (val >> 8) & 0xFF;
 
-			/*
-			if(state==0){
-				this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
-				this.send(outputid + '$.');
-			}else{
-				this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
-				this.send(state + 'V' + outputid + '.');
-			}
-			*/
+			cmdGain[7] = loByte;
+			cmdGain[11] = hiByte;
+			
+			this.send(cmdGain);
+
+
+
 		}
 		//else{
 		//	this.log.info('matrixChanged: kein Treffer');
