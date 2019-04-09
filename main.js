@@ -103,13 +103,13 @@ class Audiomatrix880 extends utils.Adapter {
 			parentThis.log.info("AudioMatrix incomming: " + in_msg);
 
 			//----// Version: V2.6.152
-			//if(in_msg.toLowerCase().indexOf('version')>-1){
+			if(in_msg.toLowerCase().indexOf('f7')>-1){
 				if(connection == false){
 					connection = true;
 					parentThis.log.info('Matrix CONNECTED');
 					parentThis.setState('info.connection', true, true);
 				}
-			//}
+			}
 
 			if(in_msg.length > 50){
 			//	in_msg = '';
