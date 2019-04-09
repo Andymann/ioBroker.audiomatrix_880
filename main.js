@@ -27,6 +27,7 @@ var cmdConnect =	new Buffer([0xf0, 0x45, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00,
 var cmdDisconnect =	new Buffer([0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdGain =		new Buffer([0xf0, 0x45, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 
 
@@ -200,6 +201,19 @@ class Audiomatrix880 extends utils.Adapter {
 
 		if(id.toString().includes('.outputroute')){
 			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
+			if(val>0){
+				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
+			}
+			if(val>5){
+				val=5;	//----Falls per Admin gesetzt und falsch gemacht
+			}
+			cmdPreset[4]=val;			
+			this.send(cmdPreset);
+
+		}
+
+		if(id.toString().includes('.preset')){
+			this.log.info('matrixChanged: preset changed. Preset:' + val.toString());
 			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
 			this.log.info('matrixChanged: outputroute changed. ID:' + channelID.toString() );
 			channelID-=1;	//
@@ -217,6 +231,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.send(cmdRoute);
 
 		}
+
 		//else{
 		//	this.log.info('matrixChanged: kein Treffer');
 		//}
@@ -308,7 +323,20 @@ class Audiomatrix880 extends utils.Adapter {
 			});
 		}
 
-
+		//----Preset
+		await this.setObjectAsync('preset', {
+			type: 'state',
+			common: {
+				name: 'Preset Selection",
+				type: 'number',
+				role: 'level',
+				read: true,
+				write: true,
+				min: 1,
+				max: 6
+			},
+			native: {},
+		});
 
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
