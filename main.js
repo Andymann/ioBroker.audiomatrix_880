@@ -145,7 +145,7 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 	
 	//----Ein State wurde veraendert
-	matrixchanged(id, state){
+	matrixchanged(id, val){
 		//this.log.info('matrixChanged:' + id +' ' + state);
 
 		//----videomatrix.0.output_1 12
@@ -156,16 +156,30 @@ class Audiomatrix880 extends utils.Adapter {
 		//}
 		//var n = id.includes(".output");
 		if(id.toString().includes('.outputgain')){
-			this.log.info('matrixChanged: outputgaib changed');
+			this.log.info('matrixChanged: outputgain changed');
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
-			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
-			if(state==0){
-				this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
-				this.send(outputid + '$.');
-			}else{
-				this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
-				this.send(state + 'V' + outputid + '.');
-			}
+			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+			//var iVal = 
+			id+=8;	//
+			cmdGain[4] = id;
+					
+			val*=13.9;
+			var loByte = val & 0xFF;
+			var hiByte = (val >> 8) & 0xFF;
+
+			cmdGain[7] = loByte;
+			cmdGain[11] = hiByte;
+			
+			this.send(cmdGain);
+	
+			//if(state==0){
+			//	this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
+			//	this.send(outputid + '$.');
+			//}else{
+			//	this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
+			//	this.send(val + 'V' + outputid + '.');
+			//}
+			
 			
 		}
 
@@ -173,6 +187,8 @@ class Audiomatrix880 extends utils.Adapter {
 			this.log.info('matrixChanged: inputgain changed');
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+
+			/*
 			if(state==0){
 				this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
 				this.send(outputid + '$.');
@@ -180,7 +196,7 @@ class Audiomatrix880 extends utils.Adapter {
 				this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
 				this.send(state + 'V' + outputid + '.');
 			}
-			
+			*/
 		}
 		//else{
 		//	this.log.info('matrixChanged: kein Treffer');
