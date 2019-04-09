@@ -24,7 +24,8 @@ var parentThis;
 
 var idDevice = 0x01;
 var cmdConnect =	new Buffer([0xf0, 0x45, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-var cmdDisconnect =	new Array(0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7);
+var cmdDisconnect =	new Buffer([0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+var cmdGain =		new Buffer([0xf0, 0x45, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 
 
@@ -134,7 +135,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	
 	send(cmd){
-		this.log.info('AudioMatrix send:' + cmd);
+		//this.log.info('AudioMatrix send:' + cmd);
 		this.log.info('AudioMatrix send:' + this.toHexString(cmd));
 		if (cmd !== undefined){
 			//cmd = cmd + '\n\r';
@@ -154,8 +155,8 @@ class Audiomatrix880 extends utils.Adapter {
 		//	this.log.info('matrixChanged: outputid:` + outputid +' cmd:' + state + 'V' + outputid + '.');
 		//}
 		//var n = id.includes(".output");
-		if(id.toString().includes('.output')){
-			this.log.info('matrixChanged: output changed');
+		if(id.toString().includes('.outputgain')){
+			this.log.info('matrixChanged: outputgaib changed');
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
 			if(state==0){
@@ -166,9 +167,24 @@ class Audiomatrix880 extends utils.Adapter {
 				this.send(state + 'V' + outputid + '.');
 			}
 			
-		}else{
-			this.log.info('matrixChanged: kein Treffer');
 		}
+
+		if(id.toString().includes('.inputgain')){
+			this.log.info('matrixChanged: inputgain changed');
+			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
+			var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+			if(state==0){
+				this.log.info('matrixChanged: outputid:' + outputid +' cmd: OFF');
+				this.send(outputid + '$.');
+			}else{
+				this.log.info('matrixChanged: outputid:' + outputid +' cmd:' + state + 'V' + outputid + '.');
+				this.send(state + 'V' + outputid + '.');
+			}
+			
+		}
+		//else{
+		//	this.log.info('matrixChanged: kein Treffer');
+		//}
 
 	}
 
@@ -205,6 +221,42 @@ class Audiomatrix880 extends utils.Adapter {
 			},
 			native: {},
 		});
+
+		//----Anlegen der Ausgaenge
+		for (var i = 1; i < 9; i++) {
+			await this.setObjectAsync('inputgain_' + i.toString(), {
+				type: 'state',
+				common: {
+					name: 'Input ' + i.toString() + " Gain",
+					type: 'number',
+					role: 'level',
+					read: true,
+					write: true,
+					min: 0,
+					max: 100
+				},
+				native: {},
+			});
+		}
+
+		//----Anlegen der Ausgaenge
+		for (var i = 1; i < 9; i++) {
+			await this.setObjectAsync('outputgain_' + i.toString(), {
+				type: 'state',
+				common: {
+					name: 'Output ' + i.toString() + " Gain",
+					type: 'number',
+					role: 'level',
+					read: true,
+					write: true,
+					min: 0,
+					max: 100
+				},
+				native: {},
+			});
+		}
+
+
 
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
