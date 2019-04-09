@@ -160,7 +160,8 @@ class Audiomatrix880 extends utils.Adapter {
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
 			//var iVal = 
-			var channelID-=1;
+			var channelID=id;
+			channelID-=1;
 			channelID+=8;	//
 			cmdGain[4] = channelID;
 					
