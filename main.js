@@ -96,9 +96,12 @@ class Audiomatrix880 extends utils.Adapter {
 		});
 			
 		matrix.on('data', function(chunk) {
-			in_msg += chunk;
+			//in_msg += chunk;
+			//parentThis.log.info("AudioMatrix incomming: " + in_msg);
+			//parentThis.log.info("AudioMatrix incomming: " + parentThis.toHexString(/*in_msg*/ chunk));
+			in_msg += parentThis.toHexString(chunk);
 			parentThis.log.info("AudioMatrix incomming: " + in_msg);
-			parentThis.log.info("AudioMatrix incomming: " + parentThis.toHexString(/*in_msg*/ chunk));
+
 			//----// Version: V2.6.152
 			//if(in_msg.toLowerCase().indexOf('version')>-1){
 				if(connection == false){
