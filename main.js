@@ -156,7 +156,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//}
 		//var n = id.includes(".output");
 		if(id.toString().includes('.outputgain')){
-			this.log.info('matrixChanged: outputgain changed');
+			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
 			//var iVal = 
@@ -180,7 +180,7 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 
 		if(id.toString().includes('.inputgain')){
-			this.log.info('matrixChanged: inputgain changed');
+			this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
 			var channelID = id;
