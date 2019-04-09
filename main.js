@@ -199,8 +199,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 		}
 
-		if(id.toString().includes('.outputroute')){
-			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
+		if(id.toString().includes('.preset')){
+			this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
 			if(val>0){
 				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
 			}
@@ -212,8 +212,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 		}
 
-		if(id.toString().includes('.preset')){
-			this.log.info('matrixChanged: preset changed. Preset:' + val.toString());
+		if(id.toString().includes('.outputroute')){
+			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
 			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
 			this.log.info('matrixChanged: outputroute changed. ID:' + channelID.toString() );
 			channelID-=1;	//
