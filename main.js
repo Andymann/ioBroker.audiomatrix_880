@@ -327,7 +327,7 @@ class Audiomatrix880 extends utils.Adapter {
 		await this.setObjectAsync('preset', {
 			type: 'state',
 			common: {
-				name: 'Preset Selection",
+				name: 'Preset Selection',
 				type: 'number',
 				role: 'level',
 				read: true,
