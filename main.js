@@ -282,11 +282,12 @@ class Audiomatrix880 extends utils.Adapter {
 				common: {
 					name: 'Input ' + i.toString() + " Gain",
 					type: 'number',
-					role: 'level',
+					role: 'level.volume',
 					read: true,
 					write: true,
 					min: 0,
-					max: 100
+					max: 100,
+					desc: 'Ausgang UKU'
 				},
 				native: {},
 			});
