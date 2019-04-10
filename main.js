@@ -23,6 +23,8 @@ var in_msg = '';
 var parentThis;
 
 //----https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation
+//----https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md
+//----https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md  => level.volume
 var idDevice = 0x01;
 var cmdConnect =	new Buffer([0xf0, 0x45, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdDisconnect =	new Buffer([0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
