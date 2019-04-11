@@ -226,8 +226,8 @@ class Audiomatrix880 extends utils.Adapter {
 				val=5;	//----Falls per Admin gesetzt und falsch gemacht
 			}
 
-			this.log.info('matrixChanged: Preset changed to:' + this.preset.toString() );
 			preset = val;
+			this.log.info('matrixChanged: Preset changed to:' + this.preset.toString() );
 
 			cmdPreset[4]=val;			
 			this.send(cmdPreset);
