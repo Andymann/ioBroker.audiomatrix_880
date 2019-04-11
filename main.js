@@ -32,9 +32,9 @@ var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 
 var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 
-var inGain = new Int8Array(8);
-var outGain = new Int8Array(8);
-var inRoute = new Int8Array(8);
+var inGain = [0, 0, 0, 0, 0, 0, 0, 0];
+var outGain = [0, 0, 0, 0, 0, 0, 0, 0];
+var inRoute = [0, 0, 0, 0, 0, 0, 0, 0];
 var preset;
 
 
