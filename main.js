@@ -227,7 +227,7 @@ class Audiomatrix880 extends utils.Adapter {
 			}
 
 			preset = val;
-			this.log.info('matrixChanged: Preset changed to:' + this.preset.toString() );
+			this.log.info('matrixChanged: Preset changed to:' + preset.toString() );
 
 			cmdPreset[4]=val;			
 			this.send(cmdPreset);
