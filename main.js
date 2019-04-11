@@ -173,8 +173,8 @@ class Audiomatrix880 extends utils.Adapter {
 			//var channelID=id;
 			channelID-=1;
 
-			this.outGain[channelID]=val;
 			this.log.info('matrixChanged: outGain[' + channelID.toString() + ']=' + val.toString() );
+			outGain[channelID]=val;
 
 			channelID+=8;	//
 			cmdGain[4] = channelID;
@@ -201,8 +201,8 @@ class Audiomatrix880 extends utils.Adapter {
 			this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 			channelID-=1;	//
 
-			this.inGain[channelID]=val;
 			this.log.info('matrixChanged: inGain[' + channelID.toString() + ']=' + val.toString() );
+			inGain[channelID]=val;
 
 			cmdGain[4] = channelID;
 					
@@ -226,8 +226,8 @@ class Audiomatrix880 extends utils.Adapter {
 				val=5;	//----Falls per Admin gesetzt und falsch gemacht
 			}
 
-			this.preset = val;
 			this.log.info('matrixChanged: Preset changed to:' + this.preset.toString() );
+			preset = val;
 
 			cmdPreset[4]=val;			
 			this.send(cmdPreset);
@@ -248,6 +248,8 @@ class Audiomatrix880 extends utils.Adapter {
 			}
 
 			this.log.info('matrixChanged: Routing changed. Output:' + (channelID-8).toString() + ' Value:' + val.toString() );
+			inRoute[channelID-8] = val;
+
 			cmdRoute[4] = channelID;			
 			cmdRoute[10] = val;
 			cmdRoute[11] = 30;	//Die Guete des Routing-Knotens
