@@ -31,8 +31,11 @@ var cmdGain =		new Buffer([0xf0, 0x45, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0
 var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
-var staGain = new Array();
-var staRoute = new Array();
+
+var inGain = new Int8Array(8);
+var outGain = new Int8Array(8);
+var inRoute = new Int8Array(8);
+var preset;
 
 
 class Audiomatrix880 extends utils.Adapter {
@@ -173,6 +176,10 @@ class Audiomatrix880 extends utils.Adapter {
 			this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
 			//var channelID=id;
 			channelID-=1;
+
+			this.outGain[channelID]=val;
+			this.log.info('matrixChanged: outGain[' + channelID.toString() + ']=' + val.toString() );
+
 			channelID+=8;	//
 			cmdGain[4] = channelID;
 					
@@ -182,6 +189,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 			cmdGain[7] = loByte;
 			cmdGain[11] = hiByte;
+
+			//----Speichern der STates
 			
 			this.send(cmdGain);
 			
@@ -195,6 +204,10 @@ class Audiomatrix880 extends utils.Adapter {
 			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
 			this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 			channelID-=1;	//
+
+			this.inGain[channelID]=val;
+			this.log.info('matrixChanged: inGain[' + channelID.toString() + ']=' + val.toString() );
+
 			cmdGain[4] = channelID;
 					
 			val*=13.9;
@@ -216,6 +229,10 @@ class Audiomatrix880 extends utils.Adapter {
 			if(val>5){
 				val=5;	//----Falls per Admin gesetzt und falsch gemacht
 			}
+
+			this.preset = val;
+			this.log.info('matrixChanged: Preset changed to:' + this.preset.toString() );
+
 			cmdPreset[4]=val;			
 			this.send(cmdPreset);
 
@@ -233,6 +250,8 @@ class Audiomatrix880 extends utils.Adapter {
 			if(val>7){
 				val=7;	//----Falls per Admin gesetzt und falsch gemacht
 			}
+
+			this.log.info('matrixChanged: Routing changed. Output:' + (channelID-8).toString() + ' Value:' + val.toString() );
 			cmdRoute[4] = channelID;			
 			cmdRoute[10] = val;
 			cmdRoute[11] = 30;	//Die Guete des Routing-Knotens
@@ -306,7 +325,7 @@ class Audiomatrix880 extends utils.Adapter {
 				common: {
 					name: 'Output ' + i.toString() + " Gain",
 					type: 'number',
-					role: 'level',
+					role: 'level.volume',
 					read: true,
 					write: true,
 					min: 0,
