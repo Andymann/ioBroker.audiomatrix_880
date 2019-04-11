@@ -17,7 +17,6 @@ var connection = false;
 var tabu = false;
 var polling_time = 5000;
 var query = null;
-var cmdqversion = '/^Version;';
 var in_msg = '';
 
 var parentThis;
@@ -29,6 +28,8 @@ var cmdGain =		new Buffer([0xf0, 0x45, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0
 var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
+var staGain = new Array();
+var staRoute = new Array();
 
 
 class Audiomatrix880 extends utils.Adapter {
@@ -46,6 +47,11 @@ class Audiomatrix880 extends utils.Adapter {
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on("message", this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
+
+		for (var i = 0; i < 8; i++) {
+			staGain.push( cmdGain );
+			staRoute.push( cmdRoute );
+		}
 
 		parentThis = this;
 	}
