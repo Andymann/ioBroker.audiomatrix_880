@@ -54,10 +54,6 @@ class Audiomatrix880 extends utils.Adapter {
 		// this.on("message", this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 
-		for (var i = 0; i < 8; i++) {
-			staGain.push( cmdGain );
-			staRoute.push( cmdRoute );
-		}
 
 		parentThis = this;
 	}
