@@ -241,7 +241,7 @@ class Audiomatrix880 extends utils.Adapter {
 			channelID-=1;	//
 			channelID+=8;
 			if(val>0){
-				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
+				//val-=1;	//----Falls per Admin gesetzt und falsch gemacht
 			}
 			if(val>7){
 				val=7;	//----Falls per Admin gesetzt und falsch gemacht
