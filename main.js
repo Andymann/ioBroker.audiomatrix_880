@@ -236,6 +236,14 @@ class Audiomatrix880 extends utils.Adapter {
 
 		}
 
+		if(id.toString().includes('.outputroutestate_')){
+			this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
+
+
+
+
+		}
+
 		if(id.toString().includes('.outputroute')){
 			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
 			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
@@ -313,7 +321,7 @@ class Audiomatrix880 extends utils.Adapter {
 			native: {},
 		});
 
-		//----Anlegen der Ausgaenge
+		//----Anlegen der Eingaenge
 		for (var i = 1; i < 9; i++) {
 			await this.setObjectAsync('inputgain_' + i.toString(), {
 				type: 'state',
@@ -364,6 +372,26 @@ class Audiomatrix880 extends utils.Adapter {
 				native: {},
 			});
 		}
+
+		//----Routing via Buttons
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 8; i++) {
+				await this.setObjectAsync('outputroutestate_' + i.toString() + '-' j.toString(), {
+					type: 'state',
+					common: {
+						name: 'Output ' + i.toString() + " Input Routing Button " + j.toString(),
+						type: 'bool',
+						role: 'state',
+						read: true,
+						write: true,
+						//min: 1,
+						//max: 8
+					},
+					native: {},
+				});
+			}
+		}
+
 
 		//----Preset
 		await this.setObjectAsync('preset', {
