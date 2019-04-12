@@ -243,7 +243,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 		}
-
+/*
 		if(id.toString().includes('.outputroute')){
 			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
 			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
@@ -280,7 +280,7 @@ class Audiomatrix880 extends utils.Adapter {
 			
 
 		}
-
+*/
 		//else{
 		//	this.log.info('matrixChanged: kein Treffer');
 		//}
