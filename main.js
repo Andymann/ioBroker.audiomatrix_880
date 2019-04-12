@@ -151,7 +151,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//matrix.write(cmd);
 			//tabu = false;
 			setTimeout(function() {
-            			parentThis.matrix.write(cmd);            
+            			matrix.write(cmd);            
 		        }, 1000);
 		}
 	}
