@@ -258,7 +258,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.send(cmdRoute);
 			
 			//Alle anderen AUS
-			for (var i = 0; i < 8; i++) {
+			for (var i = 0; i < 4; i++) {
 				if(i!==val){
 					this.log.info('matrixChanged: Routing changed. Output:' + (channelID-8).toString() + ' Muting Input:' + i.toString() );
 					cmdRoute[4] = channelID;
