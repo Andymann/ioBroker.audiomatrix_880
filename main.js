@@ -243,6 +243,12 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 		}
+
+		
+		if(id.toString().includes('.outputroutestate_')){
+			this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
+		}
+
 /*
 		if(id.toString().includes('.outputroute')){
 			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
@@ -379,7 +385,7 @@ class Audiomatrix880 extends utils.Adapter {
 		for (var i = 0; i < 8; i++) {
 			for (var j = 0; j < 8; j++) {
 				//await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
-				await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
+				await this.setObjectAsync('outputroutestate_' + (i*8 + j).toString(), {
 					type: 'state',
 					common: {
 						name: 'outputrouting',
