@@ -376,16 +376,15 @@ class Audiomatrix880 extends utils.Adapter {
 		//----Routing via Buttons
 		for (var i = 0; i < 8; i++) {
 			for (var j = 0; j < 8; i++) {
+				//await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
 				await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
 					type: 'state',
 					common: {
-						name: 'Output ' + i.toString() + " Input Routing Button " + j.toString(),
-						type: 'bool',
-						role: 'state',
+						name: 'outputrouting',
+						type: 'boolean',
+						role: 'indicator',
 						read: true,
 						write: true,
-						//min: 1,
-						//max: 8
 					},
 					native: {},
 				});
