@@ -120,6 +120,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('Matrix CONNECTED');
 					parentThis.setState('info.connection', true, true);
 				}
+				in_msg= '';
 			}
 
 			if(in_msg.length > 50){
