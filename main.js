@@ -250,10 +250,17 @@ class Audiomatrix880 extends utils.Adapter {
 			var iAusgang = channelID % 8;
 			var iEingang = (channelID-iAusgang)/8;
 			
-			this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() );
+			cmdRoute[4] = iAusgang + 8;
+			cmdRoute[10] = iEingang;
+			if(val==true){
+				this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
+				cmdRoute[11] = 30;
+			}else{
+				this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
+				cmdRoute[11] = 128;
+			}
 
-
-			
+			this.send(cmdRoute);
 		}
 
 /*
