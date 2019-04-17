@@ -402,7 +402,9 @@ class Audiomatrix880 extends utils.Adapter {
 			native: {},
 		});
 
-		type: 'state',
+
+		await this.setObjectAsync('outputroutestate_' + (i*8 + j).toString(), {
+			type: 'state',
 			common: {
 				name: 'readmemory_preset',
 				type: 'boolean',
@@ -413,6 +415,7 @@ class Audiomatrix880 extends utils.Adapter {
 			native: {},
 		});
 
+		
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
 
