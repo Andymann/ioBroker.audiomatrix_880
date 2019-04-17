@@ -276,6 +276,17 @@ class Audiomatrix880 extends utils.Adapter {
 			this.send(cmdReadmemory);
 		}
 
+		if(id.toString().includes('.readmemory_route_out_1')){
+			
+			this.log.info('matrixChanged: readmemory_route_out_1');
+			var val = 0x40 + 0x08;
+			var loAddress = val & 0xFF;
+			var hiAddress = (val >> 8) & 0xFF;
+			cmdReadmemory[4] = hiAddress;
+			cmdReadmemory[5] = loAddress;			
+			this.send(cmdReadmemory);
+		}
+
 		
 
 	}
@@ -407,6 +418,18 @@ class Audiomatrix880 extends utils.Adapter {
 			type: 'state',
 			common: {
 				name: 'readmemory_preset',
+				type: 'boolean',
+				role: 'indicator',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync('readmemory_route_out_1', {
+			type: 'state',
+			common: {
+				name: 'readmemory_route_out_1',
 				type: 'boolean',
 				role: 'indicator',
 				read: true,
