@@ -30,6 +30,7 @@ var cmdDisconnect =	new Buffer([0xf0, 0x45, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x
 var cmdGain =		new Buffer([0xf0, 0x45, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+var cmdReadmemory = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 
 var inGain = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -264,48 +265,18 @@ class Audiomatrix880 extends utils.Adapter {
 			this.send(cmdRoute);
 		}
 
-/*
-		if(id.toString().includes('.outputroute')){
-			this.log.info('matrixChanged: outputroute changed. ID:' + id.toString());
-			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-			this.log.info('matrixChanged: outputroute changed. ID:' + channelID.toString() );
-			channelID-=1;	//
-			channelID+=8;
-			if(val>0){
-				//val-=1;	//----Falls per Admin gesetzt und falsch gemacht
-			}
-			if(val>7){
-				val=7;	//----Falls per Admin gesetzt und falsch gemacht
-			}
-
-			//----Erstmal AN
-			this.log.info('matrixChanged: Routing changed. Output:' + (channelID-8).toString() + ' Value:' + val.toString() );
-			inRoute[channelID-8] = val;	//----Internes Caching
-
-			cmdRoute[4] = channelID;			
-			cmdRoute[10] = val;
-			cmdRoute[11] = 30;	//Die Guete des Routing-Knotens
+		if(id.toString().includes('.readmemory_preset')){
 			
-			this.send(cmdRoute);
-			
-			//Alle anderen AUS
-			for (var i = 0; i < 4; i++) {
-				if(i!==val){
-					this.log.info('matrixChanged: Routing changed. Output:' + (channelID-8).toString() + ' Muting Input:' + i.toString() );
-					cmdRoute[4] = channelID;
-					cmdRoute[10]=i;
-					cmdRoute[11] = 128;	//Routing OFF
-					this.send(cmdRoute);
-				}
-			}
-			
-
+			this.log.info('matrixChanged: outputroutestate readmemory_preset');
+			var val = 0x40;
+			var loAddress = val & 0xFF;
+			var hiAddress = (val >> 8) & 0xFF;
+			cmdReadmemory[4] = hiAddress;
+			cmdReadmemory[5] = loAddress;			
+			this.send(cmdReadmemory);
 		}
-*/
 
-		//else{
-		//	this.log.info('matrixChanged: kein Treffer');
-		//}
+		
 
 	}
 
@@ -379,6 +350,7 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 
 		//----Routing
+/*
 		for (var i = 1; i < 9; i++) {
 			await this.setObjectAsync('outputroute_' + i.toString(), {
 				type: 'state',
@@ -394,7 +366,7 @@ class Audiomatrix880 extends utils.Adapter {
 				native: {},
 			});
 		}
-
+*/
 
 		//----Routing via Buttons
 		for (var i = 0; i < 8; i++) {
@@ -426,6 +398,17 @@ class Audiomatrix880 extends utils.Adapter {
 				write: true,
 				min: 1,
 				max: 6
+			},
+			native: {},
+		});
+
+		type: 'state',
+			common: {
+				name: 'readmemory_preset',
+				type: 'boolean',
+				role: 'indicator',
+				read: true,
+				write: true,
 			},
 			native: {},
 		});
