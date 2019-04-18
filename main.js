@@ -55,7 +55,6 @@ class Audiomatrix880 extends utils.Adapter {
 		// this.on("message", this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
 
-
 		parentThis = this;
 	}
 
@@ -88,8 +87,8 @@ class Audiomatrix880 extends utils.Adapter {
 	connectmatrix(cb){
 		this.log.info('connectMatrix().');
  		
-		var host = this.config.host ? this.config.host : '192.168.1.56';
-		var port = this.config.port ? this.config.port : 23;
+		var host = this.config.host;// ? this.config.host : '192.168.1.56';
+		var port = this.config.port;// ? this.config.port : 23;
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
 
 		matrix = new net.Socket();
@@ -100,6 +99,8 @@ class Audiomatrix880 extends utils.Adapter {
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect);
+				}else{
+					parentThis.log.info('connectMatrix().connection==true, doing nothing');
 				}
 			    }
 			}, polling_time);
@@ -108,14 +109,12 @@ class Audiomatrix880 extends utils.Adapter {
 		});
 			
 		matrix.on('data', function(chunk) {
-			//in_msg += chunk;
-			//parentThis.log.info("AudioMatrix incomming: " + in_msg);
-			//parentThis.log.info("AudioMatrix incomming: " + parentThis.toHexString(/*in_msg*/ chunk));
 			in_msg += parentThis.toHexString(chunk);
-			parentThis.log.info("AudioMatrix incomming: " + in_msg);
+			//parentThis.log.info("AudioMatrix incomming: " + in_msg);
 
 			//----// Version: V2.6.152
 			if(in_msg.toLowerCase().indexOf('f7')>-1){
+				parentThis.log.info("AudioMatrix incomming: " + in_msg);
 				if(connection == false){
 					connection = true;
 					parentThis.log.info('Matrix CONNECTED');
@@ -124,9 +123,9 @@ class Audiomatrix880 extends utils.Adapter {
 				in_msg= '';
 			}
 
-			if(in_msg.length > 50){
+			//if(in_msg.length > 50){
 			//	in_msg = '';
-			}
+			//}
 		});
 
 		matrix.on('error', function(e) {
