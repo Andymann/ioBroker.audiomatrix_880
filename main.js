@@ -173,6 +173,7 @@ class Audiomatrix880 extends utils.Adapter {
             			matrix.write(cmd);            
 		        }, 1);
 		}
+		this.log.info('send: tabu=FALSE' );
 		tabu = false;	
 	}
 	
@@ -184,6 +185,7 @@ class Audiomatrix880 extends utils.Adapter {
 //		tabu = true;
 
 		if (connection && val && !val.ack) {
+			this.log.info('matrixChanged: tabu=TRUE' );
 			tabu = true;
 		}
 		if(id.toString().includes('.outputgain')){
