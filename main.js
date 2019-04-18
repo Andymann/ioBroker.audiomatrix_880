@@ -185,8 +185,8 @@ class Audiomatrix880 extends utils.Adapter {
 //		tabu = true;
 
 		if (connection && val && !val.ack) {
-			this.log.info('matrixChanged: tabu=TRUE' );
-			tabu = true;
+			//this.log.info('matrixChanged: tabu=TRUE' );
+			//tabu = true;
 		}
 		if(id.toString().includes('.outputgain')){
 			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
