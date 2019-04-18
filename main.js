@@ -166,7 +166,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//	this.log.info('matrixChanged: outputid:` + outputid +' cmd:' + state + 'V' + outputid + '.');
 		//}
 		//var n = id.includes(".output");
-		tabu = true;
+//		tabu = true;
 		if(id.toString().includes('.outputgain')){
 			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
