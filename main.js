@@ -157,16 +157,14 @@ class Audiomatrix880 extends utils.Adapter {
 	
 	//----Ein State wurde veraendert
 	matrixchanged(id, val){
-		//this.log.info('matrixChanged:' + id +' ' + state);
 
-		//----videomatrix.0.output_1 12
-		//if(id.toLowerCase().inlcudes('output')==true){
-            	//	this.log.info('matrixChanged: output changed');
-		//	var outputid = id.substring(id.lastIndexOf('_'));
-		//	this.log.info('matrixChanged: outputid:` + outputid +' cmd:' + state + 'V' + outputid + '.');
-		//}
-		//var n = id.includes(".output");
+
+//-----Das muss noch gefit werden
 //		tabu = true;
+
+		if (val && !val.ack) {
+			tabu = true;
+		}
 		if(id.toString().includes('.outputgain')){
 			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
