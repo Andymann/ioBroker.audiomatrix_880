@@ -65,7 +65,7 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 
 	initmatrix(){
-		this.log.info('initMatrix().');
+		//this.log.info('initMatrix().');
 		this.connectmatrix();		
 	}
 
@@ -85,7 +85,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 	connectmatrix(cb){
-		this.log.info('connectMatrix().');
+		//this.log.info('connectMatrix().');
  		
 		var host = this.config.host;// ? this.config.host : '192.168.1.56';
 		var port = this.config.port;// ? this.config.port : 23;
@@ -110,8 +110,7 @@ class Audiomatrix880 extends utils.Adapter {
 			
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
-			//parentThis.log.info("AudioMatrix incomming: " + in_msg);
-
+			
 			if(in_msg.toLowerCase().indexOf('f7')>-1){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg);
 				if(connection == false){
@@ -142,7 +141,6 @@ class Audiomatrix880 extends utils.Adapter {
 		});
 
 	}
-
 	
 	send(cmd){
 		//this.log.info('AudioMatrix send:' + cmd);
@@ -152,9 +150,9 @@ class Audiomatrix880 extends utils.Adapter {
 			//tabu = false;
 			setTimeout(function() {
             			matrix.write(cmd);            
-		        }, 1);
+		        }, 10000);
 		}
-		tabu = false;
+		tabu = false;	
 	}
 	
 	//----Ein State wurde veraendert
@@ -168,6 +166,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//	this.log.info('matrixChanged: outputid:` + outputid +' cmd:' + state + 'V' + outputid + '.');
 		//}
 		//var n = id.includes(".output");
+		tabu = true;
 		if(id.toString().includes('.outputgain')){
 			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
