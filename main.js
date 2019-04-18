@@ -38,6 +38,8 @@ var outGain = [0, 0, 0, 0, 0, 0, 0, 0];
 var inRoute = [0, 0, 0, 0, 0, 0, 0, 0];
 var preset;
 
+var bWaitingForResponse = false;
+
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -101,6 +103,10 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.send(cmdConnect);
 				}else{
 					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
+					if(bWaitingForResponse==true){
+						parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
+						bWaitingForResponse = false;
+					}
 				}
 			    }
 			}, polling_time);
@@ -146,8 +152,17 @@ class Audiomatrix880 extends utils.Adapter {
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
+		//----Falsches Device
+		var cmdFalse = new Buffer([0xf0, 0x45, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		bWaitingForResponse = true;
+		this.send(cmdFalse);
 	}
 	
+
+
+
+
+
 	send(cmd){
 		//this.log.info('AudioMatrix send:' + cmd);
 		this.log.info('AudioMatrix send:' + this.toHexString(cmd));
@@ -449,21 +464,21 @@ class Audiomatrix880 extends utils.Adapter {
 		you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
 		*/
 		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync('testVariable', true);
+//		await this.setStateAsync('testVariable', true);
 
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync('testVariable', { val: true, ack: true });
+//		await this.setStateAsync('testVariable', { val: true, ack: true });
 
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+//		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
 		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync('admin', 'iobroker');
-		this.log.info('check user admin pw ioboker: ' + result);
+//		let result = await this.checkPasswordAsync('admin', 'iobroker');
+//		this.log.info('check user admin pw ioboker: ' + result);
 
-		result = await this.checkGroupAsync('admin', 'admin');
-		this.log.info('check group user admin group admin: ' + result);
+//		result = await this.checkGroupAsync('admin', 'admin');
+//		this.log.info('check group user admin group admin: ' + result);
 
 		//----
 		this.initmatrix();
