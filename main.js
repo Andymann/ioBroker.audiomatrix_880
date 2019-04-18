@@ -162,7 +162,7 @@ class Audiomatrix880 extends utils.Adapter {
 //-----Das muss noch gefit werden
 //		tabu = true;
 
-		if (val && !val.ack) {
+		if (connection && val && !val.ack) {
 			tabu = true;
 		}
 		if(id.toString().includes('.outputgain')){
