@@ -15,7 +15,7 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 5000;
+var polling_time = 10000;
 var query = null;
 var in_msg = '';
 
@@ -95,12 +95,12 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.connect(this.config.port, this.config.host, function() {
 			clearInterval(query);
 			query = setInterval(function() {
-			    if(!tabu){
+			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect);
 				}else{
-					parentThis.log.info('connectMatrix().connection==true, doing nothing');
+					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
 				}
 			    }
 			}, polling_time);
@@ -112,7 +112,6 @@ class Audiomatrix880 extends utils.Adapter {
 			in_msg += parentThis.toHexString(chunk);
 			//parentThis.log.info("AudioMatrix incomming: " + in_msg);
 
-			//----// Version: V2.6.152
 			if(in_msg.toLowerCase().indexOf('f7')>-1){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg);
 				if(connection == false){
@@ -155,6 +154,7 @@ class Audiomatrix880 extends utils.Adapter {
             			matrix.write(cmd);            
 		        }, 1);
 		}
+		tabu = false;
 	}
 	
 	//----Ein State wurde veraendert
