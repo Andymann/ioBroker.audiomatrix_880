@@ -117,6 +117,7 @@ class Audiomatrix880 extends utils.Adapter {
 					connection = true;
 					parentThis.log.info('Matrix CONNECTED');
 					parentThis.setState('info.connection', true, true);
+					parentThis.queryMatrix();
 				}
 				in_msg= '';
 			}
@@ -140,6 +141,11 @@ class Audiomatrix880 extends utils.Adapter {
 			parentThis.reconnect();
 		});
 
+	}
+
+	//----Fragt die Werte vom Geraet ab.
+	queryMatrix(){
+		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
 	}
 	
 	send(cmd){
