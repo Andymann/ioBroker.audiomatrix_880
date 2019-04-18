@@ -102,7 +102,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect);
 				}else{
-					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
+					parentThis.log.info('connectMatrix().connection==true, doing nothing');
 					if(bWaitingForResponse==true){
 						parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
 						bWaitingForResponse = false;
