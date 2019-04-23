@@ -165,6 +165,16 @@ class Audiomatrix880 extends utils.Adapter {
 		cmdReadmemory[5] = 0x7d;	//Lo
 		bWaitingForResponse = true;
 		this.send(cmdReadmemory);
+
+		//----Test
+		var cmdReadRoute_1 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		var cmdReadRoute_2 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x7d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		var arrQuery = [cmdReadRoute_1, cmdReadRoute_2];
+
+		arrQuery.forEach(function(item, index, array) {
+			parentThis.log.info(item + ":" +  index);
+		});
+		
 	}
 	
 
