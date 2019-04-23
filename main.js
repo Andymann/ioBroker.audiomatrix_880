@@ -63,7 +63,7 @@ class Audiomatrix880 extends utils.Adapter {
 	toHexString(byteArray) {
 	  return Array.from(byteArray, function(byte) {
 	    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-	  }).join(' ')
+	  }).join('')
 	}
 
 	initmatrix(){
@@ -117,7 +117,7 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
 			
-			if(in_msg.toLowerCase().indexOf('f7')>-1){
+			if((in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg);
 				if(connection == false){
 					connection = true;
