@@ -18,6 +18,7 @@ var tabu = false;
 var polling_time = 10000;
 var query = null;
 var in_msg = '';
+var in_msg_raw = '';
 
 var parentThis;
 
@@ -118,9 +119,11 @@ class Audiomatrix880 extends utils.Adapter {
 			
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
-			
+			in_msg_raw += chunk;
+
 			if((in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg);
+				parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length);
 				if(connection == false){
 					connection = true;
 					parentThis.log.info('Matrix CONNECTED');
