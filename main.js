@@ -131,6 +131,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.queryMatrix();
 				}
 				in_msg= '';
+				in_msg_raw = '';
 			}
 
 			//if(in_msg.length > 50){
