@@ -158,7 +158,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//----Falsches Device
 		var cmdFalse = new Buffer([0xf0, 0x45, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 		cmdReadmemory[4] = 0;	//Hi
-		cmdReadmemory[5] = 0x49;	//Lo
+		cmdReadmemory[5] = 0x7d;	//Lo
 		bWaitingForResponse = true;
 		this.send(cmdReadmemory);
 	}
