@@ -156,8 +156,10 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
 		//----Falsches Device
 		var cmdFalse = new Buffer([0xf0, 0x45, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		cmdReadmemory[4] = 0;	//Hi
+		cmdReadmemory[5] = 0x48;	//Lo
 		bWaitingForResponse = true;
-		this.send(cmdFalse);
+		this.send(cmdReadmemory);
 	}
 	
 
