@@ -210,7 +210,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
 		this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
 			
-		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
+		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: false });
 	}
 
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
