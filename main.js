@@ -208,7 +208,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	setRoutingState(outIndex, inIndex, onoff){
 		this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
-		this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString();
+		this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
 			
 		await this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
 	}
