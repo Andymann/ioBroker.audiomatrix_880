@@ -66,7 +66,7 @@ class Audiomatrix880 extends utils.Adapter {
 	toArray(response){
 		var chunks = [];
 		for (var i = 0, charsLength = response.length; i < charsLength; i += 2) {
-		    chunks.push(response.substring(i, i + 2));
+		    chunks.push(parseInt(response.substring(i, i + 2), 10));
 		}
 		return chunks;
 	}
@@ -110,10 +110,10 @@ class Audiomatrix880 extends utils.Adapter {
 					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
-					if(bWaitingForResponse==true){
-						parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
-						bWaitingForResponse = false;
-					}
+					//if(bWaitingForResponse==true){
+					//	parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
+					//	bWaitingForResponse = false;
+					//}
 				}
 			    }
 			}, polling_time);
@@ -163,12 +163,13 @@ class Audiomatrix880 extends utils.Adapter {
 
 	}
 
+	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
 		this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
 		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
-		if (arrResponse[3] = '00'){
+		if (arrResponse[3] = 0x00 ){
 			this.log.info('parseMsg() Repsonse = CONNECTION' );
 			connection = true;
 			this.setState('info.connection', true, true);
@@ -179,13 +180,14 @@ class Audiomatrix880 extends utils.Adapter {
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
 		tabu =true;
+
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
 		//----Falsches Device
 		var cmdFalse = new Buffer([0xf0, 0x45, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 		cmdReadmemory[4] = 0;	//Hi
 		cmdReadmemory[5] = 0x7d;	//Lo
 		bWaitingForResponse = true;
-		this.send(cmdReadmemory);
+		//this.send(cmdReadmemory);
 
 		//----Test
 		var cmdReadRoute_1 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
