@@ -207,6 +207,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
+		tabu = true;
 		this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
 		this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
@@ -219,17 +220,18 @@ class Audiomatrix880 extends utils.Adapter {
 		if (arrResponse[3] == 0x10 ){
 			this.log.info('parseMsg() Repsonse = ReadMemory' );
 			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){
-				this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0' );				
+				this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0' );	
+				this.setRoutingState(0, 0, (arrResponse[8]==0x1E));			
 				if(arrResponse[8]==0x1E){
-					this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 ON' );
+					//this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 ON' );
 					this.setRoutingState(0, 0, true);				
 				}else{
-					this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 OFF' );				
+					//this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 OFF' );				
 					this.setRoutingState(0, 0, false);
 				}				
 			}
 		}
-
+		tabu = false;
 	}
 
 	//----Fragt die Werte vom Geraet ab.
