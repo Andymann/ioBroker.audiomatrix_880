@@ -36,6 +36,42 @@ var cmdReadmemory = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00, 0
 
 var bWaitingForResponse = false;
 
+//----Routing Memory Location
+var out0_in0_Hi = 0x00; 
+var out0_in0_Lo = 0x48;
+var out0_in1_Hi = 0x00; 
+var out0_in1_Lo = 0x49;
+var out0_in2_Hi = 0x00; 
+var out0_in2_Lo = 0x4A;
+var out0_in3_Hi = 0x00; 
+var out0_in4_Lo = 0x4B;
+
+var out1_in0_Hi = 0x00; 
+var out1_in0_Lo = 0x7C;
+var out1_in1_Hi = 0x00; 
+var out1_in1_Lo = 0x7D;
+var out1_in2_Hi = 0x00; 
+var out1_in2_Lo = 0x7E;
+var out1_in3_Hi = 0x00; 
+var out1_in4_Lo = 0x7F
+
+var out2_in0_Hi = 0x00; 
+var out2_in0_Lo = 0xB0;
+var out2_in1_Hi = 0x00; 
+var out2_in1_Lo = 0xB1;
+var out2_in2_Hi = 0x00; 
+var out2_in2_Lo = 0xB2;
+var out2_in3_Hi = 0x00; 
+var out2_in4_Lo = 0xB3;
+
+var out3_in0_Hi = 0x00; 
+var out3_in0_Lo = 0xE4;
+var out3_in1_Hi = 0x00; 
+var out3_in1_Lo = 0xE5;
+var out3_in2_Hi = 0x00; 
+var out3_in2_Lo = 0xE6;
+var out3_in3_Hi = 0x00; 
+var out3_in4_Lo = 0xE7;
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -163,6 +199,11 @@ class Audiomatrix880 extends utils.Adapter {
 
 	}
 
+
+	setRoutingState(outIndex, inIndex, onoff){
+		this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
+	}
+
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
 		this.log.info('parseMsg():' + msg);
@@ -174,22 +215,31 @@ class Audiomatrix880 extends utils.Adapter {
 			connection = true;
 			this.setState('info.connection', true, true);
 		}
+		if (arrResponse[3] == 0x10 ){
+			this.log.info('parseMsg() Repsonse = ReadMemory' );
+			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){
+				this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0' );				
+				if(arrResponse[8]==0x1E){
+					this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 ON' );
+					this.setRoutingState(0, 0, true);				
+				}else{
+					this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 OFF' );				
+					this.setRoutingState(0, 0, false);
+				}				
+			}
+		}
 
 	}
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
+		
+
+
+
 		tabu =true;
-
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
-		//----Falsches Device
-		var cmdFalse = new Buffer([0xf0, 0x45, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-		cmdReadmemory[4] = 0;	//Hi
-		cmdReadmemory[5] = 0x7d;	//Lo
-		bWaitingForResponse = true;
-		//this.send(cmdReadmemory);
 
-		//----Test
 		var cmdReadRoute_1 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 		var cmdReadRoute_2 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x7d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 		var arrQuery = [cmdReadRoute_1, cmdReadRoute_2];
