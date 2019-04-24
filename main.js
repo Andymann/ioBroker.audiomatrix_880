@@ -36,6 +36,64 @@ var cmdReadmemory = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00, 0
 
 var bWaitingForResponse = false;
 
+//----InputGain; Adressen sind abgebildet per 2 Byte
+var inGain_0_HiVal_Lo = 0x40;
+var inGain_0_HiVal_Hi = 0x00;
+var inGain_1_HiVal_Lo = 0x41;
+var inGain_1_HiVal_Hi = 0x00;
+var inGain_2_HiVal_Lo = 0x42;
+var inGain_2_HiVal_Hi = 0x00;
+var inGain_3_HiVal_Lo = 0x43;
+var inGain_3_HiVal_Hi = 0x00;
+var inGain_4_HiVal_Lo = 0x44;
+var inGain_4_HiVal_Hi = 0x00;
+var inGain_5_HiVal_Lo = 0x45;
+var inGain_5_HiVal_Hi = 0x00;
+var inGain_6_HiVal_Lo = 0x46;
+var inGain_6_HiVal_Hi = 0x00;
+var inGain_7_HiVal_Lo = 0x47;
+var inGain_7_HiVal_Hi = 0x00;
+
+var inGain_0_LoVal_Lo = 0xD8;
+var inGain_0_LoVal_Hi = 0x01;
+var inGain_1_LoVal_Lo = 0xD9;
+var inGain_1_LoVal_Hi = 0x01;
+var inGain_2_LoVal_Lo = 0xDA;
+var inGain_2_LoVal_Hi = 0x01;
+var inGain_3_LoVal_Lo = 0xDB;
+var inGain_3_LoVal_Hi = 0x01;
+var inGain_4_LoVal_Lo = 0xDC;
+var inGain_4_LoVal_Hi = 0x01;
+var inGain_5_LoVal_Lo = 0xDD;
+var inGain_5_LoVal_Hi = 0x01;
+var inGain_6_LoVal_Lo = 0xDE;
+var inGain_6_LoVal_Hi = 0x01;
+var inGain_7_LoVal_Lo = 0xDF;
+var inGain_7_LoVal_Hi = 0x01;
+
+//----Caching der Gain-Werte: Hi, Lo
+
+var inGain_0 = [-1, -1];
+var inGain_1 = [-1, -1];
+var inGain_2 = [-1, -1];
+var inGain_3 = [-1, -1];
+var inGain_4 = [-1, -1];
+var inGain_5 = [-1, -1];
+var inGain_6 = [-1, -1];
+var inGain_7 = [-1, -1];
+
+//----https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
+var inGain = [
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1]
+	];
+
 //----Routing Memory Location
 var out0_in0_Hi = 0x00; 
 var out0_in0_Lo = 0x48;
@@ -213,6 +271,17 @@ class Audiomatrix880 extends utils.Adapter {
 		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: false });
 	}
 
+	setInputGain(gainIndex){
+		this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
+		if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
+			var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
+			this.log.info('setInputGain() gainValue:' + gainVal.toString();		
+
+			inGain[gainIndex][0] = -1;
+			inGain[gainIndex][1] = -1;	
+		}
+	}
+
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
 		tabu = true;
@@ -247,6 +316,10 @@ class Audiomatrix880 extends utils.Adapter {
 			if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
 
+			if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
+			if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
+			
+
 		}
 		tabu = false;
 	}
@@ -258,6 +331,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
 
 		var arrQuery =[
+			//----Routing
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
@@ -277,6 +351,32 @@ class Audiomatrix880 extends utils.Adapter {
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in1_Hi, out3_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in2_Hi, out3_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in3_Hi, out3_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			//----InGain
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
 		];
 
 		arrQuery.forEach(function(item, index, array) {
