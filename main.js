@@ -66,7 +66,7 @@ class Audiomatrix880 extends utils.Adapter {
 	toArray(response){
 		var chunks = [];
 		for (var i = 0, charsLength = response.length; i < charsLength; i += 2) {
-		    chunks.push(parseInt(response.substring(i, i + 2), 10));
+		    chunks.push(parseInt(response.substring(i, i + 2), 16));
 		}
 		return chunks;
 	}
@@ -167,7 +167,7 @@ class Audiomatrix880 extends utils.Adapter {
 	parseMsg(msg){
 		this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
-		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
+		this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
 		if (arrResponse[3] = 0x00 ){
 			this.log.info('parseMsg() Repsonse = CONNECTION' );
