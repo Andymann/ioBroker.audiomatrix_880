@@ -44,7 +44,7 @@ var out0_in1_Lo = 0x49;
 var out0_in2_Hi = 0x00; 
 var out0_in2_Lo = 0x4A;
 var out0_in3_Hi = 0x00; 
-var out0_in4_Lo = 0x4B;
+var out0_in3_Lo = 0x4B;
 
 var out1_in0_Hi = 0x00; 
 var out1_in0_Lo = 0x7C;
@@ -53,7 +53,7 @@ var out1_in1_Lo = 0x7D;
 var out1_in2_Hi = 0x00; 
 var out1_in2_Lo = 0x7E;
 var out1_in3_Hi = 0x00; 
-var out1_in4_Lo = 0x7F
+var out1_in3_Lo = 0x7F
 
 var out2_in0_Hi = 0x00; 
 var out2_in0_Lo = 0xB0;
@@ -62,7 +62,7 @@ var out2_in1_Lo = 0xB1;
 var out2_in2_Hi = 0x00; 
 var out2_in2_Lo = 0xB2;
 var out2_in3_Hi = 0x00; 
-var out2_in4_Lo = 0xB3;
+var out2_in3_Lo = 0xB3;
 
 var out3_in0_Hi = 0x00; 
 var out3_in0_Lo = 0xE4;
@@ -71,7 +71,7 @@ var out3_in1_Lo = 0xE5;
 var out3_in2_Hi = 0x00; 
 var out3_in2_Lo = 0xE6;
 var out3_in3_Hi = 0x00; 
-var out3_in4_Lo = 0xE7;
+var out3_in3_Lo = 0xE7;
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -160,7 +160,7 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
 			//in_msg_raw += chunk;
-			parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
+			//parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
 			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
 			if(in_msg.toLowerCase().startsWith('f0')){
 				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
@@ -218,23 +218,43 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
 		if (arrResponse[3] == 0x00 ){
-			this.log.info('parseMsg() Repsonse = CONNECTION' );
+			this.log.info('parseMsg() Reaponse = CONNECTION' );
 			connection = true;
 			this.setState('info.connection', true, true);
 		}
 		if (arrResponse[3] == 0x10 ){
-			this.log.info('parseMsg() Repsonse = ReadMemory' );
+			this.log.info('parseMsg() Response = ReadMemory' );
 			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){
-				this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0' );	
+				//this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0' );	
 				this.setRoutingState(0, 0, (arrResponse[8]==0x1E));			
-				if(arrResponse[8]==0x1E){
+				//if(arrResponse[8]==0x1E){
 					//this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 ON' );
-					this.setRoutingState(0, 0, true);				
-				}else{
+				//	this.setRoutingState(0, 0, true);				
+				//}else{
 					//this.log.info('parseMsg() Repsonse = ReadRoute Out 0 In 0 OFF' );				
-					this.setRoutingState(0, 0, false);
-				}				
+				//	this.setRoutingState(0, 0, false);
+				//}				
 			}
+
+			if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingState(0, 3, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingState(1, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingState(1, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingState(1, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingState(1, 3, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingState(2, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingState(2, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingState(2, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingState(2, 3, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingState(3, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingState(3, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
+
 		}
 		tabu = false;
 	}
@@ -245,9 +265,18 @@ class Audiomatrix880 extends utils.Adapter {
 		tabu =true;
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
 
-		var cmdReadRoute_1 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-		var cmdReadRoute_2 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x7d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-		var arrQuery = [cmdReadRoute_1, cmdReadRoute_2];
+		//var cmdReadRoute_1 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x48, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		//var cmdReadRoute_2 = new Buffer([0xf0, 0x45, 0x01, 0x10, 0x00, 0x7d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+		//var arrQuery = [cmdReadRoute_1, cmdReadRoute_2];
+
+		var arrQuery =[
+				new Buffer([0xf0, 0x45, 0x01, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+				new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+				new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+				new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in3_Hi, out0_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			];
+
+
 
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
