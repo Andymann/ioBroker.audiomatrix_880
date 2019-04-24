@@ -233,9 +233,6 @@ class Audiomatrix880 extends utils.Adapter {
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
-		
-
-
 
 		tabu =true;
 		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
@@ -245,7 +242,8 @@ class Audiomatrix880 extends utils.Adapter {
 		var arrQuery = [cmdReadRoute_1, cmdReadRoute_2];
 
 		arrQuery.forEach(function(item, index, array) {
-			parentThis.log.info(item + ":" +  index);
+			//parentThis.log.info(item + ":" +  index);
+			parentThis.this.send(item);
 		});
 		
 	}
@@ -269,12 +267,13 @@ class Audiomatrix880 extends utils.Adapter {
 		tabu = false;	
 	}
 	
+
 	//----Ein State wurde veraendert
 	matrixchanged(id, val){
 
 
-//-----Das muss noch gefit werden
-//		tabu = true;
+	//-----Das muss noch gefit werden
+	//		tabu = true;
 
 		if (connection && val && !val.ack) {
 			//this.log.info('matrixChanged: tabu=TRUE' );
