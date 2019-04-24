@@ -162,20 +162,25 @@ class Audiomatrix880 extends utils.Adapter {
 			//in_msg_raw += chunk;
 			parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
 			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
-			if((in_msg.length == 26) && (in_msg.toLowerCase().startsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
-				parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
-				//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
-				/*
-				if(connection == false){
-					connection = true;
-					parentThis.log.info('Matrix CONNECTED');
-					parentThis.setState('info.connection', true, true);
-					parentThis.queryMatrix();
+			if(in_msg.toLowerCase().startsWith('f0')){
+				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
+					parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
+					//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
+					/*
+					if(connection == false){
+						connection = true;
+						parentThis.log.info('Matrix CONNECTED');
+						parentThis.setState('info.connection', true, true);
+						parentThis.queryMatrix();
+					}
+					in_msg= '';
+					in_msg_raw = '';
+					*/
+					parentThis.parseMsg(in_msg);
+					in_msg = '';
 				}
-				in_msg= '';
-				in_msg_raw = '';
-				*/
-				parentThis.parseMsg(in_msg);
+			}else{
+				//----Irgendwie vergneisgnaddelt
 				in_msg = '';
 			}
 
