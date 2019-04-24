@@ -168,7 +168,7 @@ class Audiomatrix880 extends utils.Adapter {
 		var arrResponse = this.toArray(msg);
 		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
-		if (arrResponse[3] = 0x00){
+		if (arrResponse[3] = '00'){
 			this.log.info('parseMsg() Repsonse = CONNECTION' );
 			connection = true;
 			setState('info.connection', true, true);
