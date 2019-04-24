@@ -65,8 +65,8 @@ class Audiomatrix880 extends utils.Adapter {
 	//----26 chars to one 13-element Array
 	toArray(response){
 		var chunks = [];
-		for (var i = 0, charsLength = str.length; i < charsLength; i += 2) {
-		    chunks.push(str.substring(i, i + 2));
+		for (var i = 0, charsLength = response.length; i < charsLength; i += 2) {
+		    chunks.push(response.substring(i, i + 2));
 		}
 		return chunks;
 	}
