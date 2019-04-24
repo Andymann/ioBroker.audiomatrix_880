@@ -176,6 +176,7 @@ class Audiomatrix880 extends utils.Adapter {
 				in_msg_raw = '';
 				*/
 				parentThis.parseMsg(in_msg);
+				in_msg = '';
 			}
 
 			//if(in_msg.length > 50){
