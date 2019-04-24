@@ -243,7 +243,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
-			parentThis.this.send(item);
+			parentThis.send(item);
 		});
 		
 	}
