@@ -18,7 +18,7 @@ var tabu = false;
 var polling_time = 10000;
 var query = null;
 var in_msg = '';
-var in_msg_raw = '';
+//var in_msg_raw = '';
 
 var parentThis;
 
@@ -33,11 +33,6 @@ var cmdRoute =		new Buffer([0xf0, 0x45, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 
 var cmdPreset =		new Buffer([0xf0, 0x45, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdReadmemory = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
-
-var inGain = [0, 0, 0, 0, 0, 0, 0, 0];
-var outGain = [0, 0, 0, 0, 0, 0, 0, 0];
-var inRoute = [0, 0, 0, 0, 0, 0, 0, 0];
-var preset;
 
 var bWaitingForResponse = false;
 
@@ -65,6 +60,15 @@ class Audiomatrix880 extends utils.Adapter {
 	  return Array.from(byteArray, function(byte) {
 	    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
 	  }).join('')
+	}
+
+	//----26 chars to one 13-element Array
+	toArray(response){
+		var chunks = [];
+		for (var i = 0, charsLength = str.length; i < charsLength; i += 2) {
+		    chunks.push(str.substring(i, i + 2));
+		}
+		return var;
 	}
 
 	initmatrix(){
@@ -119,11 +123,13 @@ class Audiomatrix880 extends utils.Adapter {
 			
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
-			in_msg_raw += chunk;
+			//in_msg_raw += chunk;
 			
-			if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
+			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
+			if((in_msg.length==26) && (in_msg.toLowerCase().beginsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg + " LENGTH: " + in_msg.length.toString());
-				parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
+				//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
+				/*
 				if(connection == false){
 					connection = true;
 					parentThis.log.info('Matrix CONNECTED');
@@ -132,6 +138,8 @@ class Audiomatrix880 extends utils.Adapter {
 				}
 				in_msg= '';
 				in_msg_raw = '';
+				*/
+				parentThis.parseMsg(in_msg);
 			}
 
 			//if(in_msg.length > 50){
@@ -153,6 +161,18 @@ class Audiomatrix880 extends utils.Adapter {
 			parentThis.reconnect();
 		});
 
+	}
+
+	parseMsg(msg){
+		this.log.info('parseMsg():' + msg);
+		var arrResponse = this.toArray(msg);
+		this.log.info('parseMsg() LEN:' + arrResponse.lebgth.toString() );
+		if(!connection){
+
+
+		}else{
+
+		}
 	}
 
 	//----Fragt die Werte vom Geraet ab.
@@ -215,9 +235,6 @@ class Audiomatrix880 extends utils.Adapter {
 			//var channelID=id;
 			channelID-=1;
 
-			this.log.info('matrixChanged: outGain[' + channelID.toString() + ']=' + val.toString() );
-			outGain[channelID]=val;
-
 			channelID+=8;	//
 			cmdGain[4] = channelID;
 					
@@ -243,8 +260,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 			channelID-=1;	//
 
-			this.log.info('matrixChanged: inGain[' + channelID.toString() + ']=' + val.toString() );
-			inGain[channelID]=val;
+			
 
 			cmdGain[4] = channelID;
 					
@@ -267,9 +283,6 @@ class Audiomatrix880 extends utils.Adapter {
 			if(val>5){
 				val=5;	//----Falls per Admin gesetzt und falsch gemacht
 			}
-
-			preset = val;
-			this.log.info('matrixChanged: Preset changed to:' + preset.toString() );
 
 			cmdPreset[4]=val;			
 			this.send(cmdPreset);
