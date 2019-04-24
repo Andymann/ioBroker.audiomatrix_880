@@ -126,7 +126,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//in_msg_raw += chunk;
 			
 			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
-			if((in_msg.length==26) && (in_msg.toLowerCase().beginsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
+			if((in_msg.length==26) && (in_msg.toLowerCase().startsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
 				parentThis.log.info("AudioMatrix incomming: " + in_msg + " LENGTH: " + in_msg.length.toString());
 				//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
 				/*
