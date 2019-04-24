@@ -141,7 +141,7 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect);
+					parentThis.send(cmdConnect, 1);
 				}else{
 					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
@@ -162,7 +162,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//in_msg_raw += chunk;
 			parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
 			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
-			if((in_msg.length==26) && (in_msg.toLowerCase().startsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
+			if((in_msg.length == 26) && (in_msg.toLowerCase().startsWith('f0')) && (in_msg.toLowerCase().endsWith('f7'))){
 				parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
 				//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
 				/*
@@ -244,7 +244,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
-			parentThis.send(item);
+			parentThis.send(item, 500);
 		});
 		
 	}
@@ -254,15 +254,15 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 
-	send(cmd){
+	send(cmd, iTimeout){
 		//this.log.info('AudioMatrix send:' + cmd);
-		this.log.info('AudioMatrix send:' + this.toHexString(cmd));
+		this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 		if (cmd !== undefined){
 			//matrix.write(cmd);
 			//tabu = false;
 			setTimeout(function() {
             			matrix.write(cmd);            
-		        }, 1);
+		        }, iTimeout);
 		}
 		this.log.info('send: tabu=FALSE' );
 		tabu = false;	
@@ -300,7 +300,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 			//----Speichern der STates
 			
-			this.send(cmdGain);
+			this.send(cmdGain, 1);
 			
 		}
 
@@ -324,7 +324,7 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdGain[7] = loByte;
 			cmdGain[11] = hiByte;
 			
-			this.send(cmdGain);
+			this.send(cmdGain, 1);
 
 		}
 
@@ -338,7 +338,7 @@ class Audiomatrix880 extends utils.Adapter {
 			}
 
 			cmdPreset[4]=val;			
-			this.send(cmdPreset);
+			this.send(cmdPreset, 1);
 
 		}
 /*
@@ -377,7 +377,7 @@ class Audiomatrix880 extends utils.Adapter {
 			var hiAddress = (val >> 8) & 0xFF;
 			cmdReadmemory[4] = hiAddress;
 			cmdReadmemory[5] = loAddress;			
-			this.send(cmdReadmemory);
+			this.send(cmdReadmemory, 1);
 		}
 
 		if(id.toString().includes('.readmemory_route_out_1')){
@@ -388,7 +388,7 @@ class Audiomatrix880 extends utils.Adapter {
 			var hiAddress = (val >> 8) & 0xFF;
 			cmdReadmemory[4] = hiAddress;
 			cmdReadmemory[5] = loAddress;			
-			this.send(cmdReadmemory);
+			this.send(cmdReadmemory, 1);
 		}
 
 		
