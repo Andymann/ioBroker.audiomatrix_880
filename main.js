@@ -275,7 +275,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 		if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
 			var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
-			this.log.info('setInputGain() gainValue:' + gainVal.toString();		
+			this.log.info('setInputGain() gainValue:' + gainVal.toString() );		
 
 			inGain[gainIndex][0] = -1;
 			inGain[gainIndex][1] = -1;	
