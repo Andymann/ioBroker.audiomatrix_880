@@ -68,7 +68,7 @@ class Audiomatrix880 extends utils.Adapter {
 		for (var i = 0, charsLength = str.length; i < charsLength; i += 2) {
 		    chunks.push(str.substring(i, i + 2));
 		}
-		return var;
+		return chunks;
 	}
 
 	initmatrix(){
