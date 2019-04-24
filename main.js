@@ -171,7 +171,7 @@ class Audiomatrix880 extends utils.Adapter {
 		if (arrResponse[3] = '00'){
 			this.log.info('parseMsg() Repsonse = CONNECTION' );
 			connection = true;
-			setState('info.connection', true, true);
+			this.setState('info.connection', true, true);
 		}
 
 	}
