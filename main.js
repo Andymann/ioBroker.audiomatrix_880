@@ -166,13 +166,14 @@ class Audiomatrix880 extends utils.Adapter {
 	parseMsg(msg){
 		this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
-		this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
-		if(!connection){
+		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
-
-		}else{
-
+		if (arrResponse[3] = 0x00){
+			this.log.info('parseMsg() Repsonse = CONNECTION );
+			connection = true;
+			setState('info.connection', true, true);
 		}
+
 	}
 
 	//----Fragt die Werte vom Geraet ab.
