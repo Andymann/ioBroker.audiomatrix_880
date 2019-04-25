@@ -243,7 +243,9 @@ class Audiomatrix880 extends utils.Adapter {
 			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
 			if(in_msg.toLowerCase().startsWith('f0')){
 				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
-					parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
+					//parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
+					
+
 					//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
 					/*
 					if(connection == false){
@@ -306,7 +308,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
-			this.log.info('setVolume() volumeIndex:' + volVal.toString() );		
+			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() ': ' + volVal.toString() );		
 
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
