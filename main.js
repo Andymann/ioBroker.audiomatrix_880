@@ -468,118 +468,119 @@ class Audiomatrix880 extends utils.Adapter {
 			//this.log.info('matrixChanged: tabu=TRUE' );
 			//tabu = true;
 		}
-		if(id.toString().includes('.outputgain')){
-			this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
-			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
-			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-			this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
-			//var channelID=id;
-			channelID-=1;
+		if(ack==true){
+			if(id.toString().includes('.outputgain')){
+				this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
+				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
+				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+				this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
+				//var channelID=id;
+				channelID-=1;
 
-			channelID+=8;	//
-			cmdGain[4] = channelID;
-					
-			val*=13.9;
-			var loByte = val & 0xFF;
-			var hiByte = (val >> 8) & 0xFF;
+				channelID+=8;	//
+				cmdGain[4] = channelID;
+						
+				val*=13.9;
+				var loByte = val & 0xFF;
+				var hiByte = (val >> 8) & 0xFF;
 
-			cmdGain[7] = loByte;
-			cmdGain[11] = hiByte;
+				cmdGain[7] = loByte;
+				cmdGain[11] = hiByte;
 
-			//----Speichern der STates
-			
-			this.send(cmdGain, 1);
-			
-		}
-
-		if(id.toString().includes('.inputgain')){
-			this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
-			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
-			//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
-			//var channelID = id;
-			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-			this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
-			channelID-=1;	//
-
-			
-
-			cmdGain[4] = channelID;
-					
-			val*=13.9;
-			var loByte = val & 0xFF;
-			var hiByte = (val >> 8) & 0xFF;
-
-			cmdGain[7] = loByte;
-			cmdGain[11] = hiByte;
-			
-			this.send(cmdGain, 1);
-
-		}
-
-		if(id.toString().includes('.preset')){
-			this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
-			if(val>0){
-				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
-			}
-			if(val>5){
-				val=5;	//----Falls per Admin gesetzt und falsch gemacht
+				//----Speichern der STates
+				
+				this.send(cmdGain, 1);
+				
 			}
 
-			cmdPreset[4]=val;			
-			this.send(cmdPreset, 1);
+			if(id.toString().includes('.inputgain')){
+				this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
+				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
+				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
+				//var channelID = id;
+				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+				this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
+				channelID-=1;	//
 
-		}
-/*
-		if(id.toString().includes('.outputroutestate_')){
-			this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
-		}
-*/
-		
-		if(id.toString().includes('.outputroutestate_')){
-			//this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
-			//this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
-			var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-			this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
-			
-			var iAusgang = channelID % 8;
-			var iEingang = (channelID-iAusgang)/8;
-			
-			cmdRoute[4] = iAusgang + 8;
-			cmdRoute[10] = iEingang;
-			if(val==true){
-				this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
-				cmdRoute[11] = 30;
-			}else{
-				this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
-				cmdRoute[11] = 128;
+				
+
+				cmdGain[4] = channelID;
+						
+				val*=13.9;
+				var loByte = val & 0xFF;
+				var hiByte = (val >> 8) & 0xFF;
+
+				cmdGain[7] = loByte;
+				cmdGain[11] = hiByte;
+				
+				this.send(cmdGain, 1);
+
 			}
 
-			this.send(cmdRoute);
-		}
+			if(id.toString().includes('.preset')){
+				this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
+				if(val>0){
+					val-=1;	//----Falls per Admin gesetzt und falsch gemacht
+				}
+				if(val>5){
+					val=5;	//----Falls per Admin gesetzt und falsch gemacht
+				}
 
-		if(id.toString().includes('.readmemory_preset')){
+				cmdPreset[4]=val;			
+				this.send(cmdPreset, 1);
+
+			}
+	/*
+			if(id.toString().includes('.outputroutestate_')){
+				this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
+			}
+	*/
 			
-			this.log.info('matrixChanged: readmemory_preset');
-			var val = 0x40;
-			var loAddress = val & 0xFF;
-			var hiAddress = (val >> 8) & 0xFF;
-			cmdReadmemory[4] = hiAddress;
-			cmdReadmemory[5] = loAddress;			
-			this.send(cmdReadmemory, 1);
-		}
+			if(id.toString().includes('.outputroutestate_')){
+				//this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
+				//this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
+				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+				this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
+				
+				var iAusgang = channelID % 8;
+				var iEingang = (channelID-iAusgang)/8;
+				
+				cmdRoute[4] = iAusgang + 8;
+				cmdRoute[10] = iEingang;
+				if(val==true){
+					this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
+					cmdRoute[11] = 30;
+				}else{
+					this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
+					cmdRoute[11] = 128;
+				}
 
-		if(id.toString().includes('.readmemory_route_out_1')){
-			
-			this.log.info('matrixChanged: readmemory_route_out_1');
-			var val = 0x40 + 0x08;
-			var loAddress = val & 0xFF;
-			var hiAddress = (val >> 8) & 0xFF;
-			cmdReadmemory[4] = hiAddress;
-			cmdReadmemory[5] = loAddress;			
-			this.send(cmdReadmemory, 1);
-		}
+				this.send(cmdRoute);
+			}
 
-		
+			if(id.toString().includes('.readmemory_preset')){
+				
+				this.log.info('matrixChanged: readmemory_preset');
+				var val = 0x40;
+				var loAddress = val & 0xFF;
+				var hiAddress = (val >> 8) & 0xFF;
+				cmdReadmemory[4] = hiAddress;
+				cmdReadmemory[5] = loAddress;			
+				this.send(cmdReadmemory, 1);
+			}
+
+			if(id.toString().includes('.readmemory_route_out_1')){
+				
+				this.log.info('matrixChanged: readmemory_route_out_1');
+				var val = 0x40 + 0x08;
+				var loAddress = val & 0xFF;
+				var hiAddress = (val >> 8) & 0xFF;
+				cmdReadmemory[4] = hiAddress;
+				cmdReadmemory[5] = loAddress;			
+				this.send(cmdReadmemory, 1);
+			}
+
+		}//----ack==TRUE		
 
 	}
 
