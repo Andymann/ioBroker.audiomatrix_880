@@ -516,7 +516,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		}
 
-		if(id.toString().includes('.preset')){
+		if(id.toString().includes('preset')){
 			this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
 			if(val>0){
 				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
