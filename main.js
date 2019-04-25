@@ -15,7 +15,7 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 10000;
+var polling_time = 20000;
 var query = null;
 var in_msg = '';
 //var in_msg_raw = '';
@@ -265,9 +265,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 	setRoutingState(outIndex, inIndex, onoff){
-		this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
-		this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
-			
+		//this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
+		//this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
 		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: false });
 	}
 
@@ -398,7 +397,7 @@ class Audiomatrix880 extends utils.Adapter {
             			matrix.write(cmd);            
 		        }, iTimeout);
 		}
-		this.log.info('send: tabu=FALSE' );
+		//this.log.info('send: tabu=FALSE' );
 		tabu = false;	
 	}
 	
