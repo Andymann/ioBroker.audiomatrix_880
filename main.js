@@ -286,7 +286,7 @@ class Audiomatrix880 extends utils.Adapter {
 		tabu = true;
 		this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
-		this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
+		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
 		if (arrResponse[3] == 0x00 ){
 			this.log.info('parseMsg() Response = CONNECTION' );
@@ -294,7 +294,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.setState('info.connection', true, true);
 		}
 		if (arrResponse[3] == 0x10 ){
-			this.log.info('parseMsg() Response = ReadMemory' );
+			//this.log.info('parseMsg() Response = ReadMemory' );
 			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
@@ -354,7 +354,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//----InGain
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-
+/*
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
@@ -375,7 +375,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-
+*/
 		];
 
 		arrQuery.forEach(function(item, index, array) {
