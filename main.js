@@ -308,7 +308,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
-			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() ': ' + volVal.toString() );		
+			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );		
 
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
