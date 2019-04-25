@@ -73,8 +73,8 @@ var inGain_7_LoVal_Hi = 0x02;
 
 var vol_0_HiVal_Lo = 0x7B;
 var vol_0_HiVal_Hi = 0x00;
-var vol_0_LoVal_Lo = 0xAF;
-var vol_0_LoVal_Hi = 0x00;
+var vol_0_LoVal_Lo = 0x08;
+var vol_0_LoVal_Hi = 0x02;
 
 //----Caching der Gain-Werte: Hi, Lo
 
