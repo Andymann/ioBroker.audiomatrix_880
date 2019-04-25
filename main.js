@@ -288,7 +288,7 @@ class Audiomatrix880 extends utils.Adapter {
 	setRoutingState(outIndex, inIndex, onoff){
 		//this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
 		//this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
-		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: false });
+		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
 	}
 
 	setInputGain(gainIndex){
@@ -468,7 +468,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//this.log.info('matrixChanged: tabu=TRUE' );
 			//tabu = true;
 		}
-		if(ack==true){
+		if(ack==false){
 			if(id.toString().includes('.outputgain')){
 				this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
@@ -580,7 +580,7 @@ class Audiomatrix880 extends utils.Adapter {
 				this.send(cmdReadmemory, 1);
 			}
 
-		}//----ack==TRUE		
+		}//----ack==FALSE		
 
 	}
 
