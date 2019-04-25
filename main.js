@@ -516,7 +516,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		}
 
-		if(id.toString().includes('preset')){
+		if(id.toString().includes('.preset')){
 			this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
 			if(val>0){
 				val-=1;	//----Falls per Admin gesetzt und falsch gemacht
@@ -796,9 +796,9 @@ class Audiomatrix880 extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			if(state.ack){
+			//if(state.ack){
 				this.matrixchanged(id, state.val);
-			}
+			//}
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
