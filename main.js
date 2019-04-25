@@ -71,6 +71,11 @@ var inGain_6_LoVal_Hi = 0x01;
 var inGain_7_LoVal_Lo = 0xDF;
 var inGain_7_LoVal_Hi = 0x01;
 
+var vol_0_HiVal_Lo = 0x3B;
+var vol_0_HiVal_Hi = 0x00;
+var vol_0_LoVal_Lo = 0x6F;
+var vol_0_LoVal_Hi = 0x00;
+
 //----Caching der Gain-Werte: Hi, Lo
 
 var inGain_0 = [-1, -1];
@@ -84,6 +89,17 @@ var inGain_7 = [-1, -1];
 
 //----https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
 var inGain = [
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1],
+		[-1, -1]
+	];
+
+var volume = [
 		[-1, -1],
 		[-1, -1],
 		[-1, -1],
@@ -281,6 +297,17 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 	}
 
+	setVolume(volumeIndex){
+		this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
+		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
+			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
+			this.log.info('setInputGain() volumeIndex:' + volVal.toString() );		
+
+			volume[volumeIndex][0] = -1;
+			volume[volumeIndex][1] = -1;	
+		}
+	}
+
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
 		tabu = true;
@@ -318,7 +345,8 @@ class Audiomatrix880 extends utils.Adapter {
 			if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
 			if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
 			
-
+			if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
+			if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 		}
 		tabu = false;
 	}
@@ -377,6 +405,10 @@ class Audiomatrix880 extends utils.Adapter {
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 */
+			//----Volume
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_HiVal_Hi, vol_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_LoVal_Hi, vol_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
 		];
 
 		arrQuery.forEach(function(item, index, array) {
