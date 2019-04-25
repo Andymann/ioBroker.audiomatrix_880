@@ -359,6 +359,11 @@ class Audiomatrix880 extends utils.Adapter {
 
 			if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 		}
+		if (arrResponse[3] == 0xE0 ){
+			//if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ this.log.info('UKU3:' + arrResponse[8].toString() )}
+			this.log.info('UKU3:' + arrResponse[4].toString() + ' ' + arrResponse[5].toString() + ' ' + arrResponse[6].toString() + ' ' + arrResponse[7].toString()  )
+		}
+
 		tabu = false;
 	}
 
@@ -396,7 +401,8 @@ class Audiomatrix880 extends utils.Adapter {
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0xE0, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo-2, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			
 /*
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
