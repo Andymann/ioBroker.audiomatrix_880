@@ -351,8 +351,8 @@ class Audiomatrix880 extends utils.Adapter {
 			if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
 			//if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
 			//if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
-			if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ this.log.info('UKU1:' + arrResponse[8].toString() )}
-			if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ this.log.info('UKU2:' + arrResponse[8].toString() )}
+			//if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ this.log.info('UKU1:' + arrResponse[8].toString() )}
+			//if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ this.log.info('UKU2:' + arrResponse[8].toString() )}
 			
 			if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
 			if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
@@ -375,7 +375,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		var arrQuery =[
 			//----Routing
-/*
+
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
@@ -395,16 +395,16 @@ class Audiomatrix880 extends utils.Adapter {
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in1_Hi, out3_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in2_Hi, out3_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in3_Hi, out3_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-*/
+
 			//----InGain
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			//new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-			new Buffer([0xf0, 0x45, idDevice, 0x0E, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo-2, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			//new Buffer([0xf0, 0x45, idDevice, 0x0E, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo-2, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			
-/*
+
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
@@ -425,12 +425,12 @@ class Audiomatrix880 extends utils.Adapter {
 
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-*/
-/*
+
+
 			//----Volume
 			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_HiVal_Hi, vol_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_LoVal_Hi, vol_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-*/
+
 		];
 
 		arrQuery.forEach(function(item, index, array) {
@@ -458,7 +458,7 @@ class Audiomatrix880 extends utils.Adapter {
 	
 
 	//----Ein State wurde veraendert
-	matrixchanged(id, val){
+	matrixchanged(id, val, ack){
 
 
 	//-----Das muss noch gefit werden
@@ -797,7 +797,7 @@ class Audiomatrix880 extends utils.Adapter {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			//if(state.ack){
-				this.matrixchanged(id, state.val);
+				this.matrixchanged(id, state.val, state.ack);
 			//}
 		} else {
 			// The state was deleted
