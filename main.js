@@ -55,26 +55,26 @@ var inGain_7_HiVal_Lo = 0x47;
 var inGain_7_HiVal_Hi = 0x00;
 
 var inGain_0_LoVal_Lo = 0xD8;
-var inGain_0_LoVal_Hi = 0x01;
+var inGain_0_LoVal_Hi = 0x41;
 var inGain_1_LoVal_Lo = 0xD9;
-var inGain_1_LoVal_Hi = 0x01;
+var inGain_1_LoVal_Hi = 0x41;
 var inGain_2_LoVal_Lo = 0xDA;
-var inGain_2_LoVal_Hi = 0x01;
+var inGain_2_LoVal_Hi = 0x41;
 var inGain_3_LoVal_Lo = 0xDB;
-var inGain_3_LoVal_Hi = 0x01;
+var inGain_3_LoVal_Hi = 0x41;
 var inGain_4_LoVal_Lo = 0xDC;
-var inGain_4_LoVal_Hi = 0x01;
+var inGain_4_LoVal_Hi = 0x41;
 var inGain_5_LoVal_Lo = 0xDD;
-var inGain_5_LoVal_Hi = 0x01;
+var inGain_5_LoVal_Hi = 0x41;
 var inGain_6_LoVal_Lo = 0xDE;
-var inGain_6_LoVal_Hi = 0x01;
+var inGain_6_LoVal_Hi = 0x41;
 var inGain_7_LoVal_Lo = 0xDF;
-var inGain_7_LoVal_Hi = 0x01;
+var inGain_7_LoVal_Hi = 0x41;
 
-var vol_0_HiVal_Lo = 0x3B;
-var vol_0_HiVal_Hi = 0x00;
-var vol_0_LoVal_Lo = 0x6F;
-var vol_0_LoVal_Hi = 0x00;
+var vol_0_HiVal_Lo = 0x40 + 0x3B;
+var vol_0_HiVal_Hi = 0x40 + 0x00;
+var vol_0_LoVal_Lo = 0x40 + 0x6F;
+var vol_0_LoVal_Hi = 0x40 + 0x00;
 
 //----Caching der Gain-Werte: Hi, Lo
 
@@ -301,7 +301,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
-			this.log.info('setInputGain() volumeIndex:' + volVal.toString() );		
+			this.log.info('setVolume() volumeIndex:' + volVal.toString() );		
 
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
