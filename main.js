@@ -54,27 +54,27 @@ var inGain_6_HiVal_Hi = 0x00;
 var inGain_7_HiVal_Lo = 0x47;
 var inGain_7_HiVal_Hi = 0x00;
 
-var inGain_0_LoVal_Lo = 0xD8;
-var inGain_0_LoVal_Hi = 0x41;
-var inGain_1_LoVal_Lo = 0xD9;
-var inGain_1_LoVal_Hi = 0x41;
-var inGain_2_LoVal_Lo = 0xDA;
-var inGain_2_LoVal_Hi = 0x41;
-var inGain_3_LoVal_Lo = 0xDB;
-var inGain_3_LoVal_Hi = 0x41;
-var inGain_4_LoVal_Lo = 0xDC;
-var inGain_4_LoVal_Hi = 0x41;
-var inGain_5_LoVal_Lo = 0xDD;
-var inGain_5_LoVal_Hi = 0x41;
-var inGain_6_LoVal_Lo = 0xDE;
-var inGain_6_LoVal_Hi = 0x41;
-var inGain_7_LoVal_Lo = 0xDF;
-var inGain_7_LoVal_Hi = 0x41;
+var inGain_0_LoVal_Lo = 0x18;
+var inGain_0_LoVal_Hi = 0x02;
+var inGain_1_LoVal_Lo = 0x19;
+var inGain_1_LoVal_Hi = 0x02;
+var inGain_2_LoVal_Lo = 0x1A;
+var inGain_2_LoVal_Hi = 0x02;
+var inGain_3_LoVal_Lo = 0x1B;
+var inGain_3_LoVal_Hi = 0x02;
+var inGain_4_LoVal_Lo = 0x1C;
+var inGain_4_LoVal_Hi = 0x02;
+var inGain_5_LoVal_Lo = 0x1D;
+var inGain_5_LoVal_Hi = 0x02;
+var inGain_6_LoVal_Lo = 0x1E;
+var inGain_6_LoVal_Hi = 0x02;
+var inGain_7_LoVal_Lo = 0x1F;
+var inGain_7_LoVal_Hi = 0x02;
 
-var vol_0_HiVal_Lo = 0x40 + 0x3B;
-var vol_0_HiVal_Hi = 0x40 + 0x00;
-var vol_0_LoVal_Lo = 0x40 + 0x6F;
-var vol_0_LoVal_Hi = 0x40 + 0x00;
+var vol_0_HiVal_Lo = 0x7B;
+var vol_0_HiVal_Hi = 0x00;
+var vol_0_LoVal_Lo = 0xAF;
+var vol_0_LoVal_Hi = 0x00;
 
 //----Caching der Gain-Werte: Hi, Lo
 
