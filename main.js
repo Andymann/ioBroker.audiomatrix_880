@@ -244,8 +244,6 @@ class Audiomatrix880 extends utils.Adapter {
 			if(in_msg.toLowerCase().startsWith('f0')){
 				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
 					//parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
-					
-
 					//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
 					/*
 					if(connection == false){
@@ -294,8 +292,9 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 
 	setInputGain(gainIndex){
-		this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
+		//this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 		if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
+			this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 			var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
 			this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );		
 
@@ -318,7 +317,7 @@ class Audiomatrix880 extends utils.Adapter {
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
 		tabu = true;
-		this.log.info('parseMsg():' + msg);
+		//this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
 		//this.log.info('parseMsg() LEN:' + arrResponse.length.toString() );
 
@@ -329,6 +328,7 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 		if (arrResponse[3] == 0x10 ){
 			//this.log.info('parseMsg() Response = ReadMemory' );
+			//----Routing
 			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
@@ -349,23 +349,19 @@ class Audiomatrix880 extends utils.Adapter {
 			if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
 
+			//----Input Gain
 			if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
 			if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
-			if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
-			if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
-			//if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ this.log.info('UKU1:' + arrResponse[8].toString() )}
-			//if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ this.log.info('UKU2:' + arrResponse[8].toString() )}
+			if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(1)}
+			if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(1)}
 			
+			//----Volume
 			if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
 			if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 
 			//if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 		}
-		if (arrResponse[3] == 0x0E ){
-			//if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ this.log.info('UKU3:' + arrResponse[8].toString() )}
-			this.log.info('UKU3:' + arrResponse[4].toString() + ' ' + arrResponse[5].toString() + ' ' + arrResponse[6].toString() + ' ' + arrResponse[7].toString()  )
-		}
-
+		
 		tabu = false;
 	}
 
