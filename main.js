@@ -208,9 +208,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 	connectmatrix(cb){
 		//this.log.info('connectMatrix().');
- 		
-		var host = this.config.host;// ? this.config.host : '192.168.1.56';
-		var port = this.config.port;// ? this.config.port : 23;
+ 		var host = this.config.host;
+		var port = this.config.port;
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
 
 		matrix = new net.Socket();
@@ -220,9 +219,8 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 1);
+					parentThis.send(cmdConnect, 10);
 				}else{
-					//parentThis.log.info('connectMatrix().connection==true, doing nothing');
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
 					//if(bWaitingForResponse==true){
@@ -325,6 +323,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.log.info('parseMsg() Response = CONNECTION' );
 			connection = true;
 			this.setState('info.connection', true, true);
+			this.queryMatrix();
 		}
 		if (arrResponse[3] == 0x10 ){
 			//this.log.info('parseMsg() Response = ReadMemory' );
