@@ -86,7 +86,7 @@ var vol_2_HiVal_Hi = 0x00;
 var vol_2_LoVal_Lo = 0x09;
 var vol_2_LoVal_Hi = 0x02;
 
-var vol_3_HiVal_Lo = 0x1F;
+var vol_3_HiVal_Lo = 0x17;
 var vol_3_HiVal_Hi = 0x01;
 var vol_3_LoVal_Lo = 0x0A;
 var vol_3_LoVal_Hi = 0x02;
@@ -106,7 +106,7 @@ var vol_6_HiVal_Hi = 0x01;
 var vol_6_LoVal_Lo = 0x0D;
 var vol_6_LoVal_Hi = 0x02;
 
-var vol_7_HiVal_Lo = 0xEF;
+var vol_7_HiVal_Lo = 0xE7;
 var vol_7_HiVal_Hi = 0x01;
 var vol_7_LoVal_Lo = 0x0E;
 var vol_7_LoVal_Hi = 0x02;
