@@ -299,7 +299,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//----Normalisieren auf 0..100		
 			gainVal /=13.9;
 
-			this.setStateAsync('inputgain_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
+			this.setStateAsync('inputgain_' + (gainIndex).toString(), { val: onoff, ack: true });
 			inGain[gainIndex][0] = -1;
 			inGain[gainIndex][1] = -1;	
 		}
@@ -314,7 +314,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//----Normalisieren auf 0..100		
 			volVal /=13.9;
 
-			this.setStateAsync('outputgain_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
+			this.setStateAsync('outputgain_' + (volumeIndex).toString(), { val: onoff, ack: true });
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
 		}
