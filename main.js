@@ -15,7 +15,7 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 20000;
+var polling_time = 7500;
 var query = null;
 var in_msg = '';
 //var in_msg_raw = '';
