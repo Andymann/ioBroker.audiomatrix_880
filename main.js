@@ -76,38 +76,38 @@ var vol_0_HiVal_Hi = 0x00;
 var vol_0_LoVal_Lo = 0x07;
 var vol_0_LoVal_Hi = 0x02;
 
-var vol_1_HiVal_Lo = 0x7C;
+var vol_1_HiVal_Lo = 0xAF;
 var vol_1_HiVal_Hi = 0x00;
 var vol_1_LoVal_Lo = 0x08;
 var vol_1_LoVal_Hi = 0x02;
 
-var vol_2_HiVal_Lo = 0x7D;
+var vol_2_HiVal_Lo = 0xE3;
 var vol_2_HiVal_Hi = 0x00;
 var vol_2_LoVal_Lo = 0x09;
 var vol_2_LoVal_Hi = 0x02;
 
-var vol_3_HiVal_Lo = 0x7E;
-var vol_3_HiVal_Hi = 0x00;
+var vol_3_HiVal_Lo = 0x1F;
+var vol_3_HiVal_Hi = 0x01;
 var vol_3_LoVal_Lo = 0x0A;
 var vol_3_LoVal_Hi = 0x02;
 
-var vol_4_HiVal_Lo = 0x7F;
-var vol_4_HiVal_Hi = 0x00;
+var vol_4_HiVal_Lo = 0x4B;
+var vol_4_HiVal_Hi = 0x01;
 var vol_4_LoVal_Lo = 0x0B;
 var vol_4_LoVal_Hi = 0x02;
 
-var vol_5_HiVal_Lo = 0x80;
-var vol_5_HiVal_Hi = 0x00;
+var vol_5_HiVal_Lo = 0x7F;
+var vol_5_HiVal_Hi = 0x01;
 var vol_5_LoVal_Lo = 0x0C;
 var vol_5_LoVal_Hi = 0x02;
 
-var vol_6_HiVal_Lo = 0x81;
-var vol_6_HiVal_Hi = 0x00;
+var vol_6_HiVal_Lo = 0xB3;
+var vol_6_HiVal_Hi = 0x01;
 var vol_6_LoVal_Lo = 0x0D;
 var vol_6_LoVal_Hi = 0x02;
 
-var vol_7_HiVal_Lo = 0x82;
-var vol_7_HiVal_Hi = 0x00;
+var vol_7_HiVal_Lo = 0xEF;
+var vol_7_HiVal_Hi = 0x01;
 var vol_7_LoVal_Lo = 0x0E;
 var vol_7_LoVal_Hi = 0x02;
 
@@ -337,7 +337,7 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 
 	setVolume(volumeIndex){
-		this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
+		//this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
 			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );		
@@ -346,6 +346,7 @@ class Audiomatrix880 extends utils.Adapter {
 			volVal /=13.9;
 			this.log.info('setVolume() NORMALIZED volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );
 			this.setStateAsync('outputgain_' + (volumeIndex+1).toString(), { val: volVal, ack: true });
+
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
 		}
@@ -533,7 +534,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.log.info('AudioMatrix send:' + cmd);
 		
 		if (cmd !== undefined){
-			this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
+			//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 			//matrix.write(cmd);
 			//tabu = false;
 			setTimeout(function() {
