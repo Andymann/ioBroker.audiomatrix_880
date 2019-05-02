@@ -15,7 +15,7 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 7500;
+var polling_time = 30000;
 var query = null;
 var in_msg = '';
 //var in_msg_raw = '';
@@ -525,7 +525,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.log.info('AudioMatrix queryMatrix(): Array filled. Sending');
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
-			parentThis.send(item, (index+1)*1000);
+			parentThis.send(item, (index+1)*100);
 			tabu = true;
 		});
 		
