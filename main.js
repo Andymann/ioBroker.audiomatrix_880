@@ -522,6 +522,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		];
 
+		this.log.info('AudioMatrix queryMatrix(): Array filled. Sending');
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
 			parentThis.send(item, (index+1)*100);
