@@ -457,7 +457,6 @@ class Audiomatrix880 extends utils.Adapter {
 	//----Ein State wurde veraendert
 	matrixchanged(id, val, ack){
 
-
 	//-----Das muss noch gefit werden
 	//		tabu = true;
 
@@ -552,7 +551,7 @@ class Audiomatrix880 extends utils.Adapter {
 					cmdRoute[11] = 128;
 				}
 
-				this.send(cmdRoute);
+				this.send(cmdRoute, 1);
 			}
 
 			if(id.toString().includes('.readmemory_preset')){
