@@ -294,8 +294,12 @@ class Audiomatrix880 extends utils.Adapter {
 		if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
 			this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 			var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
-			this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );		
+			this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
+			//----Normalisieren auf 0..100		
+			gainVal /=13.9;
+
+			this.setStateAsync('inputgain_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
 			inGain[gainIndex][0] = -1;
 			inGain[gainIndex][1] = -1;	
 		}
@@ -306,7 +310,11 @@ class Audiomatrix880 extends utils.Adapter {
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
 			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );		
+			
+			//----Normalisieren auf 0..100		
+			volVal /=13.9;
 
+			this.setStateAsync('outputgain_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
 			volume[volumeIndex][0] = -1;
 			volume[volumeIndex][1] = -1;	
 		}
@@ -551,7 +559,7 @@ class Audiomatrix880 extends utils.Adapter {
 					cmdRoute[11] = 128;
 				}
 
-				this.send(cmdRoute, 1);
+				this.send(cmdRoute, 10);
 			}
 
 			if(id.toString().includes('.readmemory_preset')){
