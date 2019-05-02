@@ -81,6 +81,37 @@ var vol_1_HiVal_Hi = 0x00;
 var vol_1_LoVal_Lo = 0x08;
 var vol_1_LoVal_Hi = 0x02;
 
+var vol_2_HiVal_Lo = 0x7D;
+var vol_2_HiVal_Hi = 0x00;
+var vol_2_LoVal_Lo = 0x09;
+var vol_2_LoVal_Hi = 0x02;
+
+var vol_3_HiVal_Lo = 0x7E;
+var vol_3_HiVal_Hi = 0x00;
+var vol_3_LoVal_Lo = 0x0A;
+var vol_3_LoVal_Hi = 0x02;
+
+var vol_4_HiVal_Lo = 0x7F;
+var vol_4_HiVal_Hi = 0x00;
+var vol_4_LoVal_Lo = 0x0B;
+var vol_4_LoVal_Hi = 0x02;
+
+var vol_5_HiVal_Lo = 0x80;
+var vol_5_HiVal_Hi = 0x00;
+var vol_5_LoVal_Lo = 0x0C;
+var vol_5_LoVal_Hi = 0x02;
+
+var vol_6_HiVal_Lo = 0x81;
+var vol_6_HiVal_Hi = 0x00;
+var vol_6_LoVal_Lo = 0x0D;
+var vol_6_LoVal_Hi = 0x02;
+
+var vol_7_HiVal_Lo = 0x82;
+var vol_7_HiVal_Hi = 0x00;
+var vol_7_LoVal_Lo = 0x0E;
+var vol_7_LoVal_Hi = 0x02;
+
+
 //----Caching der Gain-Werte: Hi, Lo
 
 var inGain_0 = [-1, -1];
@@ -359,17 +390,49 @@ class Audiomatrix880 extends utils.Adapter {
 			//----Input Gain
 			if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
 			if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
-			if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(1)}
-			if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(1)}
+			if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[1][0] = arrResponse[8]; this.setInputGain(1)}
+			if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[1][1] = arrResponse[8]; this.setInputGain(1)}
 			
-			if((arrResponse[4] == inGain_2_HiVal_Hi) && (arrResponse[5] == inGain_2_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(2)}
-			if((arrResponse[4] == inGain_2_LoVal_Hi) && (arrResponse[5] == inGain_2_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(2)}
-			if((arrResponse[4] == inGain_3_HiVal_Hi) && (arrResponse[5] == inGain_3_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(3)}
-			if((arrResponse[4] == inGain_3_LoVal_Hi) && (arrResponse[5] == inGain_3_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(3)}
+			if((arrResponse[4] == inGain_2_HiVal_Hi) && (arrResponse[5] == inGain_2_HiVal_Lo)){ inGain[2][0] = arrResponse[8]; this.setInputGain(2)}
+			if((arrResponse[4] == inGain_2_LoVal_Hi) && (arrResponse[5] == inGain_2_LoVal_Lo)){ inGain[2][1] = arrResponse[8]; this.setInputGain(2)}
+			if((arrResponse[4] == inGain_3_HiVal_Hi) && (arrResponse[5] == inGain_3_HiVal_Lo)){ inGain[3][0] = arrResponse[8]; this.setInputGain(3)}
+			if((arrResponse[4] == inGain_3_LoVal_Hi) && (arrResponse[5] == inGain_3_LoVal_Lo)){ inGain[3][1] = arrResponse[8]; this.setInputGain(3)}
+
+			if((arrResponse[4] == inGain_4_HiVal_Hi) && (arrResponse[5] == inGain_4_HiVal_Lo)){ inGain[4][0] = arrResponse[8]; this.setInputGain(4)}
+			if((arrResponse[4] == inGain_4_LoVal_Hi) && (arrResponse[5] == inGain_4_LoVal_Lo)){ inGain[4][1] = arrResponse[8]; this.setInputGain(4)}
+			if((arrResponse[4] == inGain_5_HiVal_Hi) && (arrResponse[5] == inGain_5_HiVal_Lo)){ inGain[5][0] = arrResponse[8]; this.setInputGain(5)}
+			if((arrResponse[4] == inGain_5_LoVal_Hi) && (arrResponse[5] == inGain_5_LoVal_Lo)){ inGain[5][1] = arrResponse[8]; this.setInputGain(5)}
+
+			if((arrResponse[4] == inGain_6_HiVal_Hi) && (arrResponse[5] == inGain_6_HiVal_Lo)){ inGain[6][0] = arrResponse[8]; this.setInputGain(6)}
+			if((arrResponse[4] == inGain_6_LoVal_Hi) && (arrResponse[5] == inGain_6_LoVal_Lo)){ inGain[6][1] = arrResponse[8]; this.setInputGain(6)}
+			if((arrResponse[4] == inGain_7_HiVal_Hi) && (arrResponse[5] == inGain_7_HiVal_Lo)){ inGain[7][0] = arrResponse[8]; this.setInputGain(7)}
+			if((arrResponse[4] == inGain_7_LoVal_Hi) && (arrResponse[5] == inGain_7_LoVal_Lo)){ inGain[7][1] = arrResponse[8]; this.setInputGain(7)}
 			
 			//----Volume
 			if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
 			if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
+
+			if((arrResponse[4] == vol_1_HiVal_Hi) && (arrResponse[5] == vol_1_HiVal_Lo)){ volume[1][0] = arrResponse[8]; this.setVolume(1)}
+			if((arrResponse[4] == vol_1_LoVal_Hi) && (arrResponse[5] == vol_1_LoVal_Lo)){ volume[1][1] = arrResponse[8]; this.setVolume(1)}
+
+			if((arrResponse[4] == vol_2_HiVal_Hi) && (arrResponse[5] == vol_2_HiVal_Lo)){ volume[2][0] = arrResponse[8]; this.setVolume(2)}
+			if((arrResponse[4] == vol_2_LoVal_Hi) && (arrResponse[5] == vol_2_LoVal_Lo)){ volume[2][1] = arrResponse[8]; this.setVolume(2)}
+
+			if((arrResponse[4] == vol_3_HiVal_Hi) && (arrResponse[5] == vol_3_HiVal_Lo)){ volume[3][0] = arrResponse[8]; this.setVolume(3)}
+			if((arrResponse[4] == vol_3_LoVal_Hi) && (arrResponse[5] == vol_3_LoVal_Lo)){ volume[3][1] = arrResponse[8]; this.setVolume(3)}
+
+			if((arrResponse[4] == vol_4_HiVal_Hi) && (arrResponse[5] == vol_4_HiVal_Lo)){ volume[4][0] = arrResponse[8]; this.setVolume(4)}
+			if((arrResponse[4] == vol_4_LoVal_Hi) && (arrResponse[5] == vol_4_LoVal_Lo)){ volume[4][1] = arrResponse[8]; this.setVolume(4)}
+
+			if((arrResponse[4] == vol_5_HiVal_Hi) && (arrResponse[5] == vol_5_HiVal_Lo)){ volume[5][0] = arrResponse[8]; this.setVolume(5)}
+			if((arrResponse[4] == vol_5_LoVal_Hi) && (arrResponse[5] == vol_5_LoVal_Lo)){ volume[5][1] = arrResponse[8]; this.setVolume(5)}
+
+			if((arrResponse[4] == vol_6_HiVal_Hi) && (arrResponse[5] == vol_6_HiVal_Lo)){ volume[6][0] = arrResponse[8]; this.setVolume(6)}
+			if((arrResponse[4] == vol_6_LoVal_Hi) && (arrResponse[5] == vol_6_LoVal_Lo)){ volume[6][1] = arrResponse[8]; this.setVolume(6)}
+
+			if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
+			if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
+
 
 			//if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 		}
@@ -385,7 +448,6 @@ class Audiomatrix880 extends utils.Adapter {
 
 		var arrQuery =[
 			//----Routing
-
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
@@ -435,6 +497,27 @@ class Audiomatrix880 extends utils.Adapter {
 			//----Volume
 			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_HiVal_Hi, vol_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_0_LoVal_Hi, vol_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_1_HiVal_Hi, vol_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_1_LoVal_Hi, vol_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_2_HiVal_Hi, vol_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_2_LoVal_Hi, vol_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_3_HiVal_Hi, vol_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_3_LoVal_Hi, vol_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_4_HiVal_Hi, vol_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_4_LoVal_Hi, vol_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_5_HiVal_Hi, vol_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_5_LoVal_Hi, vol_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_6_HiVal_Hi, vol_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_6_LoVal_Hi, vol_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_7_HiVal_Hi, vol_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, vol_7_LoVal_Hi, vol_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 		];
 
