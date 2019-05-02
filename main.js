@@ -535,7 +535,7 @@ class Audiomatrix880 extends utils.Adapter {
 			if(id.toString().includes('.outputroutestate_')){
 				//this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
 				//this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
-				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')));
 				this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
 				
 				var iAusgang = channelID % 8;
@@ -668,11 +668,11 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 */
 
-		//----Routing via Buttons
+		//----Routing via Buttons; 0-indiziert, aber Anzeige beginnt bei '1'
 		for (var i = 0; i < 8; i++) {
 			for (var j = 0; j < 8; j++) {
 				//await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
-				await this.setObjectAsync('outputroutestate_' + (i*8 + j).toString(), {
+				await this.setObjectAsync('outputroutestate_' + ((i*8 + j)+1).toString(), {
 					type: 'state',
 					common: {
 						name: 'outputrouting',
