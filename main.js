@@ -323,13 +323,13 @@ class Audiomatrix880 extends utils.Adapter {
 	setInputGain(gainIndex){
 		//this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 		if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
-			this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
+			//this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 			var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
-			this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
+			//this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
 			//----Normalisieren auf 0..100		
 			gainVal /=13.9;
-			this.log.info('setInputGain() NORMALIZED gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
+			//this.log.info('setInputGain() NORMALIZED gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 			this.setStateAsync('inputgain_' + (gainIndex+1).toString(), { val: gainVal, ack: true });
 			inGain[gainIndex][0] = -1;
 			inGain[gainIndex][1] = -1;	
@@ -340,11 +340,11 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 		if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 			var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
-			this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );		
+			//this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );		
 			
 			//----Normalisieren auf 0..100		
 			volVal /=13.9;
-			this.log.info('setVolume() NORMALIZED volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );
+			//this.log.info('setVolume() NORMALIZED volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );
 			this.setStateAsync('outputgain_' + (volumeIndex+1).toString(), { val: volVal, ack: true });
 
 			volume[volumeIndex][0] = -1;
@@ -522,7 +522,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		];
 
-		this.log.info('AudioMatrix queryMatrix(): Array filled. Sending');
+		//this.log.info('AudioMatrix queryMatrix(): Array filled. Sending');
 		arrQuery.forEach(function(item, index, array) {
 			//parentThis.log.info(item + ":" +  index);
 			parentThis.send(item, (index+1)*100);
@@ -559,11 +559,9 @@ class Audiomatrix880 extends utils.Adapter {
 		}
 		if(ack==false){
 			if(id.toString().includes('.outputgain')){
-				this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
-				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
+				//this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-				this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
-				//var channelID=id;
+				//this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
 				channelID-=1;
 
 				channelID+=8;	//
@@ -576,19 +574,15 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdGain[7] = loByte;
 				cmdGain[11] = hiByte;
 
-				//----Speichern der STates
-				
-				this.send(cmdGain, 1);
+				//----Speichern der STates				
+				this.send(cmdGain, 5);
 				
 			}
 
 			if(id.toString().includes('.inputgain')){
-				this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
-				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1, id.toLowerCase().lastIndexOf(' '));
-				//var outputid = id.toLowerCase().substring(id.lastIndexOf('_')+1);
-				//var channelID = id;
+				//this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
 				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-				this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
+				//this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 				channelID-=1;	//
 
 				
@@ -602,7 +596,7 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdGain[7] = loByte;
 				cmdGain[11] = hiByte;
 				
-				this.send(cmdGain, 1);
+				this.send(cmdGain, 5);
 
 			}
 
@@ -616,20 +610,16 @@ class Audiomatrix880 extends utils.Adapter {
 				}
 
 				cmdPreset[4]=val;			
-				this.send(cmdPreset, 1);
+				this.send(cmdPreset, 5);
 
 			}
-	/*
-			if(id.toString().includes('.outputroutestate_')){
-				this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
-			}
-	*/
+
 			
 			if(id.toString().includes('.outputroutestate_')){
 				//this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
-				this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
+				//this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
 				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
-				this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
+				//this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
 				
 				var iAusgang = channelID % 8;
 				var iEingang = (channelID-iAusgang)/8;
@@ -645,29 +635,7 @@ class Audiomatrix880 extends utils.Adapter {
 				}
 
 				this.send(cmdRoute, 10);
-			}
-
-			if(id.toString().includes('.readmemory_preset')){
-				
-				this.log.info('matrixChanged: readmemory_preset');
-				var val = 0x40;
-				var loAddress = val & 0xFF;
-				var hiAddress = (val >> 8) & 0xFF;
-				cmdReadmemory[4] = hiAddress;
-				cmdReadmemory[5] = loAddress;			
-				this.send(cmdReadmemory, 1);
-			}
-
-			if(id.toString().includes('.readmemory_route_out_1')){
-				
-				this.log.info('matrixChanged: readmemory_route_out_1');
-				var val = 0x40 + 0x08;
-				var loAddress = val & 0xFF;
-				var hiAddress = (val >> 8) & 0xFF;
-				cmdReadmemory[4] = hiAddress;
-				cmdReadmemory[5] = loAddress;			
-				this.send(cmdReadmemory, 1);
-			}
+			}		
 
 		}//----ack==FALSE		
 
@@ -796,30 +764,7 @@ class Audiomatrix880 extends utils.Adapter {
 		});
 
 
-		await this.setObjectAsync('readmemory_preset', {
-			type: 'state',
-			common: {
-				name: 'readmemory_preset',
-				type: 'boolean',
-				role: 'indicator',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-
-		await this.setObjectAsync('readmemory_route_out_1', {
-			type: 'state',
-			common: {
-				name: 'readmemory_route_out_1',
-				type: 'boolean',
-				role: 'indicator',
-				read: true,
-				write: false,
-			},
-			native: {},
-		});
-
+		
 		
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
@@ -886,9 +831,8 @@ class Audiomatrix880 extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			//if(state.ack){
-				this.matrixchanged(id, state.val, state.ack);
-			//}
+			this.matrixchanged(id, state.val, state.ack);
+			
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
