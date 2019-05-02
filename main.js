@@ -535,7 +535,7 @@ class Audiomatrix880 extends utils.Adapter {
 			if(id.toString().includes('.outputroutestate_')){
 				//this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
 				//this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
-				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')))+1;
+				var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1))+1;
 				this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
 				
 				var iAusgang = channelID % 8;
