@@ -830,7 +830,10 @@ class Audiomatrix880 extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			if(state.ack==false){
+				//----Aenderung per GUI
+				this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			}
 			this.matrixchanged(id, state.val, state.ack);
 			
 		} else {
