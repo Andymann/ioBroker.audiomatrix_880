@@ -259,7 +259,9 @@ class Audiomatrix880 extends utils.Adapter {
 					//	bWaitingForResponse = false;
 					//}
 				}
-			    }
+			    }else{
+					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
+				}
 			}, polling_time);
 			if(cb){cb();}
 	
