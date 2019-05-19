@@ -255,7 +255,7 @@ class Audiomatrix880 extends utils.Adapter {
 				parentThis.bWaitingForResponse=true;
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 10);
+					parentThis.send(cmdConnect, 1);
 					
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
