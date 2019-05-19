@@ -271,7 +271,8 @@ class Audiomatrix880 extends utils.Adapter {
 					//parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
 					if(parentThis.bWaitingForResponse){
 						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
-						parentThis.log.info('connectMatrix() Keine valide Antwort der Hardware nach ' + parentThis.response_wait_time + ' Milisekunden.');
+						parentThis.log.info('connectMatrix() Keine valide Antwort der Hardware nach ' + response_wait_time + ' Milisekunden.');
+						parentThis.log.info('connectMatrix() in_msg:' + in_msg);
 						parentThis.reconnect();
 					}else{
 
