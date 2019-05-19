@@ -225,15 +225,15 @@ class Audiomatrix880 extends utils.Adapter {
 	
 	reconnect(){
 		this.log.info('reconnectMatrix()');
-//		clearInterval(query);
-//		clearTimeout(recnt);
-//		matrix.destroy();
-//		this.setState('info.connection', false, true);
-//		this.log.info('Reconnect after 15 sec...');
-//		connection = false;
-//		recnt = setTimeout(function() {
-//			parentThis.initmatrix();
-//		}, 15000);
+		clearInterval(query);
+		clearTimeout(recnt);
+		matrix.destroy();
+		this.setState('info.connection', false, true);
+		this.log.info('Reconnect after 15 sec...');
+		connection = false;
+		recnt = setTimeout(function() {
+			parentThis.initmatrix();
+		}, 15000);
 	}
 
 
