@@ -15,7 +15,7 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 30000;
+var polling_time = 10000;
 var query = null;
 var in_msg = '';
 //var in_msg_raw = '';
@@ -308,10 +308,21 @@ class Audiomatrix880 extends utils.Adapter {
 
 		matrix.on('close', function(e) {
 			if(connection){
-				parentThis.log.error('AudioMatrix disconnected');
+				parentThis.log.error('AudioMatrix closed');
 			}
 			parentThis.reconnect();
 		});
+
+		matrix.on('disconnect', function(e) {
+			parentThis.log.error('AudioMatrix disconnected');
+			/*
+			if(connection){
+				parentThis.log.error('AudioMatrix disconnected');
+			}
+			parentThis.reconnect();
+			*/
+		});
+
 
 	}
 
