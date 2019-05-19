@@ -36,6 +36,7 @@ var cmdReadmemory = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00, 0
 
 var bWaitingForResponse = false;
 
+
 //----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
 var inGain_0_HiVal_Hi = 0x00;
@@ -254,6 +255,7 @@ class Audiomatrix880 extends utils.Adapter {
 			clearInterval(query);
 			query = setInterval(function() {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
+				parentThis.bWaitingForResponse=true;
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect, 100);
@@ -269,7 +271,12 @@ class Audiomatrix880 extends utils.Adapter {
 				
 				//----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikatinsproblem mit der Hardware
 				setTimeout(function(){
-					parentThis.log.info('connectMatrix()Nach dem Timeout. in_msg=' + parentThis.in_msg);
+					parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
+					if(parentThis.bWaitingForResponse){
+						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
+					}else{
+
+					}
 				}, 5000);
 			    }else{
 					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
@@ -300,6 +307,7 @@ class Audiomatrix880 extends utils.Adapter {
 					in_msg= '';
 					in_msg_raw = '';
 					*/
+					parentThis.bWaitingForResponse = false;
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
 				}
