@@ -299,7 +299,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
 				}else{
-					in_msg = '';
+					//in_msg = '';
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
@@ -307,9 +307,9 @@ class Audiomatrix880 extends utils.Adapter {
 				in_msg = '';
 			}
 
-			//if(in_msg.length > 50){
-			//	in_msg = '';
-			//}
+			if(in_msg.length > 50){
+				in_msg = '';
+			}
 		});
 
 		matrix.on('timeout', function(e) {
