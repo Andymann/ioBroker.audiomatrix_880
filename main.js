@@ -244,6 +244,7 @@ class Audiomatrix880 extends utils.Adapter {
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
 
 		matrix = new net.Socket();
+		matrix.setTimeout(polling_time*2);
 		matrix.connect(this.config.port, this.config.host, function() {
 			clearInterval(query);
 			query = setInterval(function() {
@@ -266,6 +267,7 @@ class Audiomatrix880 extends utils.Adapter {
 			if(cb){cb();}
 	
 		});
+
 			
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
@@ -297,6 +299,13 @@ class Audiomatrix880 extends utils.Adapter {
 			//if(in_msg.length > 50){
 			//	in_msg = '';
 			//}
+		});
+
+		matrix.on('timeout', function(e) {
+			//if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
+			//	matrix.destroy();
+			//}
+			parentThis.log.error('AudioMatrix TIMEOUT');
 		});
 
 		matrix.on('error', function(e) {
