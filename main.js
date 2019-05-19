@@ -251,8 +251,8 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					//parentThis.send(cmdConnect, 100);
-					parentThis.reconnect();
+					parentThis.send(cmdConnect, 2000);
+					//parentThis.reconnect();
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
