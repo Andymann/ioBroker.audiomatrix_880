@@ -235,17 +235,6 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.connect(this.config.port, this.config.host, function() {
 
 			parentThis.log.info('connectMatrix_2(). in function()');
-		});
-
-		matrix.setTimeout(polling_time+1000);
-		matrix.on('timeout', () => {
-			matrix.destroy();
-			//_connect(); 
-			parentThis.log.info('connectMatrix_2().TIMEOUT');
-		});
-
-		matrix.on('connect',function(){
-			parentThis.log.info('AudioMatrix Socket connected');
 			query = setInterval(function() {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
@@ -264,6 +253,18 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
 				}
 			}, polling_time);
+		});
+
+		matrix.setTimeout(polling_time*2);
+		matrix.on('timeout', () => {
+			matrix.destroy();
+			//_connect(); 
+			parentThis.log.info('connectMatrix_2().TIMEOUT');
+		});
+
+		matrix.on('connect',function(){
+			parentThis.log.info('AudioMatrix Socket connected');
+			
 		});
 		/*		
 		matrix.connect(this.config.port, this.config.host, function() {
