@@ -255,7 +255,7 @@ class Audiomatrix880 extends utils.Adapter {
 				parentThis.bWaitingForResponse=true;
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 200);
+					parentThis.send(cmdConnect, 1000);
 					
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
@@ -290,23 +290,9 @@ class Audiomatrix880 extends utils.Adapter {
 			
 		matrix.on('data', function(chunk) {
 			in_msg += parentThis.toHexString(chunk);
-			//in_msg_raw += chunk;
-			//parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
-			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
 			if(in_msg.toLowerCase().startsWith('f0')){
-				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
-					//parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
-					//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
-					/*
-					if(connection == false){
-						connection = true;
-						parentThis.log.info('Matrix CONNECTED');
-						parentThis.setState('info.connection', true, true);
-						parentThis.queryMatrix();
-					}
-					in_msg= '';
-					in_msg_raw = '';
-					*/
+				//if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
+				if((in_msg.length >= 26) && (in_msg.toLowerCase().substring(24,2)=='f7')){
 					parentThis.bWaitingForResponse = false;
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
