@@ -223,21 +223,29 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 
 
+
 	connectMatrix_2(){
 		var host = this.config.host;
 		var port = this.config.port;
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
 		
-		matrix = new net.Socket();
-		matrix.setTimeout(polling_time*2);
-		matrix.setKeepAlive(true,5000);
+		const matrix = new net.Socket();
+		//matrix.setTimeout(polling_time*2);
+		//matrix.setKeepAlive(true,5000);
 		matrix.connect(this.config.port, this.config.host, function() {
 
 			parentThis.log.info('connectMatrix_2(). in function()');
 		});
 
+		matrix.setTimeout(4000);
+		matrix.on('timeout', () => {
+			matrix.destroy();
+			//_connect(); 
+			parentThis.log.info('connectMatrix_2().TIMEOUT');
+		});
+
 		matrix.on('connect',function(){
-			this.log.info('AudioMatrix Socket connected');
+			parentThis.log.info('AudioMatrix Socket connected');
 		});
 		/*		
 		matrix.connect(this.config.port, this.config.host, function() {
