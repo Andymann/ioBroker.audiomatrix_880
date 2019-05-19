@@ -255,7 +255,7 @@ class Audiomatrix880 extends utils.Adapter {
 				parentThis.bWaitingForResponse=true;
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 100);
+					parentThis.send(cmdConnect, 10);
 					
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
@@ -358,7 +358,7 @@ class Audiomatrix880 extends utils.Adapter {
 	setRoutingState(outIndex, inIndex, onoff){
 		//this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
 		//this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
-		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex-1).toString(), { val: onoff, ack: true });
+		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
 	}
 
 	setInputGain(gainIndex){
