@@ -15,7 +15,8 @@ var matrix;
 var recnt;
 var connection = false;
 var tabu = false;
-var polling_time = 10000;
+var polling_time = 10000;	//In dem Intervall wird die angeschlossen Hardware angefragt
+var response_wait_time = 5000;	//Solange warten wir nach einem Polling auf eine grundsaetzliche Antwort der Hardware
 var query = null;
 var in_msg = '';
 //var in_msg_raw = '';
@@ -223,10 +224,6 @@ class Audiomatrix880 extends utils.Adapter {
 	}
 
 
-
-	
-
-
 	
 	reconnect(){
 		this.log.info('reconnectMatrix()');
@@ -259,7 +256,7 @@ class Audiomatrix880 extends utils.Adapter {
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
 					parentThis.send(cmdConnect, 100);
-					//parentThis.reconnect();
+					
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
@@ -274,15 +271,16 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
 					if(parentThis.bWaitingForResponse){
 						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
+						parentThis.reconnect();
 					}else{
 
 					}
-				}, 5000);
+				}, response_wait_time);
 			    }else{
 					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
 				}
 			}, polling_time);
-			parentThis.log.info('connectMatrix().cNACH dem Aufruf von SetIntervall()');
+			//parentThis.log.info('connectMatrix().cNACH dem Aufruf von SetIntervall()');
 			if(cb){cb();}
 	
 		});
@@ -345,19 +343,11 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.on('disconnect', function(e) {
 			parentThis.log.error('AudioMatrix disconnected');
 			parentThis.reconnect();
-			/*
-			if(connection){
-				parentThis.log.error('AudioMatrix disconnected');
-			}
-			parentThis.reconnect();
-			*/
+			
 		});
 
 		matrix.on('end', function(e) {
-			//if(connection){
-				parentThis.log.error('AudioMatrix ended');
-			//}
-			//parentThis.reconnect();
+			parentThis.log.error('AudioMatrix ended');			
 		});
 	}
 
