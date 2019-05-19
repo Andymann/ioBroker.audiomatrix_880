@@ -245,6 +245,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		matrix = new net.Socket();
 		matrix.setTimeout(polling_time*2);
+		matrix.setKeepAlive(true,5000);
 		matrix.connect(this.config.port, this.config.host, function() {
 			clearInterval(query);
 			query = setInterval(function() {
@@ -334,7 +335,12 @@ class Audiomatrix880 extends utils.Adapter {
 			*/
 		});
 
-
+		matrix.on('end', function(e) {
+			//if(connection){
+				parentThis.log.error('AudioMatrix ended');
+			//}
+			//parentThis.reconnect();
+		});
 	}
 
 
