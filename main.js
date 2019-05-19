@@ -224,7 +224,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 
-	connectMatrix_2(){
+	connectMatrix_2(cb){
 		var host = this.config.host;
 		var port = this.config.port;
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
