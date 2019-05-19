@@ -250,7 +250,7 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 10);
+					parentThis.send(cmdConnect, 100);
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
@@ -366,8 +366,7 @@ class Audiomatrix880 extends utils.Adapter {
 			connection = true;
 			this.setState('info.connection', true, true);
 			this.queryMatrix();
-		}
-		if (arrResponse[3] == 0x10 ){
+		}else if (arrResponse[3] == 0x10 ){
 			//this.log.info('parseMsg() Response = ReadMemory' );
 			//----Routing
 			if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
@@ -438,6 +437,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 			//if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
+		} else {
+			this.log.info('parseMsg() Response unhandled:' + msg );
 		}
 		
 		tabu = false;
