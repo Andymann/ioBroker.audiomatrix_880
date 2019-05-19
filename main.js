@@ -232,6 +232,7 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.setTimeout(polling_time*2);
 		matrix.setKeepAlive(true,5000);
 		matrix.connect(this.config.port, this.config.host, function() {
+
 			parentThis.log.info('connectMatrix_2(). in function()');
 		});
 
