@@ -315,6 +315,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		matrix.on('disconnect', function(e) {
 			parentThis.log.error('AudioMatrix disconnected');
+			parentThis.reconnect();
 			/*
 			if(connection){
 				parentThis.log.error('AudioMatrix disconnected');
