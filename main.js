@@ -266,6 +266,11 @@ class Audiomatrix880 extends utils.Adapter {
 					//	bWaitingForResponse = false;
 					//}
 				}
+				
+				//----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikatinsproblem mit der Hardware
+				setTimeout(function(){
+					parentThis.log.info('connectMatrix()Nach dem Timeout');
+				}, 5000);
 			    }else{
 					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
 				}
