@@ -293,12 +293,16 @@ class Audiomatrix880 extends utils.Adapter {
 			if(in_msg.toLowerCase().startsWith('f0')){
 				//if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
 				if((in_msg.length >= 26) && (in_msg.toLowerCase().substring(24,2)=='f7')){
+					parentThis.log.info( 'inmsg-chunk:' + in_msg.toLowerCase().substring(24,2) );
 					parentThis.bWaitingForResponse = false;
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
+				}else{
+					//in_msg = '';
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
+				parentThis.log.info('in_msg starts with');
 				in_msg = '';
 			}
 
