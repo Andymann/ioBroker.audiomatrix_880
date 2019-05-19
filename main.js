@@ -299,7 +299,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
 				}else{
-					//in_msg = '';
+					in_msg = '';
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
