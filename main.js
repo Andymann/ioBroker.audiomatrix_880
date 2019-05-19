@@ -219,7 +219,7 @@ class Audiomatrix880 extends utils.Adapter {
 	initmatrix(){
 		//this.log.info('initMatrix().');
 		//this.connectmatrix();
-		this.connectmatrix_2();				
+		this.connectMatrix_2();				
 	}
 
 
