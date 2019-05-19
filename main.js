@@ -218,118 +218,12 @@ class Audiomatrix880 extends utils.Adapter {
 
 	initmatrix(){
 		//this.log.info('initMatrix().');
-		//this.connectmatrix();
-		this.connectMatrix_2();				
+		this.connectmatrix();				
 	}
 
 
 
-	connectMatrix_2(cb){
-		//this.log.info('connectMatrix().');
- 		var host = this.config.host;
-		var port = this.config.port;
-		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port);
-
-		matrix = new net.Socket();
-		matrix.setTimeout(polling_time*2);
-		matrix.setKeepAlive(true,5000);
-		matrix.connect(this.config.port, this.config.host, function() {
-			clearInterval(query);
-			query = setInterval(function() {
-			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
-				if(connection==false){
-					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 2000);
-					//parentThis.reconnect();
-				}else{
-					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
-					parentThis.queryMatrix();
-					//if(bWaitingForResponse==true){
-					//	parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
-					//	bWaitingForResponse = false;
-					//}
-				}
-			    }else{
-					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
-				}
-			}, polling_time);
-			//if(cb){cb();}
 	
-		});
-
-		matrix.setTimeout(polling_time*2);
-			
-		matrix.on('data', function(chunk) {
-			in_msg += parentThis.toHexString(chunk);
-			//in_msg_raw += chunk;
-			//parentThis.log.info("AudioMatrix incoming PART: " + in_msg);
-			//if((in_msg.length==26) && (in_msg.toLowerCase().indexOf('f0')>-1) && (in_msg.toLowerCase().indexOf('f7')>-1)){
-			if(in_msg.toLowerCase().startsWith('f0')){
-				if((in_msg.length == 26) && (in_msg.toLowerCase().endsWith('f7'))){
-					//parentThis.log.info("AudioMatrix incoming: " + in_msg + " LENGTH: " + in_msg.length.toString());
-					//parentThis.log.info("AudioMatrix incomming RAW: " + in_msg_raw + " LENGTH:" + in_msg_raw.length.toString());
-					/*
-					if(connection == false){
-						connection = true;
-						parentThis.log.info('Matrix CONNECTED');
-						parentThis.setState('info.connection', true, true);
-						parentThis.queryMatrix();
-					}
-					in_msg= '';
-					in_msg_raw = '';
-					*/
-					parentThis.parseMsg(in_msg);
-					in_msg = '';
-				}
-			}else{
-				//----Irgendwie vergneisgnaddelt
-				in_msg = '';
-			}
-
-			//if(in_msg.length > 50){
-			//	in_msg = '';
-			//}
-		});
-
-		matrix.on('timeout', function(e) {
-			//if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
-			//	matrix.destroy();
-			//}
-			parentThis.log.error('AudioMatrix TIMEOUT');
-		});
-
-		matrix.on('error', function(e) {
-			if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
-				matrix.destroy();
-			}
-			parentThis.log.error(e);
-		});
-
-		matrix.on('close', function(e) {
-			if(connection){
-				parentThis.log.error('AudioMatrix closed');
-			}
-			parentThis.reconnect();
-		});
-
-		matrix.on('disconnect', function(e) {
-			parentThis.log.error('AudioMatrix disconnected');
-			parentThis.reconnect();
-			/*
-			if(connection){
-				parentThis.log.error('AudioMatrix disconnected');
-			}
-			parentThis.reconnect();
-			*/
-		});
-
-		matrix.on('end', function(e) {
-			//if(connection){
-				parentThis.log.error('AudioMatrix ended');
-			//}
-			//parentThis.reconnect();
-		});
-	}
 
 
 	
@@ -362,7 +256,7 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				if(connection==false){
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
-					parentThis.send(cmdConnect, 2000);
+					parentThis.send(cmdConnect, 100);
 					//parentThis.reconnect();
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
@@ -376,6 +270,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
 				}
 			}, polling_time);
+			parentThis.log.info('connectMatrix().cNACH dem Aufruf von SetIntervall()');
 			if(cb){cb();}
 	
 		});
