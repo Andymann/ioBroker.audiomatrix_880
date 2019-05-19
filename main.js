@@ -268,9 +268,10 @@ class Audiomatrix880 extends utils.Adapter {
 				
 				//----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikatinsproblem mit der Hardware
 				setTimeout(function(){
-					parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
+					//parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
 					if(parentThis.bWaitingForResponse){
 						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
+						parentThis.log.info('connectMatrix() Keine valide Antwort der Hardware nach ' + parentThis.response_wait_time + ' Milisekunden.');
 						parentThis.reconnect();
 					}else{
 
@@ -324,6 +325,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//	matrix.destroy();
 			//}
 			parentThis.log.error('AudioMatrix TIMEOUT');
+			//parentThis.reconnect();
 		});
 
 		matrix.on('error', function(e) {
@@ -355,7 +357,7 @@ class Audiomatrix880 extends utils.Adapter {
 	setRoutingState(outIndex, inIndex, onoff){
 		//this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
 		//this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
-		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex).toString(), { val: onoff, ack: true });
+		this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex-1).toString(), { val: onoff, ack: true });
 	}
 
 	setInputGain(gainIndex){
