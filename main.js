@@ -853,7 +853,7 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdGain[11] = hiByte;
 
 				this.log.info('matrixChanged: killing arrQuery before sending' );
-				this.arrQuery.length = 0;	//----Query stoppen
+				this.arrQuery = [];	//----Query stoppen
 				this.send(cmdGain, 5);
 				
 			}
