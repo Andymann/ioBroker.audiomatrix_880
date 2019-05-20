@@ -352,12 +352,12 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 	reconnect(){
-		this.log.info('reconnectMatrix()');
+		this.log.info('AudioMatrix: reconnectMatrix()');
 		clearInterval(query);
 		clearTimeout(recnt);
 		matrix.destroy();
 		
-		this.log.info('Reconnect after 15 sec...');
+		this.log.info('AudioMatrix: Reconnect after 15 sec...');
 		this.setState('info.connection', false, true);
 		//this.setConnState(false, false);
 		recnt = setTimeout(function() {
@@ -379,7 +379,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.reconfigureCMD(0x46);
 			tmpFirmwareName = 'v1.6';
 		}
-		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + tmpFirmwareName);
+		this.log.info('AudioMatrix: connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + tmpFirmwareName);
 
 		matrix = new net.Socket();
 		matrix.setTimeout(polling_time*2);
@@ -390,12 +390,12 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				parentThis.bWaitingForResponse=true;
 				if(connection==false){
-					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
+					parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
 					//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 					parentThis.send(cmdConnect, 1000);
 
 				}else{
-					parentThis.log.debug('connectMatrix().connection==true, idle, querying Matrix');
+					parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
 					//parentThis.setConnState(true, true);
 					//if(bWaitingForResponse==true){
@@ -409,14 +409,14 @@ class Audiomatrix880 extends utils.Adapter {
 					//parentThis.log.info('connectMatrix()Nach dem Timeout. bWaitingForResponse=' + parentThis.bWaitingForResponse);
 					if(parentThis.bWaitingForResponse){
 						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
-						parentThis.log.info('connectMatrix() Keine valide Antwort der Hardware nach ' + response_wait_time + ' Milisekunden.');
-						parentThis.log.info('connectMatrix() in_msg:' + in_msg);
-						parentThis.log.info( 'in_msg-chunk: -' + in_msg.toLowerCase().substring(24,26) + '-' );
+						parentThis.log.info('AudioMatrix: connectMatrix() Keine valide Antwort der Hardware nach ' + response_wait_time + ' Milisekunden.');
+						parentThis.log.info('AudioMatrix: connectMatrix() in_msg:' + in_msg);
+						parentThis.log.info('AudioMatrix: in_msg-chunk: -' + in_msg.toLowerCase().substring(24,26) + '-' );
 						parentThis.reconnect();
 					}
 				}, response_wait_time);
 			    }else{
-					parentThis.log.info('connectMatrix().In Interval aber tabu==TRUE');
+					parentThis.log.debug('AudioMatrix: connectMatrix().In Interval aber tabu==TRUE');
 				}
 			}, polling_time);
 			//parentThis.log.info('connectMatrix().cNACH dem Aufruf von SetIntervall()');
@@ -437,7 +437,7 @@ class Audiomatrix880 extends utils.Adapter {
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
-				parentThis.log.debug('matrix.on data: Fehlerhafte oder inkonsistente Daten empfangen:' + in_msg);
+				parentThis.log.debug('AudioMatrix: matrix.on data: Fehlerhafte oder inkonsistente Daten empfangen:' + in_msg);
 				in_msg = '';
 			}
 
@@ -452,9 +452,9 @@ class Audiomatrix880 extends utils.Adapter {
 			//	matrix.destroy();
 			//}
 			parentThis.log.error('AudioMatrix TIMEOUT');
-			parentThis.connection=false;
+			//parentThis.connection=false;
 			//parentThis.setConnState(false, true);
-			//parentThis.reconnect();
+			parentThis.reconnect();
 		});
 
 		matrix.on('error', function(e) {
@@ -462,6 +462,7 @@ class Audiomatrix880 extends utils.Adapter {
 				matrix.destroy();
 			}
 			parentThis.log.error(e);
+			parentThis.reconnect();
 		});
 
 		matrix.on('close', function(e) {
@@ -659,7 +660,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 			//if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 		} else {
-			this.log.info('parseMsg() Response unhandled:' + msg );
+			this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
 		}
 		
 		tabu = false;
@@ -669,7 +670,7 @@ class Audiomatrix880 extends utils.Adapter {
 	queryMatrix(){
 
 		tabu =true;
-		this.log.info('AudioMatrix queryMatrix():' /*+ this.toHexString(cmd)*/);
+		this.log.info('AudioMatrix: queryMatrix():' /*+ this.toHexString(cmd)*/);
 
 		var arrQuery =[
 			//----Routing
@@ -877,7 +878,7 @@ class Audiomatrix880 extends utils.Adapter {
 			}
 
 			if(id.toString().includes('.preset')){
-				this.log.info('matrixChanged: preset changed. Recalled Preset:' + val.toString());
+				this.log.info('AudioMatrix: matrixChanged: preset changed. Recalled Preset:' + val.toString());
 				if(val>0){
 					val-=1;	//----Falls per Admin gesetzt und falsch gemacht
 				}
@@ -903,10 +904,10 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdRoute[4] = iAusgang + 8;
 				cmdRoute[10] = iEingang;
 				if(val==true){
-					this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
+					this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
 					cmdRoute[11] = 30;
 				}else{
-					this.log.info('matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
+					this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
 					cmdRoute[11] = 128;
 				}
 
@@ -933,9 +934,9 @@ class Audiomatrix880 extends utils.Adapter {
 		// this.config:
 		//this.log.info('config option1: ' + this.config.option1);
 		//this.log.info('config option2: ' + this.config.option2);
-		this.log.info('config Host: ' + this.config.host);
-		this.log.info('config Port: ' + this.config.port);
-		this.log.info('config Firmware: ' + this.config.firmware);
+		this.log.info('AudioMatrix: config Host: ' + this.config.host);
+		this.log.info('AudioMatrix: config Port: ' + this.config.port);
+		this.log.info('AudioMatrix: config Firmware: ' + this.config.firmware);
 
 		/*
 		For every state in the system there has to be also an object of type state
@@ -1079,7 +1080,7 @@ class Audiomatrix880 extends utils.Adapter {
 	 */
 	onUnload(callback) {
 		try {
-			this.log.info('cleaned everything up...');
+			this.log.info('AudioMatrix: cleaned everything up...');
 			callback();
 		} catch (e) {
 			callback();
@@ -1094,10 +1095,10 @@ class Audiomatrix880 extends utils.Adapter {
 	onObjectChange(id, obj) {
 		if (obj) {
 			// The object was changed
-			this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
+			this.log.info(`AudioMatrix: object ${id} changed: ${JSON.stringify(obj)}`);
 		} else {
 			// The object was deleted
-			this.log.info(`object ${id} deleted`);
+			this.log.info(`AudioMatrix: object ${id} deleted`);
 		}
 	}
 
@@ -1111,13 +1112,13 @@ class Audiomatrix880 extends utils.Adapter {
 			// The state was changed
 			if(state.ack==false){
 				//----Aenderung per GUI
-				this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+				this.log.info(`AudioMatrix: state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			}
 			this.matrixchanged(id, state.val, state.ack);
 			
 		} else {
 			// The state was deleted
-			this.log.info(`state ${id} deleted`);
+			this.log.info(`AudioMatrix: state ${id} deleted`);
 		}
 	}
 
