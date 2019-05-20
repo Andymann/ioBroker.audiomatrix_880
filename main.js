@@ -816,7 +816,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 			//matrix.write(cmd);
 			//tabu = false;
-			tabu=true;
+			//tabu=true;
 			setTimeout(function() {
             			matrix.write(cmd);            
 		        }, iTimeout);
@@ -853,8 +853,8 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdGain[7] = loByte;
 				cmdGain[11] = hiByte;
 
-				this.log.info('matrixChanged: killing arrQuery before sending' );
-				this.arrQuery = [];	//----Query stoppen
+				//this.log.info('matrixChanged: killing arrQuery before sending' );
+				//this.arrQuery = [];	//----Query stoppen
 				this.send(cmdGain, 100);
 				
 			}
