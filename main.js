@@ -255,10 +255,10 @@ class Audiomatrix880 extends utils.Adapter {
 		var firmware = this.config.firmware;
 		var tmpFirmwareName;
 		if(firmware=='v14'){
-			reconfigureCMD(0x45);
+			this.reconfigureCMD(0x45);
 			tmpFirmwareName = 'v1.4';
 		}else if(firmware=='v16'){
-			reconfigureCMD(0x45);
+			this.reconfigureCMD(0x45);
 			tmpFirmwareName = 'v1.6';
 		}
 		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + this.tmpFirmwareName);
