@@ -208,6 +208,17 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis = this;
 	}
 
+	setConnState(pConn_net, pConn_hw){
+		this.connection_net = pConn_net;
+		this.connection_hardware = pConn_hw;
+		this.connection = connection_net && connection_hardware;
+		
+		this.setState('info.connection_net', connection_net, true);
+		this.setState('info.connection_hardware', connection_hardware, true);
+		this.setState('info.connection', connection, true);
+
+	}
+
 	toHexString(byteArray) {
 	  return Array.from(byteArray, function(byte) {
 	    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
@@ -237,14 +248,20 @@ class Audiomatrix880 extends utils.Adapter {
 		cmdReadmemory =	new Buffer([0xf0, pFirmware, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 	}
 	
+
+
 	reconnect(){
 		this.log.info('reconnectMatrix()');
 		clearInterval(query);
 		clearTimeout(recnt);
 		matrix.destroy();
-		this.setState('info.connection', false, true);
+		
 		this.log.info('Reconnect after 15 sec...');
-		connection = false;
+		//connection_net = false;
+		//connection_hardware = false;
+		//connection = connection_net && connection_hardware;
+		//this.setState('info.connection', connection, true);
+		this.setConnState(false, false);
 		recnt = setTimeout(function() {
 			parentThis.initmatrix();
 		}, 15000);
@@ -278,10 +295,11 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
 					//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 					parentThis.send(cmdConnect, 1000);
-					
+					this.setConnState(true, false);
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
+					this.setConnState(true, true);
 					//if(bWaitingForResponse==true){
 					//	parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
 					//	bWaitingForResponse = false;
@@ -297,8 +315,6 @@ class Audiomatrix880 extends utils.Adapter {
 						parentThis.log.info('connectMatrix() in_msg:' + in_msg);
 						parentThis.log.info( 'inmsg-chunk: -' + in_msg.toLowerCase().substring(24,26) + '-' );
 						parentThis.reconnect();
-					}else{
-
 					}
 				}, response_wait_time);
 			    }else{
@@ -338,6 +354,8 @@ class Audiomatrix880 extends utils.Adapter {
 			//	matrix.destroy();
 			//}
 			parentThis.log.error('AudioMatrix TIMEOUT');
+			//parentThis.connection=false;
+			parentThis.setConnState(false, true);
 			//parentThis.reconnect();
 		});
 
@@ -362,7 +380,8 @@ class Audiomatrix880 extends utils.Adapter {
 		});
 
 		matrix.on('end', function(e) {
-			parentThis.log.error('AudioMatrix ended');			
+			parentThis.log.error('AudioMatrix ended');
+			parentThis.setConnState(false, true);			
 		});
 	}
 
@@ -407,6 +426,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
+		this.setConnState(true, true);
 		tabu = true;
 		//this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
@@ -414,7 +434,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		if (arrResponse[3] == 0x00 ){
 			this.log.info('parseMsg() Response = CONNECTION' );
-			connection = true;
+			
 			this.setState('info.connection', true, true);
 			this.queryMatrix();
 		}else if (arrResponse[3] == 0x10 ){
@@ -703,6 +723,8 @@ class Audiomatrix880 extends utils.Adapter {
 		// Initialize your adapter here
 
 		// Reset the connection indicator during startup
+		this.setState('info.connection_net', false, true);
+		this.setState('info.connection_hardware', false, true);
 		this.setState('info.connection', false, true);
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
@@ -711,6 +733,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.log.info('config option2: ' + this.config.option2);
 		this.log.info('config Host: ' + this.config.host);
 		this.log.info('config Port: ' + this.config.port);
+		this.log.info('config Firmware: ' + this.config.firmware);
 
 		/*
 		For every state in the system there has to be also an object of type state
