@@ -162,6 +162,14 @@ var out0_in2_Hi = 0x00;
 var out0_in2_Lo = 0x4A;
 var out0_in3_Hi = 0x00; 
 var out0_in3_Lo = 0x4B;
+var out0_in4_Hi = 0x00; 
+var out0_in4_Lo = 0x4C;
+var out0_in5_Hi = 0x00; 
+var out0_in5_Lo = 0x4D;
+var out0_in6_Hi = 0x00; 
+var out0_in6_Lo = 0x4E;
+var out0_in7_Hi = 0x00; 
+var out0_in7_Lo = 0x4F;
 
 var out1_in0_Hi = 0x00; 
 var out1_in0_Lo = 0x7C;
@@ -170,7 +178,15 @@ var out1_in1_Lo = 0x7D;
 var out1_in2_Hi = 0x00; 
 var out1_in2_Lo = 0x7E;
 var out1_in3_Hi = 0x00; 
-var out1_in3_Lo = 0x7F
+var out1_in3_Lo = 0x7F;
+var out1_in4_Hi = 0x00; 
+var out1_in4_Lo = 0x80;
+var out1_in5_Hi = 0x00; 
+var out1_in5_Lo = 0x81;
+var out1_in6_Hi = 0x00; 
+var out1_in6_Lo = 0x82;
+var out1_in7_Hi = 0x00; 
+var out1_in7_Lo = 0x83;
 
 var out2_in0_Hi = 0x00; 
 var out2_in0_Lo = 0xB0;
@@ -180,6 +196,15 @@ var out2_in2_Hi = 0x00;
 var out2_in2_Lo = 0xB2;
 var out2_in3_Hi = 0x00; 
 var out2_in3_Lo = 0xB3;
+var out2_in4_Hi = 0x00; 
+var out2_in4_Lo = 0xB4;
+var out2_in5_Hi = 0x00; 
+var out2_in5_Lo = 0xB5;
+var out2_in6_Hi = 0x00; 
+var out2_in6_Lo = 0xB6;
+var out2_in7_Hi = 0x00; 
+var out2_in7_Lo = 0xB7;
+
 
 var out3_in0_Hi = 0x00; 
 var out3_in0_Lo = 0xE4;
@@ -189,6 +214,82 @@ var out3_in2_Hi = 0x00;
 var out3_in2_Lo = 0xE6;
 var out3_in3_Hi = 0x00; 
 var out3_in3_Lo = 0xE7;
+var out3_in4_Hi = 0x00; 
+var out3_in4_Lo = 0xE8;
+var out3_in5_Hi = 0x00; 
+var out3_in5_Lo = 0xE9;
+var out3_in6_Hi = 0x00; 
+var out3_in6_Lo = 0xEA;
+var out3_in7_Hi = 0x00; 
+var out3_in7_Lo = 0xEB;
+
+var out4_in0_Hi = 0x01; 
+var out4_in0_Lo = 0x18;
+var out4_in1_Hi = 0x01; 
+var out4_in1_Lo = 0x19;
+var out4_in2_Hi = 0x01; 
+var out4_in2_Lo = 0x1A;
+var out4_in3_Hi = 0x01; 
+var out4_in3_Lo = 0x1B;
+var out4_in4_Hi = 0x01; 
+var out4_in4_Lo = 0x1C;
+var out4_in5_Hi = 0x01; 
+var out4_in5_Lo = 0x1D;
+var out4_in6_Hi = 0x01; 
+var out4_in6_Lo = 0x1E;
+var out4_in7_Hi = 0x01; 
+var out4_in7_Lo = 0x1F;
+
+var out5_in0_Hi = 0x01; 
+var out5_in0_Lo = 0x4C;
+var out5_in1_Hi = 0x01; 
+var out5_in1_Lo = 0x4D;
+var out5_in2_Hi = 0x01; 
+var out5_in2_Lo = 0x4E;
+var out5_in3_Hi = 0x01; 
+var out5_in3_Lo = 0x4F;
+var out5_in4_Hi = 0x01; 
+var out5_in4_Lo = 0x50;
+var out5_in5_Hi = 0x01; 
+var out5_in5_Lo = 0x51;
+var out5_in6_Hi = 0x01; 
+var out5_in6_Lo = 0x52;
+var out5_in7_Hi = 0x01; 
+var out5_in7_Lo = 0x53;
+
+var out6_in0_Hi = 0x01; 
+var out6_in0_Lo = 0x80;
+var out6_in1_Hi = 0x01; 
+var out6_in1_Lo = 0x81;
+var out6_in2_Hi = 0x01; 
+var out6_in2_Lo = 0x82;
+var out6_in3_Hi = 0x01; 
+var out6_in3_Lo = 0x83;
+var out6_in4_Hi = 0x01; 
+var out6_in4_Lo = 0x84;
+var out6_in5_Hi = 0x01; 
+var out6_in5_Lo = 0x85;
+var out6_in6_Hi = 0x01; 
+var out6_in6_Lo = 0x86;
+var out6_in7_Hi = 0x01; 
+var out6_in7_Lo = 0x87;
+
+var out7_in0_Hi = 0x01; 
+var out7_in0_Lo = 0xB4;
+var out7_in1_Hi = 0x01; 
+var out7_in1_Lo = 0xB5;
+var out7_in2_Hi = 0x01; 
+var out7_in2_Lo = 0xB6;
+var out7_in3_Hi = 0x01; 
+var out7_in3_Lo = 0xB7;
+var out7_in4_Hi = 0x01; 
+var out7_in4_Lo = 0xB8;
+var out7_in5_Hi = 0x01; 
+var out7_in5_Lo = 0xB9;
+var out7_in6_Hi = 0x01; 
+var out7_in6_Lo = 0xBA;
+var out7_in7_Hi = 0x01; 
+var out7_in7_Lo = 0xBB;
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -441,21 +542,73 @@ class Audiomatrix880 extends utils.Adapter {
 			if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingState(0, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in4_Hi) && (arrResponse[5] == out0_in4_Lo)){ this.setRoutingState(0, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in5_Hi) && (arrResponse[5] == out0_in5_Lo)){ this.setRoutingState(0, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in6_Hi) && (arrResponse[5] == out0_in6_Lo)){ this.setRoutingState(0, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out0_in7_Hi) && (arrResponse[5] == out0_in7_Lo)){ this.setRoutingState(0, 7, (arrResponse[8]==0x1E)); }
 
 			if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingState(1, 0, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingState(1, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingState(1, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingState(1, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in4_Hi) && (arrResponse[5] == out1_in4_Lo)){ this.setRoutingState(1, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in5_Hi) && (arrResponse[5] == out1_in5_Lo)){ this.setRoutingState(1, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in6_Hi) && (arrResponse[5] == out1_in6_Lo)){ this.setRoutingState(1, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out1_in7_Hi) && (arrResponse[5] == out1_in7_Lo)){ this.setRoutingState(1, 7, (arrResponse[8]==0x1E)); }
 
 			if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingState(2, 0, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingState(2, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingState(2, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingState(2, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in4_Hi) && (arrResponse[5] == out2_in4_Lo)){ this.setRoutingState(2, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in5_Hi) && (arrResponse[5] == out2_in5_Lo)){ this.setRoutingState(2, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in6_Hi) && (arrResponse[5] == out2_in6_Lo)){ this.setRoutingState(2, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out2_in7_Hi) && (arrResponse[5] == out2_in7_Lo)){ this.setRoutingState(2, 7, (arrResponse[8]==0x1E)); }
 
 			if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingState(3, 0, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingState(3, 1, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
 			if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in4_Hi) && (arrResponse[5] == out3_in4_Lo)){ this.setRoutingState(3, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in5_Hi) && (arrResponse[5] == out3_in5_Lo)){ this.setRoutingState(3, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in6_Hi) && (arrResponse[5] == out3_in6_Lo)){ this.setRoutingState(3, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out3_in7_Hi) && (arrResponse[5] == out3_in7_Lo)){ this.setRoutingState(3, 7, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out4_in0_Hi) && (arrResponse[5] == out4_in0_Lo)){ this.setRoutingState(4, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in1_Hi) && (arrResponse[5] == out4_in1_Lo)){ this.setRoutingState(4, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in2_Hi) && (arrResponse[5] == out4_in2_Lo)){ this.setRoutingState(4, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in3_Hi) && (arrResponse[5] == out4_in3_Lo)){ this.setRoutingState(4, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in4_Hi) && (arrResponse[5] == out4_in4_Lo)){ this.setRoutingState(4, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in5_Hi) && (arrResponse[5] == out4_in5_Lo)){ this.setRoutingState(4, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in6_Hi) && (arrResponse[5] == out4_in6_Lo)){ this.setRoutingState(4, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out4_in7_Hi) && (arrResponse[5] == out4_in7_Lo)){ this.setRoutingState(4, 7, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out5_in0_Hi) && (arrResponse[5] == out5_in0_Lo)){ this.setRoutingState(5, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in1_Hi) && (arrResponse[5] == out5_in1_Lo)){ this.setRoutingState(5, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in2_Hi) && (arrResponse[5] == out5_in2_Lo)){ this.setRoutingState(5, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in3_Hi) && (arrResponse[5] == out5_in3_Lo)){ this.setRoutingState(5, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in4_Hi) && (arrResponse[5] == out5_in4_Lo)){ this.setRoutingState(5, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in5_Hi) && (arrResponse[5] == out5_in5_Lo)){ this.setRoutingState(5, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in6_Hi) && (arrResponse[5] == out5_in6_Lo)){ this.setRoutingState(5, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out5_in7_Hi) && (arrResponse[5] == out5_in7_Lo)){ this.setRoutingState(5, 7, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out6_in0_Hi) && (arrResponse[5] == out6_in0_Lo)){ this.setRoutingState(6, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in1_Hi) && (arrResponse[5] == out6_in1_Lo)){ this.setRoutingState(6, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in2_Hi) && (arrResponse[5] == out6_in2_Lo)){ this.setRoutingState(6, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in3_Hi) && (arrResponse[5] == out6_in3_Lo)){ this.setRoutingState(6, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in4_Hi) && (arrResponse[5] == out6_in4_Lo)){ this.setRoutingState(6, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in5_Hi) && (arrResponse[5] == out6_in5_Lo)){ this.setRoutingState(6, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in6_Hi) && (arrResponse[5] == out6_in6_Lo)){ this.setRoutingState(6, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out6_in7_Hi) && (arrResponse[5] == out6_in7_Lo)){ this.setRoutingState(6, 7, (arrResponse[8]==0x1E)); }
+
+			if((arrResponse[4] == out7_in0_Hi) && (arrResponse[5] == out7_in0_Lo)){ this.setRoutingState(7, 0, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in1_Hi) && (arrResponse[5] == out7_in1_Lo)){ this.setRoutingState(7, 1, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in2_Hi) && (arrResponse[5] == out7_in2_Lo)){ this.setRoutingState(7, 2, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in3_Hi) && (arrResponse[5] == out7_in3_Lo)){ this.setRoutingState(7, 3, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in4_Hi) && (arrResponse[5] == out7_in4_Lo)){ this.setRoutingState(7, 4, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in5_Hi) && (arrResponse[5] == out7_in5_Lo)){ this.setRoutingState(7, 5, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in6_Hi) && (arrResponse[5] == out7_in6_Lo)){ this.setRoutingState(7, 6, (arrResponse[8]==0x1E)); }
+			if((arrResponse[4] == out7_in7_Hi) && (arrResponse[5] == out7_in7_Lo)){ this.setRoutingState(7, 7, (arrResponse[8]==0x1E)); }
 
 			//----Input Gain
 			if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
@@ -524,21 +677,73 @@ class Audiomatrix880 extends utils.Adapter {
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in3_Hi, out0_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in4_Hi, out0_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in5_Hi, out0_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in6_Hi, out0_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in7_Hi, out0_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in0_Hi, out1_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in1_Hi, out1_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in2_Hi, out1_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in3_Hi, out1_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in4_Hi, out1_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in5_Hi, out1_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in6_Hi, out1_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out1_in7_Hi, out1_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in0_Hi, out2_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in1_Hi, out2_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in2_Hi, out2_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in3_Hi, out2_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in4_Hi, out2_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in5_Hi, out2_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in6_Hi, out2_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out2_in7_Hi, out2_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in0_Hi, out3_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in1_Hi, out3_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in2_Hi, out3_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in3_Hi, out3_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in4_Hi, out3_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in5_Hi, out3_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in6_Hi, out3_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out3_in7_Hi, out3_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in0_Hi, out4_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in1_Hi, out4_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in2_Hi, out4_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in3_Hi, out4_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in4_Hi, out4_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in5_Hi, out4_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in6_Hi, out4_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out4_in7_Hi, out4_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in0_Hi, out5_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in1_Hi, out5_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in2_Hi, out5_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in3_Hi, out5_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in4_Hi, out5_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in5_Hi, out5_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in6_Hi, out5_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out5_in7_Hi, out5_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in0_Hi, out6_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in1_Hi, out6_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in2_Hi, out6_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in3_Hi, out6_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in4_Hi, out6_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in5_Hi, out6_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in6_Hi, out6_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out6_in7_Hi, out6_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in0_Hi, out7_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in1_Hi, out7_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in2_Hi, out7_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in3_Hi, out7_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in4_Hi, out7_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in5_Hi, out7_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in6_Hi, out7_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+			new Buffer([0xf0, 0x45, idDevice, 0x10, out7_in7_Hi, out7_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
 			//----InGain
 			new Buffer([0xf0, 0x45, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
