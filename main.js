@@ -262,7 +262,7 @@ class Audiomatrix880 extends utils.Adapter {
 			this.reconfigureCMD(0x45);
 			tmpFirmwareName = 'v1.6';
 		}
-		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + this.tmpFirmwareName);
+		this.log.info('AudioMatrix connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + tmpFirmwareName);
 
 		matrix = new net.Socket();
 		matrix.setTimeout(polling_time*2);
