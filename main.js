@@ -816,6 +816,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 			//matrix.write(cmd);
 			//tabu = false;
+			tabu=true;
 			setTimeout(function() {
             			matrix.write(cmd);            
 		        }, iTimeout);
