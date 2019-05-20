@@ -353,6 +353,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	reconnect(){
 		this.log.info('AudioMatrix: reconnectMatrix()');
+		connection = false;
 		clearInterval(query);
 		clearTimeout(recnt);
 		matrix.destroy();
