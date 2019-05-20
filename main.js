@@ -211,10 +211,10 @@ class Audiomatrix880 extends utils.Adapter {
 	setConnState(pConn_net, pConn_hw){
 		this.connection_net = pConn_net;
 		this.connection_hardware = pConn_hw;
-		this.connection = connection_net && connection_hardware;
+		this.connection = pConn_net && pConn_hw;
 		
-		this.setState('info.connection_net', connection_net, true);
-		this.setState('info.connection_hardware', connection_hardware, true);
+		//this.setState('info.connection_net', connection_net, true);
+		//this.setState('info.connection_hardware', connection_hardware, true);
 		this.setState('info.connection', connection, true);
 
 	}
