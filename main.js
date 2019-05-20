@@ -292,6 +292,7 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
 					//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 					parentThis.send(cmdConnect, 1000);
+					parentThis.connection = true;
 					//parentThis.setConnState(true, false);
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
