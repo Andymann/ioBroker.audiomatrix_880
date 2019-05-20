@@ -27,6 +27,7 @@ var parentThis;
 //----https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md
 //----https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md  => level.volume
 var idDevice = 0x01;
+var firmware = 0x45;	//----Default
 
 //----2. Byte: Firmware Version. Initial auf v1.4 == 0x45
 var cmdConnect;// =	new Buffer([0xf0, 0x45, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
@@ -252,7 +253,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.log.info('connectMatrix().');
  		var host = this.config.host;
 		var port = this.config.port;
-		var firmware = this.config.firmware;
+		firmware = this.config.firmware;	//----Einlesen via config
 		var tmpFirmwareName;
 		if(firmware=='v14'){
 			this.reconfigureCMD(0x45);
