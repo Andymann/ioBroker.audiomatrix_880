@@ -534,7 +534,8 @@ class Audiomatrix880 extends utils.Adapter {
 		if (arrResponse[3] == 0x00 ){
 			this.log.info('parseMsg() Response = CONNECTION' );
 			connection = true;
-			this.setState('info.connection', true, true);
+			//this.setState('info.connection', true, true);
+			setState('info.connection', true, true);
 			this.queryMatrix();
 		}else if (arrResponse[3] == 0x10 ){
 			//this.log.info('parseMsg() Response = ReadMemory' );
