@@ -13,7 +13,9 @@ const utils = require('@iobroker/adapter-core');
 var net = require('net');
 var matrix;
 var recnt;
-var connection = false;
+var connection = false;		//----Connection in SUMME
+var connection_net = false;	//----Connection zum Ethernet-Seriall Adapter
+var connection_hardware = false;//----Connection des Eth-Seriell-Adapters mit der angeschlossenen Hardware
 var tabu = false;
 var polling_time = 10000;	//In dem Intervall wird die angeschlossen Hardware angefragt
 var response_wait_time = 5000;	//Solange warten wir nach einem Polling auf eine grundsaetzliche Antwort der Hardware
@@ -273,7 +275,8 @@ class Audiomatrix880 extends utils.Adapter {
 			    if(!tabu){	//----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 				parentThis.bWaitingForResponse=true;
 				if(connection==false){
-					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT');
+					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
+					//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 					parentThis.send(cmdConnect, 1000);
 					
 				}else{
