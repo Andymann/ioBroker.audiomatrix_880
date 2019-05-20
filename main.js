@@ -41,7 +41,8 @@ var cmdReadmemory;// = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00
 
 
 var bWaitingForResponse = false;
-
+var bStopQuery = false;
+var arrQuery = []; //----Das Array mit den zu sendenden Befehlen
 
 //----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
@@ -673,7 +674,7 @@ class Audiomatrix880 extends utils.Adapter {
 		tabu =true;
 		this.log.info('AudioMatrix: queryMatrix():' /*+ this.toHexString(cmd)*/);
 
-		var arrQuery =[
+		arrQuery =[
 			//----Routing
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
@@ -802,7 +803,6 @@ class Audiomatrix880 extends utils.Adapter {
 
 		//this.log.info('AudioMatrix queryMatrix(): Array filled. Sending');
 		arrQuery.forEach(function(item, index, array) {
-			//parentThis.log.info(item + ":" +  index);
 			tabu = true;
 			parentThis.send(item, (index+1)*100);			
 		});
@@ -852,7 +852,8 @@ class Audiomatrix880 extends utils.Adapter {
 				cmdGain[7] = loByte;
 				cmdGain[11] = hiByte;
 
-				//----Speichern der STates				
+				this.log.info('matrixChanged: killing arrQuery before sending' );
+				this.arrQuery.length = 0;	//----Query stoppen
 				this.send(cmdGain, 5);
 				
 			}
