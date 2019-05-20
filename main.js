@@ -14,8 +14,8 @@ var net = require('net');
 var matrix;
 var recnt;
 var connection = false;		//----Connection in SUMME
-var connection_net = false;	//----Connection zum Ethernet-Seriall Adapter
-var connection_hardware = false;//----Connection des Eth-Seriell-Adapters mit der angeschlossenen Hardware
+//var connection_net = false;	//----Connection zum Ethernet-Seriall Adapter
+//var connection_hardware = false;//----Connection des Eth-Seriell-Adapters mit der angeschlossenen Hardware
 var tabu = false;
 var polling_time = 10000;	//In dem Intervall wird die angeschlossen Hardware angefragt
 var response_wait_time = 5000;	//Solange warten wir nach einem Polling auf eine grundsaetzliche Antwort der Hardware
@@ -208,6 +208,7 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis = this;
 	}
 
+/*
 	setConnState(pConn_net, pConn_hw){
 		this.connection_net = pConn_net;
 		this.connection_hardware = pConn_hw;
@@ -216,9 +217,8 @@ class Audiomatrix880 extends utils.Adapter {
 		//this.setState('info.connection_net', connection_net, true);
 		//this.setState('info.connection_hardware', connection_hardware, true);
 		this.setState('info.connection', connection, true);
-
 	}
-
+*/
 	toHexString(byteArray) {
 	  return Array.from(byteArray, function(byte) {
 	    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
@@ -257,11 +257,8 @@ class Audiomatrix880 extends utils.Adapter {
 		matrix.destroy();
 		
 		this.log.info('Reconnect after 15 sec...');
-		//connection_net = false;
-		//connection_hardware = false;
-		//connection = connection_net && connection_hardware;
-		//this.setState('info.connection', connection, true);
-		this.setConnState(false, false);
+		this.setState('info.connection', false, true);
+		//this.setConnState(false, false);
 		recnt = setTimeout(function() {
 			parentThis.initmatrix();
 		}, 15000);
@@ -295,11 +292,11 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.log.info('connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
 					//this.log.info('AudioMatrix send:' + this.toHexString(cmd) + ' Timeout:' + iTimeout.toString() );
 					parentThis.send(cmdConnect, 1000);
-					parentThis.setConnState(true, false);
+					//parentThis.setConnState(true, false);
 				}else{
 					parentThis.log.info('connectMatrix().connection==true, idle, querying Matrix');
 					parentThis.queryMatrix();
-					parentThis.setConnState(true, true);
+					//parentThis.setConnState(true, true);
 					//if(bWaitingForResponse==true){
 					//	parentThis.log.info('connectMatrix().connection==true, bWaitingForResponse==TRUE, aber Timeout');
 					//	bWaitingForResponse = false;
@@ -354,8 +351,8 @@ class Audiomatrix880 extends utils.Adapter {
 			//	matrix.destroy();
 			//}
 			parentThis.log.error('AudioMatrix TIMEOUT');
-			//parentThis.connection=false;
-			parentThis.setConnState(false, true);
+			parentThis.connection=false;
+			//parentThis.setConnState(false, true);
 			//parentThis.reconnect();
 		});
 
@@ -381,7 +378,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		matrix.on('end', function(e) {
 			parentThis.log.error('AudioMatrix ended');
-			parentThis.setConnState(false, true);			
+			//parentThis.setConnState(false, true);			
 		});
 	}
 
@@ -426,7 +423,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	//----Verarbeitung ankommender Daten. alles ist asynchron.
 	parseMsg(msg){
-		this.setConnState(true, true);
+		//this.setConnState(true, true);
 		tabu = true;
 		//this.log.info('parseMsg():' + msg);
 		var arrResponse = this.toArray(msg);
@@ -723,8 +720,8 @@ class Audiomatrix880 extends utils.Adapter {
 		// Initialize your adapter here
 
 		// Reset the connection indicator during startup
-		this.setState('info.connection_net', false, true);
-		this.setState('info.connection_hardware', false, true);
+		//this.setState('info.connection_net', false, true);
+		//this.setState('info.connection_hardware', false, true);
 		this.setState('info.connection', false, true);
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via

@@ -96,32 +96,6 @@
 				"def": false
 			},
 			"native": {}
-		},
-		{
-			"_id": "info.connection_net",
-			"type": "state",
-			"common": {
-				"role": "indicator.connected",
-				"name": "Network Adapter connected",
-				"type": "boolean",
-				"read": true,
-				"write": false,
-				"def": false
-			},
-			"native": {}
-		},
-		{
-			"_id": "info.connection_hardware",
-			"type": "state",
-			"common": {
-				"role": "indicator.connected",
-				"name": "Hardware connected to Network Adapter",
-				"type": "boolean",
-				"read": true,
-				"write": false,
-				"def": false
-			},
-			"native": {}
 		}
 	]
 }
