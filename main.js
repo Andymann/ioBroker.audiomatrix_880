@@ -42,7 +42,7 @@ var cmdReadmemory;// = 	new Buffer([0xf0, 0x45, idDevice, 0x10, 0x00, 0x00, 0x00
 
 var bWaitingForResponse = false;
 var bStopQuery = false;
-var arrQuery = []; //----Das Array mit den zu sendenden Befehlen
+//var arrQuery = []; //----Das Array mit den zu sendenden Befehlen
 
 //----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
@@ -674,7 +674,7 @@ class Audiomatrix880 extends utils.Adapter {
 		tabu =true;
 		this.log.info('AudioMatrix: queryMatrix():' /*+ this.toHexString(cmd)*/);
 
-		arrQuery =[
+		var arrQuery =[
 			//----Routing
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 			new Buffer([0xf0, 0x45, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
@@ -806,6 +806,7 @@ class Audiomatrix880 extends utils.Adapter {
 			tabu = true;
 			parentThis.send(item, (index+1)*100);			
 		});
+		//arrQuery = [];
 		
 	}
 	
