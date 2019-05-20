@@ -298,16 +298,15 @@ class Audiomatrix880 extends utils.Adapter {
 					parentThis.bWaitingForResponse = false;
 					parentThis.parseMsg(in_msg);
 					in_msg = '';
-				}else{
-					//in_msg = '';
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
-				parentThis.log.info('in_msg starts with');
+				parentThis.log.info('matrix.on data vergniesgnaddelung angefangen: in_msg starts with:' + in_msg);
 				in_msg = '';
 			}
 
 			if(in_msg.length > 50){
+				//----Just in case
 				in_msg = '';
 			}
 		});
