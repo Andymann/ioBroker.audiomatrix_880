@@ -1,8 +1,13 @@
 {
 	"common": {
 		"name": "audiomatrix_880",
-		"version": "0.0.1",
+		"version": "1.0.1",
 		"news": {
+			"1.0.1": {
+				"en": "Working release",
+				"de": "Erste produktiv einsetzbare Version",				
+			},
+			
 			"0.0.1": {
 				"en": "initial release",
 				"de": "Erstveröffentlichung",
