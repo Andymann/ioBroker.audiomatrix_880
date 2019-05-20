@@ -411,7 +411,7 @@ class Audiomatrix880 extends utils.Adapter {
 						//----Wir warten nach 5000ms noch auf Antwort. Das ist nicht gut
 						parentThis.log.info('connectMatrix() Keine valide Antwort der Hardware nach ' + response_wait_time + ' Milisekunden.');
 						parentThis.log.info('connectMatrix() in_msg:' + in_msg);
-						parentThis.log.info( 'inmsg-chunk: -' + in_msg.toLowerCase().substring(24,26) + '-' );
+						parentThis.log.info( 'in_msg-chunk: -' + in_msg.toLowerCase().substring(24,26) + '-' );
 						parentThis.reconnect();
 					}
 				}, response_wait_time);
@@ -437,7 +437,7 @@ class Audiomatrix880 extends utils.Adapter {
 				}
 			}else{
 				//----Irgendwie vergneisgnaddelt
-				parentThis.log.info('matrix.on data vergniesgnaddelung angefangen: in_msg starts with:' + in_msg);
+				parentThis.log.debug('matrix.on data: Fehlerhafte oder inkonsistente Daten empfangen:' + in_msg);
 				in_msg = '';
 			}
 
