@@ -738,7 +738,7 @@ connectmatrix(cb){
 
                                                                       }                                                                                           
 
-                                                      }, 5000/*grossesIntervall*/);
+                                                      }, 15000/*grossesIntervall*/);
 
 
 
