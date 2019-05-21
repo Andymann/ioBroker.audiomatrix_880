@@ -2105,17 +2105,3 @@ if (module.parent) {
                 new Audiomatrix880();
 
 }
-
- 
-
-----------------------------
-A green Tree Bitte denken Sie an die Umwelt! Müssen Sie diese Nachricht ausdrucken?
-
-----------------------------
-
-__________________________________________
-
-Fielmann Aktiengesellschaft - Sitz der Gesellschaft: Hamburg -
-HRB 56098 - Aufsichtsratsvorsitzender: Prof. Dr. Mark K. Binz -
-Vorstand: Günther Fielmann, Marc Fielmann (Vorsitzende), Michael Ferley, Dr. Bastian Körber, Dr. Stefan Thies, Georg Alexander Zeiss
-
