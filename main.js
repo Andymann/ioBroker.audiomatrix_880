@@ -722,6 +722,7 @@ connectmatrix(cb){
 									if(arrCMD.length==0){
 										parentThis.log.error('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, arrCMD.length==0, trigger RECONNECT');
 										bWaitingForResponse=false;
+										tabu=false;
 										in_msg = '';
 										arrCMD = [];
 										lastCMD = '';
