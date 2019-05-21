@@ -694,10 +694,10 @@ var arrQuery =[
 
                                queryMatrix(){                
 
-                                               this.log.info('AudioMatrix: queryMatrix()');                      
+                                               this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
 
                                                arrQuery.forEach(function(item, index, array) {                             
-
+								parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parenThis.toHexString(item));
                                                                arrCMD.push(item);
 
                                                });
