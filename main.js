@@ -726,7 +726,7 @@ var arrQuery =[
 
                                                if(tmpFirmware=='v14'){
 
-                                                               this.reconfigureCMD(0x45);
+                                                               //this.reconfigureCMD(0x45);
 
                                                                tmpFirmwareName = 'v1.4';
 
@@ -734,7 +734,7 @@ var arrQuery =[
 
                                                }else if(tmpFirmware=='v16'){
 
-                                                               this.reconfigureCMD(0x46);
+                                                               //this.reconfigureCMD(0x46);
 
                                                                tmpFirmwareName = 'v1.6';
 
@@ -2087,19 +2087,13 @@ var arrQuery =[
  
 
 if (module.parent) {
-
                 // Export the constructor in compact mode
-
                 /**
-
                 * @param {Partial<ioBroker.AdapterOptions>} [options={}]
-
                 */
-
                 module.exports = (options) => new Audiomatrix880(options);
 
 } else {
-
                 // otherwise start the instance directly
 
                 new Audiomatrix880();
