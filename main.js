@@ -792,7 +792,7 @@ var arrQuery =[
 
                                                                                               setTimeout(function(){
 
-                                                                                                              parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout');
+                                                                                                              //parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout');
 
                                                                                                               if(bWaitingForResponse==true){
 
@@ -800,7 +800,7 @@ var arrQuery =[
 
                                                                                                                                              parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
 
-                                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. lastCMD =' + lastCMD);
+                                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD));
 
                                                                                                                                              iMaxTryCounter--;
 
@@ -848,13 +848,14 @@ var arrQuery =[
 
                                                                                                               //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
 
-                                                                                                              parentThis.log.info('AudioMatrix: connectMatrix() in_msg: grosses Timeout');
+                                                                                                              parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
 
                                                                                                               tabu = false;
 
                                                                                                              
 
                                                                                                               if(bWaitingForResponse==true){
+															    parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, trigger RECONNECT');
 
                                                                                                                              bWaitingForResponse=false;
 
@@ -1042,7 +1043,7 @@ var arrQuery =[
 
                                                                if(arrCMD.length>0){
 
-                                                                              this.log.info('AudioMatrix: processCMD: tabe==FALSE, arrCMD.length=' +arrCMD.length.toString());
+                                                                              this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD.length=' +arrCMD.length.toString());
 
                                                                               tabu=true;
 
