@@ -715,30 +715,23 @@ connectmatrix(cb){
 
                                                       setTimeout(function(){
 
-                                                                      //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
+								//----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
+								//parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
 
-                                                                      //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
+								if(bWaitingForResponse==true){
+									if(arrCMD.length==0){
+										parentThis.log.error('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, arrCMD.length==0, trigger RECONNECT');
+										bWaitingForResponse=false;
+										in_msg = '';
+										arrCMD = [];
+										lastCMD = '';
+										parentThis.reconnect();
+									}else{
+										parentThis.log.debug('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, aber arrCMD.length>0. Kein Problem');
+									}
+								}                                                                                           
 
-                                                                      tabu = false;
-
-                                                                     
-
-                                                                      if(bWaitingForResponse==true){
-										    parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, trigger RECONNECT');
-
-                                                                                     bWaitingForResponse=false;
-
-                                                                                     in_msg = '';
-
-                                                                                     arrCMD = [];
-
-                                                                                     lastCMD = '';
-
-                                                                                     parentThis.reconnect();
-
-                                                                      }                                                                                           
-
-                                                      }, 150000/*grossesIntervall*/);
+                                                      }, 5000/*grossesIntervall*/);
 
 
 
@@ -942,7 +935,7 @@ processCMD(){
 
        }else{
 
-                       this.log.info('AudioMatrix: processCMD: tabu==TRUE. Nichts machen');
+                       this.log.debug('AudioMatrix: processCMD: tabu==TRUE. Nichts machen');
 
        }
 
