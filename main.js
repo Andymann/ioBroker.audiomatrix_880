@@ -53,6 +53,7 @@ var cmdPreset =                              new Buffer([0xf0, firmware, idDevic
 var cmdReadmemory=                new Buffer([0xf0, firmware, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 var bWaitingForResponse = false;
+var bQueryDone;
 
 //----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
@@ -71,7 +72,7 @@ var inGain_6_HiVal_Lo = 0x46;
 var inGain_6_HiVal_Hi = 0x00;
 var inGain_7_HiVal_Lo = 0x47;
 var inGain_7_HiVal_Hi = 0x00;
-
+bQueryDone
 var inGain_0_LoVal_Lo = 0x18;
 var inGain_0_LoVal_Hi = 0x02;
 var inGain_1_LoVal_Lo = 0x19;
@@ -722,7 +723,7 @@ connectmatrix(cb){
 
        var tmpFirmwareName;
 
-       var bQueryDone = false;
+       bQueryDone = false;
 
       
 
@@ -1094,37 +1095,21 @@ processCMD(){
 checkQueryDone(){                     
 
 
-
        var bTMP_Routing = true;
-
        arrStateQuery_Routing.forEach(function(item, index, array) {                
-
                        bTMP_Routing = bTMP_Routing && item;
-
        });
-
        this.log.info('checkQueryDone(): Routing:' + bTMP_Routing);
 
-      
-
        var bTMP_Input = true;
-
        arrStateQuery_Input.forEach(function(item, index, array) {                    
-
                        bTMP_Input = bTMP_Input && item;
-
        });
-
        this.log.info('checkQueryDone(): Input:' + bTMP_Input);
-
-      
-
+     
        var bTMP_Output = true;
-
        arrStateQuery_Output.forEach(function(item, index, array) {                 
-
                        bTMP_Output = bTMP_Output && item;
-
        });
 
        this.log.info('checkQueryDone(): Output:' + bTMP_Output);
