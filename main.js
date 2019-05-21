@@ -1052,7 +1052,7 @@ var arrQuery =[
 
                                                                               //this.send(tmp);
 
-                                                                              lastCMD = cmd;
+                                                                              lastCMD = tmp;
 
                                                                               bWaitingForResponse=true;
 
