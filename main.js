@@ -900,7 +900,7 @@ var arrQuery =[
 
                                                                if(bWaitingForResponse==true){                                                                          
 
-                                                                              if((in_msg.length >= 26) && (in_msg.includes('f0')){
+                                                                              if((in_msg.length >= 26) && (in_msg.includes('f0'))){
 
                                                                                               parentThis.log.info('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
 
