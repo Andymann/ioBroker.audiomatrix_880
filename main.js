@@ -697,7 +697,7 @@ var arrQuery =[
                                                this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
 
                                                arrQuery.forEach(function(item, index, array) {                             
-								parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parenThis.toHexString(item));
+								parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
                                                                arrCMD.push(item);
 
                                                });
