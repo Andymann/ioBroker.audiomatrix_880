@@ -194,7 +194,7 @@ var out7_in6_Lo = 0xBA;
 var out7_in7_Hi = 0x01;
 var out7_in7_Lo = 0xBB;
 
-/----InputGain; Adressen sind abgebildet per 2 Byte
+//----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
 var inGain_0_HiVal_Hi = 0x00;
 var inGain_1_HiVal_Lo = 0x41;
@@ -211,7 +211,7 @@ var inGain_6_HiVal_Lo = 0x46;
 var inGain_6_HiVal_Hi = 0x00;
 var inGain_7_HiVal_Lo = 0x47;
 var inGain_7_HiVal_Hi = 0x00;
-bQueryDone
+
 var inGain_0_LoVal_Lo = 0x18;
 var inGain_0_LoVal_Hi = 0x02;
 var inGain_1_LoVal_Lo = 0x19;
