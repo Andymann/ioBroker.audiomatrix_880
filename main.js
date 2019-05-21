@@ -563,14 +563,14 @@ pingMatrix(){
 
 queryMatrix(){                
 
-       this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
+       this.log.info('AudioMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());                      
 
        arrQuery.forEach(function(item, index, array) {                             
 			//parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
                        arrCMD.push(item);
 
        });
-
+	this.log.info('AudioMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
        iMaxTryCounter = 3;
 
        this.processCMD();
@@ -818,7 +818,7 @@ connectmatrix(cb){
 
                       
 
-                       if(in_msg.length > 50){
+                       if(in_msg.length > 60){
 
                                       //----Just in case
 
@@ -993,7 +993,7 @@ setRoutingState(outIndex, inIndex, onoff){
 
        this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
 
-       arrStateQuery_Routing[inIndex*8 + outIndex+1] = true;
+       arrStateQuery_Routing[inIndex*8 + outIndex] = true;
 
        this.checkQueryDone();
 
