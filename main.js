@@ -1049,7 +1049,7 @@ var arrQuery =[
 
                                                                               var tmp = arrCMD.shift();
 
-                                                                              this.log.info('AudioMatrix: processCMD: next CMD=' + tmp);
+                                                                              this.log.info('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp));
 
                                                                               //this.send(tmp);
 
