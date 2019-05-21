@@ -55,7 +55,146 @@ var cmdReadmemory=                new Buffer([0xf0, firmware, idDevice, 0x10, 0x
 var bWaitingForResponse = false;
 var bQueryDone;
 
-//----InputGain; Adressen sind abgebildet per 2 Byte
+//----Routing Memory Location
+
+var out0_in0_Hi = 0x00;
+var out0_in0_Lo = 0x48;
+var out0_in1_Hi = 0x00;
+var out0_in1_Lo = 0x49;
+var out0_in2_Hi = 0x00;
+var out0_in2_Lo = 0x4A;
+var out0_in3_Hi = 0x00;
+var out0_in3_Lo = 0x4B;
+var out0_in4_Hi = 0x00;
+var out0_in4_Lo = 0x4C;
+var out0_in5_Hi = 0x00;
+var out0_in5_Lo = 0x4D;
+var out0_in6_Hi = 0x00;
+var out0_in6_Lo = 0x4E;
+var out0_in7_Hi = 0x00;
+var out0_in7_Lo = 0x4F;
+
+var out1_in0_Hi = 0x00;
+var out1_in0_Lo = 0x7C;
+var out1_in1_Hi = 0x00;
+var out1_in1_Lo = 0x7D;
+var out1_in2_Hi = 0x00;
+var out1_in2_Lo = 0x7E;
+var out1_in3_Hi = 0x00;
+var out1_in3_Lo = 0x7F;
+var out1_in4_Hi = 0x00;
+var out1_in4_Lo = 0x80;
+var out1_in5_Hi = 0x00;
+var out1_in5_Lo = 0x81;
+var out1_in6_Hi = 0x00;
+var out1_in6_Lo = 0x82;
+var out1_in7_Hi = 0x00;
+var out1_in7_Lo = 0x83;
+
+var out2_in0_Hi = 0x00;
+var out2_in0_Lo = 0xB0;
+var out2_in1_Hi = 0x00;
+var out2_in1_Lo = 0xB1;
+var out2_in2_Hi = 0x00;
+var out2_in2_Lo = 0xB2;
+var out2_in3_Hi = 0x00;
+var out2_in3_Lo = 0xB3;
+var out2_in4_Hi = 0x00;
+var out2_in4_Lo = 0xB4;
+var out2_in5_Hi = 0x00;
+var out2_in5_Lo = 0xB5;
+var out2_in6_Hi = 0x00;
+var out2_in6_Lo = 0xB6;
+var out2_in7_Hi = 0x00;
+var out2_in7_Lo = 0xB7;
+
+
+var out3_in0_Hi = 0x00;
+var out3_in0_Lo = 0xE4;
+var out3_in1_Hi = 0x00;
+var out3_in1_Lo = 0xE5;
+var out3_in2_Hi = 0x00;
+var out3_in2_Lo = 0xE6;
+var out3_in3_Hi = 0x00;
+var out3_in3_Lo = 0xE7;
+var out3_in4_Hi = 0x00;
+var out3_in4_Lo = 0xE8;
+var out3_in5_Hi = 0x00;
+var out3_in5_Lo = 0xE9;
+var out3_in6_Hi = 0x00;
+var out3_in6_Lo = 0xEA;
+var out3_in7_Hi = 0x00;
+var out3_in7_Lo = 0xEB;
+
+var out4_in0_Hi = 0x01;
+var out4_in0_Lo = 0x18;
+var out4_in1_Hi = 0x01;
+var out4_in1_Lo = 0x19;
+var out4_in2_Hi = 0x01;
+var out4_in2_Lo = 0x1A;
+var out4_in3_Hi = 0x01;
+var out4_in3_Lo = 0x1B;
+var out4_in4_Hi = 0x01;
+var out4_in4_Lo = 0x1C;
+var out4_in5_Hi = 0x01;
+var out4_in5_Lo = 0x1D;
+var out4_in6_Hi = 0x01;
+var out4_in6_Lo = 0x1E;
+var out4_in7_Hi = 0x01;
+var out4_in7_Lo = 0x1F;
+
+var out5_in0_Hi = 0x01;
+var out5_in0_Lo = 0x4C;
+var out5_in1_Hi = 0x01;
+var out5_in1_Lo = 0x4D;
+var out5_in2_Hi = 0x01;
+var out5_in2_Lo = 0x4E;
+var out5_in3_Hi = 0x01;
+var out5_in3_Lo = 0x4F;
+var out5_in4_Hi = 0x01;
+var out5_in4_Lo = 0x50;
+var out5_in5_Hi = 0x01;
+var out5_in5_Lo = 0x51;
+var out5_in6_Hi = 0x01;
+var out5_in6_Lo = 0x52;
+var out5_in7_Hi = 0x01;
+var out5_in7_Lo = 0x53;
+
+var out6_in0_Hi = 0x01;
+var out6_in0_Lo = 0x80;
+var out6_in1_Hi = 0x01;
+var out6_in1_Lo = 0x81;
+var out6_in2_Hi = 0x01;
+var out6_in2_Lo = 0x82;
+var out6_in3_Hi = 0x01;
+var out6_in3_Lo = 0x83;
+var out6_in4_Hi = 0x01;
+var out6_in4_Lo = 0x84;
+var out6_in5_Hi = 0x01;
+var out6_in5_Lo = 0x85;
+var out6_in6_Hi = 0x01;
+var out6_in6_Lo = 0x86;
+var out6_in7_Hi = 0x01;
+var out6_in7_Lo = 0x87;
+
+var out7_in0_Hi = 0x01;
+var out7_in0_Lo = 0xB4;
+var out7_in1_Hi = 0x01;
+var out7_in1_Lo = 0xB5;
+var out7_in2_Hi = 0x01;
+var out7_in2_Lo = 0xB6;
+var out7_in3_Hi = 0x01;
+var out7_in3_Lo = 0xB7;
+var out7_in4_Hi = 0x01;
+var out7_in4_Lo = 0xB8;
+var out7_in5_Hi = 0x01;
+var out7_in5_Lo = 0xB9;
+var out7_in6_Hi = 0x01;
+var out7_in6_Lo = 0xBA;
+var out7_in7_Hi = 0x01;
+var out7_in7_Lo = 0xBB;
+
+/----InputGain; Adressen sind abgebildet per 2 Byte
 var inGain_0_HiVal_Lo = 0x40;
 var inGain_0_HiVal_Hi = 0x00;
 var inGain_1_HiVal_Lo = 0x41;
@@ -295,279 +434,6 @@ var volume = [
 
 
 
-//----Routing Memory Location
-
-var out0_in0_Hi = 0x00;
-
-var out0_in0_Lo = 0x48;
-
-var out0_in1_Hi = 0x00;
-
-var out0_in1_Lo = 0x49;
-
-var out0_in2_Hi = 0x00;
-
-var out0_in2_Lo = 0x4A;
-
-var out0_in3_Hi = 0x00;
-
-var out0_in3_Lo = 0x4B;
-
-var out0_in4_Hi = 0x00;
-
-var out0_in4_Lo = 0x4C;
-
-var out0_in5_Hi = 0x00;
-
-var out0_in5_Lo = 0x4D;
-
-var out0_in6_Hi = 0x00;
-
-var out0_in6_Lo = 0x4E;
-
-var out0_in7_Hi = 0x00;
-
-var out0_in7_Lo = 0x4F;
-
-
-
-var out1_in0_Hi = 0x00;
-
-var out1_in0_Lo = 0x7C;
-
-var out1_in1_Hi = 0x00;
-
-var out1_in1_Lo = 0x7D;
-
-var out1_in2_Hi = 0x00;
-
-var out1_in2_Lo = 0x7E;
-
-var out1_in3_Hi = 0x00;
-
-var out1_in3_Lo = 0x7F;
-
-var out1_in4_Hi = 0x00;
-
-var out1_in4_Lo = 0x80;
-
-var out1_in5_Hi = 0x00;
-
-var out1_in5_Lo = 0x81;
-
-var out1_in6_Hi = 0x00;
-
-var out1_in6_Lo = 0x82;
-
-var out1_in7_Hi = 0x00;
-
-var out1_in7_Lo = 0x83;
-
-
-
-var out2_in0_Hi = 0x00;
-
-var out2_in0_Lo = 0xB0;
-
-var out2_in1_Hi = 0x00;
-
-var out2_in1_Lo = 0xB1;
-
-var out2_in2_Hi = 0x00;
-
-var out2_in2_Lo = 0xB2;
-
-var out2_in3_Hi = 0x00;
-
-var out2_in3_Lo = 0xB3;
-
-var out2_in4_Hi = 0x00;
-
-var out2_in4_Lo = 0xB4;
-
-var out2_in5_Hi = 0x00;
-
-var out2_in5_Lo = 0xB5;
-
-var out2_in6_Hi = 0x00;
-
-var out2_in6_Lo = 0xB6;
-
-var out2_in7_Hi = 0x00;
-
-var out2_in7_Lo = 0xB7;
-
-
-
-
-
-var out3_in0_Hi = 0x00;
-
-var out3_in0_Lo = 0xE4;
-
-var out3_in1_Hi = 0x00;
-
-var out3_in1_Lo = 0xE5;
-
-var out3_in2_Hi = 0x00;
-
-var out3_in2_Lo = 0xE6;
-
-var out3_in3_Hi = 0x00;
-
-var out3_in3_Lo = 0xE7;
-
-var out3_in4_Hi = 0x00;
-
-var out3_in4_Lo = 0xE8;
-
-var out3_in5_Hi = 0x00;
-
-var out3_in5_Lo = 0xE9;
-
-var out3_in6_Hi = 0x00;
-
-var out3_in6_Lo = 0xEA;
-
-var out3_in7_Hi = 0x00;
-
-var out3_in7_Lo = 0xEB;
-
-
-
-var out4_in0_Hi = 0x01;
-
-var out4_in0_Lo = 0x18;
-
-var out4_in1_Hi = 0x01;
-
-var out4_in1_Lo = 0x19;
-
-var out4_in2_Hi = 0x01;
-
-var out4_in2_Lo = 0x1A;
-
-var out4_in3_Hi = 0x01;
-
-var out4_in3_Lo = 0x1B;
-
-var out4_in4_Hi = 0x01;
-
-var out4_in4_Lo = 0x1C;
-
-var out4_in5_Hi = 0x01;
-
-var out4_in5_Lo = 0x1D;
-
-var out4_in6_Hi = 0x01;
-
-var out4_in6_Lo = 0x1E;
-
-var out4_in7_Hi = 0x01;
-
-var out4_in7_Lo = 0x1F;
-
-
-
-var out5_in0_Hi = 0x01;
-
-var out5_in0_Lo = 0x4C;
-
-var out5_in1_Hi = 0x01;
-
-var out5_in1_Lo = 0x4D;
-
-var out5_in2_Hi = 0x01;
-
-var out5_in2_Lo = 0x4E;
-
-var out5_in3_Hi = 0x01;
-
-var out5_in3_Lo = 0x4F;
-
-var out5_in4_Hi = 0x01;
-
-var out5_in4_Lo = 0x50;
-
-var out5_in5_Hi = 0x01;
-
-var out5_in5_Lo = 0x51;
-
-var out5_in6_Hi = 0x01;
-
-var out5_in6_Lo = 0x52;
-
-var out5_in7_Hi = 0x01;
-
-var out5_in7_Lo = 0x53;
-
-
-
-var out6_in0_Hi = 0x01;
-
-var out6_in0_Lo = 0x80;
-
-var out6_in1_Hi = 0x01;
-
-var out6_in1_Lo = 0x81;
-
-var out6_in2_Hi = 0x01;
-
-var out6_in2_Lo = 0x82;
-
-var out6_in3_Hi = 0x01;
-
-var out6_in3_Lo = 0x83;
-
-var out6_in4_Hi = 0x01;
-
-var out6_in4_Lo = 0x84;
-
-var out6_in5_Hi = 0x01;
-
-var out6_in5_Lo = 0x85;
-
-var out6_in6_Hi = 0x01;
-
-var out6_in6_Lo = 0x86;
-
-var out6_in7_Hi = 0x01;
-
-var out6_in7_Lo = 0x87;
-
-
-
-var out7_in0_Hi = 0x01;
-
-var out7_in0_Lo = 0xB4;
-
-var out7_in1_Hi = 0x01;
-
-var out7_in1_Lo = 0xB5;
-
-var out7_in2_Hi = 0x01;
-
-var out7_in2_Lo = 0xB6;
-
-var out7_in3_Hi = 0x01;
-
-var out7_in3_Lo = 0xB7;
-
-var out7_in4_Hi = 0x01;
-
-var out7_in4_Lo = 0xB8;
-
-var out7_in5_Hi = 0x01;
-
-var out7_in5_Lo = 0xB9;
-
-var out7_in6_Hi = 0x01;
-
-var out7_in6_Lo = 0xBA;
-
-var out7_in7_Hi = 0x01;
-
-var out7_in7_Lo = 0xBB;
 
 
 
@@ -700,7 +566,7 @@ queryMatrix(){
        this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
 
        arrQuery.forEach(function(item, index, array) {                             
-			parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
+			//parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
                        arrCMD.push(item);
 
        });
@@ -906,7 +772,7 @@ connectmatrix(cb){
 
                                       if((in_msg.length >= 26) && (in_msg.includes('f0'))){
 
-                                                      parentThis.log.debug('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
+                                                      //parentThis.log.debug('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
 
                                                       var iStartPos = in_msg.indexOf('f0');
 
@@ -1068,9 +934,9 @@ processCMD(){
 
                        }else{
 
-                                      this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD ist leer');
+                                      this.log.debug('AudioMatrix: processCMD: tabu==FALSE, arrCMD ist leer. Kein Problem');
 
-                                      tabu=false;
+                                      //tabu=false;
 
                        }
 
