@@ -1,6 +1,6 @@
 'use strict';
 
- 
+
 
 /*
 
@@ -8,7 +8,7 @@
 
 */
 
- 
+
 
 // The adapter-core module gives you access to the core ioBroker functions
 
@@ -16,7 +16,7 @@
 
 const utils = require('@iobroker/adapter-core');
 
- 
+
 
 // Load your modules here, e.g.:
 
@@ -40,10 +40,10 @@ var arrStateQuery_Input = [];
 var arrStateQuery_Output = [];
 var arrStateQuery_Routing = [];
 
- 
+
 var idDevice = 0x01;
 var firmware = 0x45;
- 
+
 
 var cmdConnect =          new Buffer([0xf0, firmware, idDevice, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdDisconnect =     new Buffer([0xf0, firmware, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
@@ -54,1886 +54,1883 @@ var cmdReadmemory=                new Buffer([0xf0, firmware, idDevice, 0x10, 0x
 
 var bWaitingForResponse = false;
 
- //----InputGain; Adressen sind abgebildet per 2 Byte
-	var inGain_0_HiVal_Lo = 0x40;
-	var inGain_0_HiVal_Hi = 0x00;
-	var inGain_1_HiVal_Lo = 0x41;
-	var inGain_1_HiVal_Hi = 0x00;
-	var inGain_2_HiVal_Lo = 0x42;
-	var inGain_2_HiVal_Hi = 0x00;
-	var inGain_3_HiVal_Lo = 0x43;
-	var inGain_3_HiVal_Hi = 0x00;
-	var inGain_4_HiVal_Lo = 0x44;
-	var inGain_4_HiVal_Hi = 0x00;
-	var inGain_5_HiVal_Lo = 0x45;
-	var inGain_5_HiVal_Hi = 0x00;
-	var inGain_6_HiVal_Lo = 0x46;
-	var inGain_6_HiVal_Hi = 0x00;
-	var inGain_7_HiVal_Lo = 0x47;
-	var inGain_7_HiVal_Hi = 0x00;
+//----InputGain; Adressen sind abgebildet per 2 Byte
+var inGain_0_HiVal_Lo = 0x40;
+var inGain_0_HiVal_Hi = 0x00;
+var inGain_1_HiVal_Lo = 0x41;
+var inGain_1_HiVal_Hi = 0x00;
+var inGain_2_HiVal_Lo = 0x42;
+var inGain_2_HiVal_Hi = 0x00;
+var inGain_3_HiVal_Lo = 0x43;
+var inGain_3_HiVal_Hi = 0x00;
+var inGain_4_HiVal_Lo = 0x44;
+var inGain_4_HiVal_Hi = 0x00;
+var inGain_5_HiVal_Lo = 0x45;
+var inGain_5_HiVal_Hi = 0x00;
+var inGain_6_HiVal_Lo = 0x46;
+var inGain_6_HiVal_Hi = 0x00;
+var inGain_7_HiVal_Lo = 0x47;
+var inGain_7_HiVal_Hi = 0x00;
 
-	var inGain_0_LoVal_Lo = 0x18;
-	var inGain_0_LoVal_Hi = 0x02;
-	var inGain_1_LoVal_Lo = 0x19;
-	var inGain_1_LoVal_Hi = 0x02;
-	var inGain_2_LoVal_Lo = 0x1A;
-	var inGain_2_LoVal_Hi = 0x02;
-	var inGain_3_LoVal_Lo = 0x1B;
-	var inGain_3_LoVal_Hi = 0x02;
-	var inGain_4_LoVal_Lo = 0x1C;
-	var inGain_4_LoVal_Hi = 0x02;
-	var inGain_5_LoVal_Lo = 0x1D;
-	var inGain_5_LoVal_Hi = 0x02;
-	var inGain_6_LoVal_Lo = 0x1E;
-	var inGain_6_LoVal_Hi = 0x02;
-	var inGain_7_LoVal_Lo = 0x1F;
-	var inGain_7_LoVal_Hi = 0x02;
+var inGain_0_LoVal_Lo = 0x18;
+var inGain_0_LoVal_Hi = 0x02;
+var inGain_1_LoVal_Lo = 0x19;
+var inGain_1_LoVal_Hi = 0x02;
+var inGain_2_LoVal_Lo = 0x1A;
+var inGain_2_LoVal_Hi = 0x02;
+var inGain_3_LoVal_Lo = 0x1B;
+var inGain_3_LoVal_Hi = 0x02;
+var inGain_4_LoVal_Lo = 0x1C;
+var inGain_4_LoVal_Hi = 0x02;
+var inGain_5_LoVal_Lo = 0x1D;
+var inGain_5_LoVal_Hi = 0x02;
+var inGain_6_LoVal_Lo = 0x1E;
+var inGain_6_LoVal_Hi = 0x02;
+var inGain_7_LoVal_Lo = 0x1F;
+var inGain_7_LoVal_Hi = 0x02;
 
-	var vol_0_HiVal_Lo = 0x7B;
-	var vol_0_HiVal_Hi = 0x00;
-	var vol_0_LoVal_Lo = 0x07;
-	var vol_0_LoVal_Hi = 0x02;
+var vol_0_HiVal_Lo = 0x7B;
+var vol_0_HiVal_Hi = 0x00;
+var vol_0_LoVal_Lo = 0x07;
+var vol_0_LoVal_Hi = 0x02;
 
-	var vol_1_HiVal_Lo = 0xAF;
-	var vol_1_HiVal_Hi = 0x00;
-	var vol_1_LoVal_Lo = 0x08;
-	var vol_1_LoVal_Hi = 0x02;
+var vol_1_HiVal_Lo = 0xAF;
+var vol_1_HiVal_Hi = 0x00;
+var vol_1_LoVal_Lo = 0x08;
+var vol_1_LoVal_Hi = 0x02;
 
-	var vol_2_HiVal_Lo = 0xE3;
-	var vol_2_HiVal_Hi = 0x00;
-	var vol_2_LoVal_Lo = 0x09;
-	var vol_2_LoVal_Hi = 0x02;
+var vol_2_HiVal_Lo = 0xE3;
+var vol_2_HiVal_Hi = 0x00;
+var vol_2_LoVal_Lo = 0x09;
+var vol_2_LoVal_Hi = 0x02;
 
-	var vol_3_HiVal_Lo = 0x17;
-	var vol_3_HiVal_Hi = 0x01;
-	var vol_3_LoVal_Lo = 0x0A;
-	var vol_3_LoVal_Hi = 0x02;
+var vol_3_HiVal_Lo = 0x17;
+var vol_3_HiVal_Hi = 0x01;
+var vol_3_LoVal_Lo = 0x0A;
+var vol_3_LoVal_Hi = 0x02;
 
-	var vol_4_HiVal_Lo = 0x4B;
-	var vol_4_HiVal_Hi = 0x01;
-	var vol_4_LoVal_Lo = 0x0B;
-	var vol_4_LoVal_Hi = 0x02;
+var vol_4_HiVal_Lo = 0x4B;
+var vol_4_HiVal_Hi = 0x01;
+var vol_4_LoVal_Lo = 0x0B;
+var vol_4_LoVal_Hi = 0x02;
 
-	var vol_5_HiVal_Lo = 0x7F;
-	var vol_5_HiVal_Hi = 0x01;
-	var vol_5_LoVal_Lo = 0x0C;
-	var vol_5_LoVal_Hi = 0x02;
+var vol_5_HiVal_Lo = 0x7F;
+var vol_5_HiVal_Hi = 0x01;
+var vol_5_LoVal_Lo = 0x0C;
+var vol_5_LoVal_Hi = 0x02;
 
-	var vol_6_HiVal_Lo = 0xB3;
-	var vol_6_HiVal_Hi = 0x01;
-	var vol_6_LoVal_Lo = 0x0D;
-	var vol_6_LoVal_Hi = 0x02;
+var vol_6_HiVal_Lo = 0xB3;
+var vol_6_HiVal_Hi = 0x01;
+var vol_6_LoVal_Lo = 0x0D;
+var vol_6_LoVal_Hi = 0x02;
 
-	var vol_7_HiVal_Lo = 0xE7;
-	var vol_7_HiVal_Hi = 0x01;
-	var vol_7_LoVal_Lo = 0x0E;
-	var vol_7_LoVal_Hi = 0x02;
+var vol_7_HiVal_Lo = 0xE7;
+var vol_7_HiVal_Hi = 0x01;
+var vol_7_LoVal_Lo = 0x0E;
+var vol_7_LoVal_Hi = 0x02;
 
 var arrQuery =[
 
-        //----Routing
+//----Routing
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in3_Hi, out0_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in4_Hi, out0_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in5_Hi, out0_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in6_Hi, out0_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out0_in7_Hi, out0_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in0_Hi, out0_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in1_Hi, out0_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in2_Hi, out0_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in3_Hi, out0_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in4_Hi, out0_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in5_Hi, out0_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in6_Hi, out0_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out0_in7_Hi, out0_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in0_Hi, out1_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in1_Hi, out1_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in2_Hi, out1_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in3_Hi, out1_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in4_Hi, out1_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in5_Hi, out1_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in6_Hi, out1_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out1_in7_Hi, out1_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in0_Hi, out1_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in1_Hi, out1_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in2_Hi, out1_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in3_Hi, out1_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in4_Hi, out1_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in5_Hi, out1_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in6_Hi, out1_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out1_in7_Hi, out1_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in0_Hi, out2_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in1_Hi, out2_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in2_Hi, out2_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in3_Hi, out2_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in4_Hi, out2_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in5_Hi, out2_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in6_Hi, out2_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out2_in7_Hi, out2_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in0_Hi, out2_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in1_Hi, out2_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in2_Hi, out2_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in3_Hi, out2_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in4_Hi, out2_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in5_Hi, out2_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in6_Hi, out2_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out2_in7_Hi, out2_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in0_Hi, out3_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in1_Hi, out3_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in2_Hi, out3_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in3_Hi, out3_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in4_Hi, out3_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in5_Hi, out3_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in6_Hi, out3_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out3_in7_Hi, out3_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in0_Hi, out3_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in1_Hi, out3_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in2_Hi, out3_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in3_Hi, out3_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in4_Hi, out3_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in5_Hi, out3_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in6_Hi, out3_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out3_in7_Hi, out3_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in0_Hi, out4_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in1_Hi, out4_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in2_Hi, out4_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in3_Hi, out4_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in4_Hi, out4_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in5_Hi, out4_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in6_Hi, out4_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out4_in7_Hi, out4_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in0_Hi, out4_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in1_Hi, out4_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in2_Hi, out4_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in3_Hi, out4_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in4_Hi, out4_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in5_Hi, out4_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in6_Hi, out4_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out4_in7_Hi, out4_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in0_Hi, out5_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in1_Hi, out5_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in2_Hi, out5_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in3_Hi, out5_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in4_Hi, out5_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in5_Hi, out5_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in6_Hi, out5_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out5_in7_Hi, out5_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in0_Hi, out5_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in1_Hi, out5_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in2_Hi, out5_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in3_Hi, out5_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in4_Hi, out5_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in5_Hi, out5_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in6_Hi, out5_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out5_in7_Hi, out5_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in0_Hi, out6_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in1_Hi, out6_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in2_Hi, out6_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in3_Hi, out6_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in4_Hi, out6_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in5_Hi, out6_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in6_Hi, out6_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out6_in7_Hi, out6_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in0_Hi, out6_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in1_Hi, out6_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in2_Hi, out6_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in3_Hi, out6_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in4_Hi, out6_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in5_Hi, out6_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in6_Hi, out6_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out6_in7_Hi, out6_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in0_Hi, out7_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in1_Hi, out7_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in2_Hi, out7_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in3_Hi, out7_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in4_Hi, out7_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in5_Hi, out7_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in6_Hi, out7_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, out7_in7_Hi, out7_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in0_Hi, out7_in0_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in1_Hi, out7_in1_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in2_Hi, out7_in2_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in3_Hi, out7_in3_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in4_Hi, out7_in4_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in5_Hi, out7_in5_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in6_Hi, out7_in6_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, out7_in7_Hi, out7_in7_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        //----InGain
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+//----InGain
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 
-        //----Volume
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_0_HiVal_Hi, vol_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_0_LoVal_Hi, vol_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_1_HiVal_Hi, vol_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_1_LoVal_Hi, vol_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_2_HiVal_Hi, vol_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_2_LoVal_Hi, vol_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_3_HiVal_Hi, vol_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_3_LoVal_Hi, vol_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_4_HiVal_Hi, vol_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_4_LoVal_Hi, vol_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_5_HiVal_Hi, vol_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_5_LoVal_Hi, vol_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_6_HiVal_Hi, vol_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_6_LoVal_Hi, vol_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_7_HiVal_Hi, vol_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
-        new Buffer([0xf0, firmware, idDevice, 0x10, vol_7_LoVal_Hi, vol_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+//----Volume
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_0_HiVal_Hi, vol_0_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_0_LoVal_Hi, vol_0_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_1_HiVal_Hi, vol_1_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_1_LoVal_Hi, vol_1_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_2_HiVal_Hi, vol_2_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_2_LoVal_Hi, vol_2_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_3_HiVal_Hi, vol_3_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_3_LoVal_Hi, vol_3_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_4_HiVal_Hi, vol_4_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_4_LoVal_Hi, vol_4_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_5_HiVal_Hi, vol_5_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_5_LoVal_Hi, vol_5_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_6_HiVal_Hi, vol_6_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_6_LoVal_Hi, vol_6_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_7_HiVal_Hi, vol_7_HiVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
+new Buffer([0xf0, firmware, idDevice, 0x10, vol_7_LoVal_Hi, vol_7_LoVal_Lo, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]),
 ];
- 
-       
 
 
-        //----Caching der Gain-Werte: Hi, Lo
 
 
-        var inGain_0 = [-1, -1];
-        var inGain_1 = [-1, -1];
-        var inGain_2 = [-1, -1];
-        var inGain_3 = [-1, -1];
-        var inGain_4 = [-1, -1];
-        var inGain_5 = [-1, -1];
-        var inGain_6 = [-1, -1];
-        var inGain_7 = [-1, -1];
+//----Caching der Gain-Werte: Hi, Lo
 
 
-        //----https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
+var inGain_0 = [-1, -1];
+var inGain_1 = [-1, -1];
+var inGain_2 = [-1, -1];
+var inGain_3 = [-1, -1];
+var inGain_4 = [-1, -1];
+var inGain_5 = [-1, -1];
+var inGain_6 = [-1, -1];
+var inGain_7 = [-1, -1];
 
-        var inGain = [
 
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1],
-                       [-1, -1]
-       ];
+//----https://stackoverflow.com/questions/966225/how-can-i-create-a-two-dimensional-array-in-javascript
 
-        var volume = [
+var inGain = [
 
-                       [-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1],
+[-1, -1]
+];
 
-                       [-1, -1],
+var volume = [
 
-                       [-1, -1],
+[-1, -1],
 
-                       [-1, -1],
+[-1, -1],
 
-                       [-1, -1],
+[-1, -1],
 
-                       [-1, -1],
+[-1, -1],
 
-                       [-1, -1],
+[-1, -1],
 
-                       [-1, -1]
+[-1, -1],
 
-       ];
+[-1, -1],
 
+[-1, -1]
 
+];
 
-        //----Routing Memory Location
 
-        var out0_in0_Hi = 0x00;
 
-        var out0_in0_Lo = 0x48;
+//----Routing Memory Location
 
-        var out0_in1_Hi = 0x00;
+var out0_in0_Hi = 0x00;
 
-        var out0_in1_Lo = 0x49;
+var out0_in0_Lo = 0x48;
 
-        var out0_in2_Hi = 0x00;
+var out0_in1_Hi = 0x00;
 
-        var out0_in2_Lo = 0x4A;
+var out0_in1_Lo = 0x49;
 
-        var out0_in3_Hi = 0x00;
+var out0_in2_Hi = 0x00;
 
-        var out0_in3_Lo = 0x4B;
+var out0_in2_Lo = 0x4A;
 
-        var out0_in4_Hi = 0x00;
+var out0_in3_Hi = 0x00;
 
-        var out0_in4_Lo = 0x4C;
+var out0_in3_Lo = 0x4B;
 
-        var out0_in5_Hi = 0x00;
+var out0_in4_Hi = 0x00;
 
-        var out0_in5_Lo = 0x4D;
+var out0_in4_Lo = 0x4C;
 
-        var out0_in6_Hi = 0x00;
+var out0_in5_Hi = 0x00;
 
-        var out0_in6_Lo = 0x4E;
+var out0_in5_Lo = 0x4D;
 
-        var out0_in7_Hi = 0x00;
+var out0_in6_Hi = 0x00;
 
-        var out0_in7_Lo = 0x4F;
+var out0_in6_Lo = 0x4E;
 
+var out0_in7_Hi = 0x00;
 
+var out0_in7_Lo = 0x4F;
 
-        var out1_in0_Hi = 0x00;
 
-        var out1_in0_Lo = 0x7C;
 
-        var out1_in1_Hi = 0x00;
+var out1_in0_Hi = 0x00;
 
-        var out1_in1_Lo = 0x7D;
+var out1_in0_Lo = 0x7C;
 
-        var out1_in2_Hi = 0x00;
+var out1_in1_Hi = 0x00;
 
-        var out1_in2_Lo = 0x7E;
+var out1_in1_Lo = 0x7D;
 
-        var out1_in3_Hi = 0x00;
+var out1_in2_Hi = 0x00;
 
-        var out1_in3_Lo = 0x7F;
+var out1_in2_Lo = 0x7E;
 
-        var out1_in4_Hi = 0x00;
+var out1_in3_Hi = 0x00;
 
-        var out1_in4_Lo = 0x80;
+var out1_in3_Lo = 0x7F;
 
-        var out1_in5_Hi = 0x00;
+var out1_in4_Hi = 0x00;
 
-        var out1_in5_Lo = 0x81;
+var out1_in4_Lo = 0x80;
 
-        var out1_in6_Hi = 0x00;
+var out1_in5_Hi = 0x00;
 
-        var out1_in6_Lo = 0x82;
+var out1_in5_Lo = 0x81;
 
-        var out1_in7_Hi = 0x00;
+var out1_in6_Hi = 0x00;
 
-        var out1_in7_Lo = 0x83;
+var out1_in6_Lo = 0x82;
 
+var out1_in7_Hi = 0x00;
 
+var out1_in7_Lo = 0x83;
 
-        var out2_in0_Hi = 0x00;
 
-        var out2_in0_Lo = 0xB0;
 
-        var out2_in1_Hi = 0x00;
+var out2_in0_Hi = 0x00;
 
-        var out2_in1_Lo = 0xB1;
+var out2_in0_Lo = 0xB0;
 
-        var out2_in2_Hi = 0x00;
+var out2_in1_Hi = 0x00;
 
-        var out2_in2_Lo = 0xB2;
+var out2_in1_Lo = 0xB1;
 
-        var out2_in3_Hi = 0x00;
+var out2_in2_Hi = 0x00;
 
-        var out2_in3_Lo = 0xB3;
+var out2_in2_Lo = 0xB2;
 
-        var out2_in4_Hi = 0x00;
+var out2_in3_Hi = 0x00;
 
-        var out2_in4_Lo = 0xB4;
+var out2_in3_Lo = 0xB3;
 
-        var out2_in5_Hi = 0x00;
+var out2_in4_Hi = 0x00;
 
-        var out2_in5_Lo = 0xB5;
+var out2_in4_Lo = 0xB4;
 
-        var out2_in6_Hi = 0x00;
+var out2_in5_Hi = 0x00;
 
-        var out2_in6_Lo = 0xB6;
+var out2_in5_Lo = 0xB5;
 
-        var out2_in7_Hi = 0x00;
+var out2_in6_Hi = 0x00;
 
-        var out2_in7_Lo = 0xB7;
+var out2_in6_Lo = 0xB6;
 
+var out2_in7_Hi = 0x00;
 
+var out2_in7_Lo = 0xB7;
 
 
 
-        var out3_in0_Hi = 0x00;
 
-        var out3_in0_Lo = 0xE4;
 
-        var out3_in1_Hi = 0x00;
+var out3_in0_Hi = 0x00;
 
-        var out3_in1_Lo = 0xE5;
+var out3_in0_Lo = 0xE4;
 
-        var out3_in2_Hi = 0x00;
+var out3_in1_Hi = 0x00;
 
-        var out3_in2_Lo = 0xE6;
+var out3_in1_Lo = 0xE5;
 
-        var out3_in3_Hi = 0x00;
+var out3_in2_Hi = 0x00;
 
-        var out3_in3_Lo = 0xE7;
+var out3_in2_Lo = 0xE6;
 
-        var out3_in4_Hi = 0x00;
+var out3_in3_Hi = 0x00;
 
-        var out3_in4_Lo = 0xE8;
+var out3_in3_Lo = 0xE7;
 
-        var out3_in5_Hi = 0x00;
+var out3_in4_Hi = 0x00;
 
-        var out3_in5_Lo = 0xE9;
+var out3_in4_Lo = 0xE8;
 
-        var out3_in6_Hi = 0x00;
+var out3_in5_Hi = 0x00;
 
-        var out3_in6_Lo = 0xEA;
+var out3_in5_Lo = 0xE9;
 
-        var out3_in7_Hi = 0x00;
+var out3_in6_Hi = 0x00;
 
-        var out3_in7_Lo = 0xEB;
+var out3_in6_Lo = 0xEA;
 
+var out3_in7_Hi = 0x00;
 
+var out3_in7_Lo = 0xEB;
 
-        var out4_in0_Hi = 0x01;
 
-        var out4_in0_Lo = 0x18;
 
-        var out4_in1_Hi = 0x01;
+var out4_in0_Hi = 0x01;
 
-        var out4_in1_Lo = 0x19;
+var out4_in0_Lo = 0x18;
 
-        var out4_in2_Hi = 0x01;
+var out4_in1_Hi = 0x01;
 
-        var out4_in2_Lo = 0x1A;
+var out4_in1_Lo = 0x19;
 
-        var out4_in3_Hi = 0x01;
+var out4_in2_Hi = 0x01;
 
-        var out4_in3_Lo = 0x1B;
+var out4_in2_Lo = 0x1A;
 
-        var out4_in4_Hi = 0x01;
+var out4_in3_Hi = 0x01;
 
-        var out4_in4_Lo = 0x1C;
+var out4_in3_Lo = 0x1B;
 
-        var out4_in5_Hi = 0x01;
+var out4_in4_Hi = 0x01;
 
-        var out4_in5_Lo = 0x1D;
+var out4_in4_Lo = 0x1C;
 
-        var out4_in6_Hi = 0x01;
+var out4_in5_Hi = 0x01;
 
-        var out4_in6_Lo = 0x1E;
+var out4_in5_Lo = 0x1D;
 
-        var out4_in7_Hi = 0x01;
+var out4_in6_Hi = 0x01;
 
-        var out4_in7_Lo = 0x1F;
+var out4_in6_Lo = 0x1E;
 
+var out4_in7_Hi = 0x01;
 
+var out4_in7_Lo = 0x1F;
 
-        var out5_in0_Hi = 0x01;
 
-        var out5_in0_Lo = 0x4C;
 
-        var out5_in1_Hi = 0x01;
+var out5_in0_Hi = 0x01;
 
-        var out5_in1_Lo = 0x4D;
+var out5_in0_Lo = 0x4C;
 
-        var out5_in2_Hi = 0x01;
+var out5_in1_Hi = 0x01;
 
-        var out5_in2_Lo = 0x4E;
+var out5_in1_Lo = 0x4D;
 
-        var out5_in3_Hi = 0x01;
+var out5_in2_Hi = 0x01;
 
-        var out5_in3_Lo = 0x4F;
+var out5_in2_Lo = 0x4E;
 
-        var out5_in4_Hi = 0x01;
+var out5_in3_Hi = 0x01;
 
-        var out5_in4_Lo = 0x50;
+var out5_in3_Lo = 0x4F;
 
-        var out5_in5_Hi = 0x01;
+var out5_in4_Hi = 0x01;
 
-        var out5_in5_Lo = 0x51;
+var out5_in4_Lo = 0x50;
 
-        var out5_in6_Hi = 0x01;
+var out5_in5_Hi = 0x01;
 
-        var out5_in6_Lo = 0x52;
+var out5_in5_Lo = 0x51;
 
-        var out5_in7_Hi = 0x01;
+var out5_in6_Hi = 0x01;
 
-        var out5_in7_Lo = 0x53;
+var out5_in6_Lo = 0x52;
 
+var out5_in7_Hi = 0x01;
 
+var out5_in7_Lo = 0x53;
 
-        var out6_in0_Hi = 0x01;
 
-        var out6_in0_Lo = 0x80;
 
-        var out6_in1_Hi = 0x01;
+var out6_in0_Hi = 0x01;
 
-        var out6_in1_Lo = 0x81;
+var out6_in0_Lo = 0x80;
 
-        var out6_in2_Hi = 0x01;
+var out6_in1_Hi = 0x01;
 
-        var out6_in2_Lo = 0x82;
+var out6_in1_Lo = 0x81;
 
-        var out6_in3_Hi = 0x01;
+var out6_in2_Hi = 0x01;
 
-        var out6_in3_Lo = 0x83;
+var out6_in2_Lo = 0x82;
 
-        var out6_in4_Hi = 0x01;
+var out6_in3_Hi = 0x01;
 
-        var out6_in4_Lo = 0x84;
+var out6_in3_Lo = 0x83;
 
-        var out6_in5_Hi = 0x01;
+var out6_in4_Hi = 0x01;
 
-        var out6_in5_Lo = 0x85;
+var out6_in4_Lo = 0x84;
 
-        var out6_in6_Hi = 0x01;
+var out6_in5_Hi = 0x01;
 
-        var out6_in6_Lo = 0x86;
+var out6_in5_Lo = 0x85;
 
-        var out6_in7_Hi = 0x01;
+var out6_in6_Hi = 0x01;
 
-        var out6_in7_Lo = 0x87;
+var out6_in6_Lo = 0x86;
 
+var out6_in7_Hi = 0x01;
 
+var out6_in7_Lo = 0x87;
 
-        var out7_in0_Hi = 0x01;
 
-        var out7_in0_Lo = 0xB4;
 
-        var out7_in1_Hi = 0x01;
+var out7_in0_Hi = 0x01;
 
-        var out7_in1_Lo = 0xB5;
+var out7_in0_Lo = 0xB4;
 
-        var out7_in2_Hi = 0x01;
+var out7_in1_Hi = 0x01;
 
-        var out7_in2_Lo = 0xB6;
+var out7_in1_Lo = 0xB5;
 
-        var out7_in3_Hi = 0x01;
+var out7_in2_Hi = 0x01;
 
-        var out7_in3_Lo = 0xB7;
+var out7_in2_Lo = 0xB6;
 
-        var out7_in4_Hi = 0x01;
+var out7_in3_Hi = 0x01;
 
-        var out7_in4_Lo = 0xB8;
+var out7_in3_Lo = 0xB7;
 
-        var out7_in5_Hi = 0x01;
+var out7_in4_Hi = 0x01;
 
-        var out7_in5_Lo = 0xB9;
+var out7_in4_Lo = 0xB8;
 
-        var out7_in6_Hi = 0x01;
+var out7_in5_Hi = 0x01;
 
-        var out7_in6_Lo = 0xBA;
+var out7_in5_Lo = 0xB9;
 
-        var out7_in7_Hi = 0x01;
+var out7_in6_Hi = 0x01;
 
-        var out7_in7_Lo = 0xBB;
+var out7_in6_Lo = 0xBA;
 
-               
+var out7_in7_Hi = 0x01;
+
+var out7_in7_Lo = 0xBB;
+
+
 
 class Audiomatrix880 extends utils.Adapter {
 
 
 
-               /**
+/**
 
-               * @param {Partial<ioBroker.AdapterOptions>} [options={}]
+* @param {Partial<ioBroker.AdapterOptions>} [options={}]
 
-               */
+*/
 
-               constructor(options) {
+constructor(options) {
 
-                               super({
+       super({
 
-                                               ...options,
+                       ...options,
 
-                                               name: 'audiomatrix_880',
+                       name: 'audiomatrix_880',
 
-                               });
+       });
 
-                               this.on('ready', this.onReady.bind(this));
+       this.on('ready', this.onReady.bind(this));
 
-                               this.on('objectChange', this.onObjectChange.bind(this));
+       this.on('objectChange', this.onObjectChange.bind(this));
 
-                               this.on('stateChange', this.onStateChange.bind(this));
+       this.on('stateChange', this.onStateChange.bind(this));
 
-                               // this.on("message", this.onMessage.bind(this));
+       // this.on("message", this.onMessage.bind(this));
 
-                               this.on('unload', this.onUnload.bind(this));
+       this.on('unload', this.onUnload.bind(this));
 
-                               parentThis = this;
+       parentThis = this;
 
-               }
+}
 
-              
 
-               toHexString(byteArray) {
 
-                 return Array.from(byteArray, function(byte) {
+toHexString(byteArray) {
 
-                               return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+return Array.from(byteArray, function(byte) {
 
-                 }).join('')
+       return ('0' + (byte & 0xFF).toString(16)).slice(-2);
 
-               }
+}).join('')
 
+}
 
 
-                //----26 chars to one 13-element Array
 
-               toArray(response){
+//----26 chars to one 13-element Array
 
-                               var chunks = [];
+toArray(response){
 
-                               for (var i = 0, charsLength = response.length; i < charsLength; i += 2) {
+       var chunks = [];
 
-                                               chunks.push(parseInt(response.substring(i, i + 2), 16));
+       for (var i = 0, charsLength = response.length; i < charsLength; i += 2) {
 
-                               }
+                       chunks.push(parseInt(response.substring(i, i + 2), 16));
 
-                               return chunks;
+       }
 
-               }
+       return chunks;
 
+}
 
 
-               initmatrix(){
 
-                               //this.log.info('initMatrix().');
+initmatrix(){
 
-                               this.connectmatrix();                                                  
+       //this.log.info('initMatrix().');
 
-               }
+       this.connectmatrix();                                                  
 
-              
+}
 
-               reconnect(){
 
-                               this.log.info('AudioMatrix: reconnectMatrix()');
 
-                               connection = false;
+reconnect(){
 
-                               clearInterval(query);
+       this.log.info('AudioMatrix: reconnectMatrix()');
 
-                               clearTimeout(recnt);
+       connection = false;
 
-                               matrix.destroy();
+       clearInterval(query);
 
-                              
+       clearTimeout(recnt);
 
-                               this.log.info('AudioMatrix: Reconnect after 15 sec...');
+       matrix.destroy();
 
-                               this.setState('info.connection', false, true);
+      
 
-                               //this.setConnState(false, false);
+       this.log.info('AudioMatrix: Reconnect after 15 sec...');
 
-                               recnt = setTimeout(function() {
+       this.setState('info.connection', false, true);
 
-                                               parentThis.initmatrix();
+       //this.setConnState(false, false);
 
-                               }, 15000);
+       recnt = setTimeout(function() {
 
-               }
+                       parentThis.initmatrix();
 
-              
+       }, 15000);
 
-               pingMatrix(){
+}
 
-                               this.log.info('AudioMatrix: pingMatrix()' );
 
-                               //this.send(cmdConnect);
 
-                               arrCMD.push(cmdConnect);
+pingMatrix(){
 
-                               iMaxTryCounter = 3;
+       this.log.info('AudioMatrix: pingMatrix()' );
 
-                               this.processCMD();
+       //this.send(cmdConnect);
 
-               }
+       arrCMD.push(cmdConnect);
 
+       iMaxTryCounter = 3;
 
+       this.processCMD();
 
-               //----Fragt die Werte vom Geraet ab.
+}
 
-               queryMatrix(){                
 
-                               this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
 
-                               arrQuery.forEach(function(item, index, array) {                             
-						parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
-                                               arrCMD.push(item);
+//----Fragt die Werte vom Geraet ab.
 
-                               });
+queryMatrix(){                
 
-                               iMaxTryCounter = 3;
+       this.log.info('AudioMatrix: queryMatrix(). arrCMD.length=' + arrCMD.length.toString());                      
 
-                               this.processCMD();
+       arrQuery.forEach(function(item, index, array) {                             
+			parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
+                       arrCMD.push(item);
 
-               }
+       });
 
-              
+       iMaxTryCounter = 3;
 
-               connectmatrix(cb){
+       this.processCMD();
 
-                               var host = this.config.host;
+}
 
-                               var port = this.config.port;
 
-                               var tmpFirmware = this.config.firmware;                           
 
-                               var tmpFirmwareName;
+connectmatrix(cb){
 
-                               var bQueryDone = false;
+       var host = this.config.host;
 
-                              
+       var port = this.config.port;
 
-                               if(tmpFirmware=='v14'){
+       var tmpFirmware = this.config.firmware;                           
 
-                                               //this.reconfigureCMD(0x45);
+       var tmpFirmwareName;
 
-                                               tmpFirmwareName = 'v1.4';
+       var bQueryDone = false;
 
-                                               firmware = 0x45;
+      
 
-                               }else if(tmpFirmware=='v16'){
+       if(tmpFirmware=='v14'){
 
-                                               //this.reconfigureCMD(0x46);
+                       //this.reconfigureCMD(0x45);
 
-                                               tmpFirmwareName = 'v1.6';
+                       tmpFirmwareName = 'v1.4';
 
-                                               firmware = 0x46;
+                       firmware = 0x45;
 
-                               }
+       }else if(tmpFirmware=='v16'){
 
-                              
+                       //this.reconfigureCMD(0x46);
 
-                               this.log.info('AudioMatrix: connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + tmpFirmwareName);
+                       tmpFirmwareName = 'v1.6';
 
+                       firmware = 0x46;
 
+       }
 
-                               matrix = new net.Socket();
+      
 
-                               matrix.connect(this.config.port, this.config.host, function() {
+       this.log.info('AudioMatrix: connecting to: ' + this.config.host + ':' + this.config.port + ' Firmware Version:' + tmpFirmwareName);
 
-                                               clearInterval(query);
 
-                                               query = setInterval(function() {
 
-                                                              if(!tabu){             //----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
+       matrix = new net.Socket();
 
-                                                                              if(connection==false){
+       matrix.connect(this.config.port, this.config.host, function() {
 
-                                                                                              parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
+               		clearInterval(query);
 
-                                                                                              arrCMD.push(cmdConnect);
+                       query = setInterval(function() {
 
-                                                                                              iMaxTryCounter = 3;
+                                      if(!tabu){             //----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
 
-                                                                                              parentThis.processCMD();
+                                                      if(connection==false){
 
-                                                                              }else{
+                                                                      parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
 
-                                                                                              if(bQueryDone==true){
+                                                                      arrCMD.push(cmdConnect);
 
-                                                                                                             parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
+                                                                      iMaxTryCounter = 3;
 
-                                                                                                             parentThis.pingMatrix();                                                                                                          
+                                                                      parentThis.processCMD();
 
-                                                                                              }else{
+                                                      }else{
 
-                                                                                                             parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==FALSE, idle, query Matrix');                            
+                                                                      if(bQueryDone==true){
 
-                                                                                                             parentThis.queryMatrix();
+                                                                                     parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
 
-                                                                                              }                                                                                           
+                                                                                     parentThis.pingMatrix();                                                                                                          
 
-                                                                              }
+                                                                      }else{
 
-                                                                             
+                                                                                     parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==FALSE, idle, query Matrix');                            
 
-                                                                              //----kleines Intervall fuer Befehle
+                                                                                     parentThis.queryMatrix();
 
-                                                                              setTimeout(function(){
+                                                                      }                                                                                           
 
-                                                                                              //parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout');
+                                                      }
 
-                                                                                              if(bWaitingForResponse==true){
+                                                     
 
-                                                                                                             if(iMaxTryCounter>0){
+                                                      //----kleines Intervall fuer Befehle
 
-                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
+                                                      setTimeout(function(){
 
-                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD));
+                                                                      //parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout');
 
-                                                                                                                             iMaxTryCounter--;
+                                                                      if(bWaitingForResponse==true){
 
-                                                                                                                             //send(lastCMD);
+                                                                                     if(iMaxTryCounter>0){
 
-                                                                                                                             if(lastCMD !== undefined){
+                                                                                                     parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
 
-                                                                                                                                             setTimeout(function() {
+                                                                                                     parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD));
 
-                                                                                                                                                                            matrix.write(lastCMD);            
+                                                                                                     iMaxTryCounter--;
 
-                                                                                                                                             }, 100);
+                                                                                                     //send(lastCMD);
 
-                                                                                                                             }
+                                                                                                     if(lastCMD !== undefined){
 
-                                                                                                             }else{
+                                                                                                                     setTimeout(function() {
 
-                                                                                                                             tabu = false;     
+                                                                                                                                                    matrix.write(lastCMD);            
 
-                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
+                                                                                                                     }, 100);
 
-                                                                                                                             parentThis.log.info('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
+                                                                                                     }
 
-                                                                                                                             bWaitingForResponse=false;
+                                                                                     }else{
 
-                                                                                                                             lastCMD = '';
+                                                                                                     tabu = false;     
 
-                                                                                                                             in_msg = '';
+                                                                                                     parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
 
-                                                                                                             }
+                                                                                                     parentThis.log.info('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
 
-                                                                                              }else{
+                                                                                                     bWaitingForResponse=false;
 
-                                                                                                             parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
+                                                                                                     lastCMD = '';
 
-                                                                                              }
+                                                                                                     in_msg = '';
 
-                                                                              }, 200/*kleinesIntervall*/);
+                                                                                     }
 
-                                                                             
+                                                                      }else{
 
-                                                                              //----grosses Intervall zur Bestitmmung genereller Timeouts.
+                                                                                     parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
 
-                                                                              setTimeout(function(){
+                                                                      }
 
-                                                                                              //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
+                                                      }, 200/*kleinesIntervall*/);
 
-                                                                                              //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
+                                                     
 
-                                                                                              tabu = false;
+                                                      //----grosses Intervall zur Bestitmmung genereller Timeouts.
 
-                                                                                             
+                                                      setTimeout(function(){
 
-                                                                                              if(bWaitingForResponse==true){
-													    parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, trigger RECONNECT');
+                                                                      //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
 
-                                                                                                             bWaitingForResponse=false;
+                                                                      //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
 
-                                                                                                             in_msg = '';
+                                                                      tabu = false;
 
-                                                                                                             arrCMD = [];
+                                                                     
 
-                                                                                                             lastCMD = '';
+                                                                      if(bWaitingForResponse==true){
+										    parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, trigger RECONNECT');
 
-                                                                                                             parentThis.reconnect();
+                                                                                     bWaitingForResponse=false;
 
-                                                                                              }                                                                                           
+                                                                                     in_msg = '';
 
-                                                                              }, 5000/*grossesIntervall*/);
+                                                                                     arrCMD = [];
 
+                                                                                     lastCMD = '';
 
+                                                                                     parentThis.reconnect();
 
-                                                              }else{
+                                                                      }                                                                                           
 
-                                                                              parentThis.log.debug('AudioMatrix: connectMatrix().In Interval aber tabu==TRUE');
+                                                      }, 5000/*grossesIntervall*/);
 
-                                                              }
 
-                                               }, 10000);
 
-                              
+                                      }else{
 
-                                               if(cb){
+                                                      parentThis.log.debug('AudioMatrix: connectMatrix().In Interval aber tabu==TRUE');
 
-                                                              cb();
+                                      }
 
-                                               }                             
+                       }, 10000);
 
-                               });
+      
 
-                              
+                       if(cb){
 
-                               matrix.on('data', function(chunk) {
+                                      cb();
 
-                                               in_msg += parentThis.toHexString(chunk);
+                       }                             
 
-                                              
+       });
 
-                                               if(bWaitingForResponse==true){                                                                          
+      
 
-                                                              if((in_msg.length >= 26) && (in_msg.includes('f0'))){
+       matrix.on('data', function(chunk) {
 
-                                                                              parentThis.log.debug('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
+                       in_msg += parentThis.toHexString(chunk);
 
-                                                                              var iStartPos = in_msg.indexOf('f0');
+                      
 
-                                                                              if(in_msg.toLowerCase().substring(iStartPos+24,iStartPos+26)=='f7'){                                                                                              
+                       if(bWaitingForResponse==true){                                                                          
 
-                                                                                              bWaitingForResponse = false;
+                                      if((in_msg.length >= 26) && (in_msg.includes('f0'))){
 
-                                                                                              var tmpMSG = in_msg.toLowerCase().substring(iStartPos,iStartPos+26);
+                                                      parentThis.log.debug('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
 
-                                                                                              parentThis.log.debug('AudioMatrix: matrix.on data(); filtered:' + tmpMSG);
+                                                      var iStartPos = in_msg.indexOf('f0');
 
-                                                                                              parentThis.bWaitingForResponse = false;
+                                                      if(in_msg.toLowerCase().substring(iStartPos+24,iStartPos+26)=='f7'){                                                                                              
 
-                                                                                              parentThis.parseMsg(tmpMSG);
+                                                                      bWaitingForResponse = false;
 
-                                                                                              in_msg = '';
+                                                                      var tmpMSG = in_msg.toLowerCase().substring(iStartPos,iStartPos+26);
 
-                                                                                              lastCMD = '';
+                                                                      parentThis.log.debug('AudioMatrix: matrix.on data(); filtered:' + tmpMSG);
 
-                                                                                              iMaxTryCounter = 3;
+                                                                      parentThis.bWaitingForResponse = false;
 
-                                                                                              parentThis.processCMD();
+                                                                      parentThis.parseMsg(tmpMSG);
 
-                                                                                              //tabu = false; 
+                                                                      in_msg = '';
 
-                                                                              }else{
+                                                                      lastCMD = '';
 
-                                                                                              //----Irgendwie vergniesgnaddelt
+                                                                      iMaxTryCounter = 3;
 
-                                                                                              parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);                                                                                                   
+                                                                      parentThis.processCMD();
 
-                                                                              }                                                                                           
+                                                                      //tabu = false; 
 
-                                                              }
+                                                      }else{
 
-                                               }else{
+                                                                      //----Irgendwie vergniesgnaddelt
 
-                                                              parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
+                                                                      parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);                                                                                                   
 
-                                               }
+                                                      }                                                                                           
 
-                                              
+                                      }
 
-                                              
+                       }else{
 
-                                               if(in_msg.length > 50){
+                                      parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
 
-                                                              //----Just in case
+                       }
 
-                                                              in_msg = '';
+                      
 
-                                               }
+                      
 
-                               });
+                       if(in_msg.length > 50){
 
+                                      //----Just in case
 
+                                      in_msg = '';
 
-                               matrix.on('timeout', function(e) {
+                       }
 
-                                               //if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
+       });
 
-                                               //            matrix.destroy();
 
-                                               //}
 
-                                               parentThis.log.error('AudioMatrix TIMEOUT');
+       matrix.on('timeout', function(e) {
 
-                                               //parentThis.connection=false;
+                       //if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
 
-                                               //parentThis.setConnState(false, true);
+                       //            matrix.destroy();
 
-                                               parentThis.reconnect();
+                       //}
 
-                               });
+                       parentThis.log.error('AudioMatrix TIMEOUT');
 
+                       //parentThis.connection=false;
 
+                       //parentThis.setConnState(false, true);
 
-                               matrix.on('error', function(e) {
+                       parentThis.reconnect();
 
-                                               if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
+       });
 
-                                                              matrix.destroy();
 
-                                               }
 
-                                               parentThis.log.error(e);
+       matrix.on('error', function(e) {
 
-                                               parentThis.reconnect();
+                       if (e.code == "ENOTFOUND" || e.code == "ECONNREFUSED" || e.code == "ETIMEDOUT") {
 
-                               });
+                                      matrix.destroy();
 
+                       }
 
+                       parentThis.log.error(e);
 
-                               matrix.on('close', function(e) {
+                       parentThis.reconnect();
 
-                                               if(connection){
+       });
 
-                                                              parentThis.log.error('AudioMatrix closed');
 
-                                               }
 
-                                               parentThis.reconnect();
+       matrix.on('close', function(e) {
 
-                               });
+                       if(connection){
 
+                                      parentThis.log.error('AudioMatrix closed');
 
+                       }
 
-                               matrix.on('disconnect', function(e) {
+                       parentThis.reconnect();
 
-                                               parentThis.log.error('AudioMatrix disconnected');
+       });
 
-                                               parentThis.reconnect();
 
-                                              
 
-                               });
+       matrix.on('disconnect', function(e) {
 
+                       parentThis.log.error('AudioMatrix disconnected');
 
+                       parentThis.reconnect();
 
-                               matrix.on('end', function(e) {
+                      
 
-                                               parentThis.log.error('AudioMatrix ended');
+       });
 
-                                               //parentThis.setConnState(false, true);                                            
 
-                               });
 
-               }
+       matrix.on('end', function(e) {
 
+                       parentThis.log.error('AudioMatrix ended');
 
+                       //parentThis.setConnState(false, true);                                            
 
+       });
 
+}
 
-               processCMD(){
 
-                               if(!tabu){
 
-                                               if(arrCMD.length>0){
 
-                                                              this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD.length=' +arrCMD.length.toString());
 
-                                                              tabu=true;
+processCMD(){
 
-                                                              var tmp = arrCMD.shift();
+       if(!tabu){
 
-                                                              this.log.info('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length=' +arrCMD.length.toString());
+                       if(arrCMD.length>0){
 
-                                                              //this.send(tmp);
+                                      this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD.length=' +arrCMD.length.toString());
 
-                                                              lastCMD = tmp;
+                                      tabu=true;
 
-                                                              bWaitingForResponse=true;
+                                      var tmp = arrCMD.shift();
 
-                                                              setTimeout(function() {
+                                      this.log.debug('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length rest=' +arrCMD.length.toString());
 
-                                                                                              matrix.write(tmp);           
+                                      //this.send(tmp);
 
-                                                              }, 100);
+                                      lastCMD = tmp;
 
-                                               }else{
+                                      bWaitingForResponse=true;
 
-                                                              this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD ist leer');
+                                      setTimeout(function() {
 
-                                                              tabu=false;
+                                                                      matrix.write(tmp);           
 
-                                               }
+                                      }, 100);
 
-                               }else{
+                       }else{
 
-                                               this.log.info('AudioMatrix: processCMD: tabu==TRUE. Nichts machen');
+                                      this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD ist leer');
 
-                               }
+                                      tabu=false;
 
-                              
+                       }
 
-                               //----Anzeige der Quelength auf der Oberflaeche
+       }else{
 
-                               this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
+                       this.log.info('AudioMatrix: processCMD: tabu==TRUE. Nichts machen');
 
-               }
+       }
 
-              
+      
 
-               //----stellt fest, ob das Abfragen der Werte vollstaendig ist.
+       //----Anzeige der Quelength auf der Oberflaeche
 
-               checkQueryDone(){                     
+       this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
 
+}
 
 
-                               var bTMP_Routing = true;
 
-                               arrStateQuery_Routing.forEach(function(item, index, array) {                
+//----stellt fest, ob das Abfragen der Werte vollstaendig ist.
 
-                                               bTMP_Routing = bTMP_Routing && item;
+checkQueryDone(){                     
 
-                               });
 
-                               this.log.info('checkQueryDone(): Routing:' + bTMP_Routing);
 
-                              
+       var bTMP_Routing = true;
 
-                               var bTMP_Input = true;
+       arrStateQuery_Routing.forEach(function(item, index, array) {                
 
-                               arrStateQuery_Input.forEach(function(item, index, array) {                    
+                       bTMP_Routing = bTMP_Routing && item;
 
-                                               bTMP_Input = bTMP_Input && item;
+       });
 
-                               });
+       this.log.info('checkQueryDone(): Routing:' + bTMP_Routing);
 
-                               this.log.info('checkQueryDone(): Input:' + bTMP_Input);
+      
 
-                              
+       var bTMP_Input = true;
 
-                               var bTMP_Output = true;
+       arrStateQuery_Input.forEach(function(item, index, array) {                    
 
-                               arrStateQuery_Output.forEach(function(item, index, array) {                 
+                       bTMP_Input = bTMP_Input && item;
 
-                                               bTMP_Output = bTMP_Output && item;
+       });
 
-                               });
+       this.log.info('checkQueryDone(): Input:' + bTMP_Input);
 
-                               this.log.info('checkQueryDone(): Output:' + bTMP_Output);
+      
 
-                              
+       var bTMP_Output = true;
 
-                               bQueryDone = bTTMP_Routing && bTMP_Input && bTMP_Output;
+       arrStateQuery_Output.forEach(function(item, index, array) {                 
 
-               }
+                       bTMP_Output = bTMP_Output && item;
 
-              
+       });
 
-               setRoutingState(outIndex, inIndex, onoff){
+       this.log.info('checkQueryDone(): Output:' + bTMP_Output);
+       bQueryDone = bTMP_Routing && bTMP_Input && bTMP_Output;
 
-                               //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
+}
 
-                               //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
 
-                               this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
 
-                               arrStateQuery_Routing[inIndex*8 + outIndex+1] = true;
+setRoutingState(outIndex, inIndex, onoff){
 
-                               this.checkQueryDone();
+       //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
 
-               }
+       //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
 
+       this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
 
+       arrStateQuery_Routing[inIndex*8 + outIndex+1] = true;
 
-               setInputGain(gainIndex){
+       this.checkQueryDone();
 
-                               //this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
+}
 
-                               if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
 
-                                               //this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 
-                                               var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
+setInputGain(gainIndex){
 
-                                               //this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
+       //this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 
+       if((inGain[gainIndex][0]>-1) && (inGain[gainIndex][1]>-1)){
 
+                       //this.log.info('setInputGain() gainIndex:' + gainIndex.toString() + ' Hi:' + inGain[gainIndex][0].toString() + ' Lo:' + inGain[gainIndex][1].toString() );
 
-                                               //----Normalisieren auf 0..100                 
+                       var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
 
-                                               gainVal /=13.9;
+                       //this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
-                                               //this.log.info('setInputGain() NORMALIZED gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
-                                               this.setStateAsync('inputgain_' + (gainIndex+1).toString(), { val: gainVal, ack: true });
 
-                                               inGain[gainIndex][0] = -1;
+                       //----Normalisieren auf 0..100                 
 
-                                               inGain[gainIndex][1] = -1;          
+                       gainVal /=13.9;
 
-                                              
+                       //this.log.info('setInputGain() NORMALIZED gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
-                                               arrStateQuery_Input[gainIndex] = true;
+                       this.setStateAsync('inputgain_' + (gainIndex+1).toString(), { val: gainVal, ack: true });
 
-                                               this.checkQueryDone();
+                       inGain[gainIndex][0] = -1;
 
-                               }
+                       inGain[gainIndex][1] = -1;          
 
-               }
+                      
 
+                       arrStateQuery_Input[gainIndex] = true;
 
+                       this.checkQueryDone();
 
-               setVolume(volumeIndex){
+       }
 
-                               //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
+}
 
-                               if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 
-                                               var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
 
-                                               //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );                           
+setVolume(volumeIndex){
 
-                                              
+       //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
 
-                                               //----Normalisieren auf 0..100                 
+       if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
 
-                                               volVal /=13.9;
+                       var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
 
-                                               //this.log.info('setVolume() NORMALIZED volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );
+                       //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );                           
 
-                                               this.setStateAsync('outputgain_' + (volumeIndex+1).toString(), { val: volVal, ack: true });
+                      
 
+                       //----Normalisieren auf 0..100                 
 
+                       volVal /=13.9;
 
-                                               volume[volumeIndex][0] = -1;
+                       //this.log.info('setVolume() NORMALIZED volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );
 
-                                               volume[volumeIndex][1] = -1;
+                       this.setStateAsync('outputgain_' + (volumeIndex+1).toString(), { val: volVal, ack: true });
 
-                                              
 
-                                               arrStateQuery_Output[volumeIndex] = true;
 
-                                               this.checkQueryDone();
+                       volume[volumeIndex][0] = -1;
 
-                               }
+                       volume[volumeIndex][1] = -1;
 
-               }
+                      
 
+                       arrStateQuery_Output[volumeIndex] = true;
 
+                       this.checkQueryDone();
 
-               //----Verarbeitung ankommender Daten. alles ist asynchron.
+       }
 
-               parseMsg(msg){
+}
 
-                               var arrResponse = this.toArray(msg);
 
-                              
 
-                               if (arrResponse[3] == 0x00 ){
+//----Verarbeitung ankommender Daten. alles ist asynchron.
 
-                                               this.log.info('parseMsg() Response = CONNECTION' );
+parseMsg(msg){
 
-                                               connection = true;
+       var arrResponse = this.toArray(msg);
 
-                                               this.setState('info.connection', true, true);
+      
 
-                                               //this.queryMatrix();
+       if (arrResponse[3] == 0x00 ){
 
-                               }else if (arrResponse[3] == 0x10 ){
+                       this.log.info('parseMsg() Response = CONNECTION' );
 
-                                               //this.log.info('parseMsg() Response = ReadMemory' );
+                       connection = true;
 
-                                               //----Routing
+                       this.setState('info.connection', true, true);
 
-                                               if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
+                       //this.queryMatrix();
 
-                                               if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
+       }else if (arrResponse[3] == 0x10 ){
 
-                                               if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
+                       //this.log.info('parseMsg() Response = ReadMemory' );
 
-                                               if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingState(0, 3, (arrResponse[8]==0x1E)); }
+                       //----Routing
 
-                                               if((arrResponse[4] == out0_in4_Hi) && (arrResponse[5] == out0_in4_Lo)){ this.setRoutingState(0, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out0_in5_Hi) && (arrResponse[5] == out0_in5_Lo)){ this.setRoutingState(0, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out0_in6_Hi) && (arrResponse[5] == out0_in6_Lo)){ this.setRoutingState(0, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out0_in7_Hi) && (arrResponse[5] == out0_in7_Lo)){ this.setRoutingState(0, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingState(0, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingState(1, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in4_Hi) && (arrResponse[5] == out0_in4_Lo)){ this.setRoutingState(0, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingState(1, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in5_Hi) && (arrResponse[5] == out0_in5_Lo)){ this.setRoutingState(0, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingState(1, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in6_Hi) && (arrResponse[5] == out0_in6_Lo)){ this.setRoutingState(0, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingState(1, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out0_in7_Hi) && (arrResponse[5] == out0_in7_Lo)){ this.setRoutingState(0, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in4_Hi) && (arrResponse[5] == out1_in4_Lo)){ this.setRoutingState(1, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingState(1, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in5_Hi) && (arrResponse[5] == out1_in5_Lo)){ this.setRoutingState(1, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingState(1, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in6_Hi) && (arrResponse[5] == out1_in6_Lo)){ this.setRoutingState(1, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingState(1, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out1_in7_Hi) && (arrResponse[5] == out1_in7_Lo)){ this.setRoutingState(1, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingState(1, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingState(2, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in4_Hi) && (arrResponse[5] == out1_in4_Lo)){ this.setRoutingState(1, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingState(2, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in5_Hi) && (arrResponse[5] == out1_in5_Lo)){ this.setRoutingState(1, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingState(2, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in6_Hi) && (arrResponse[5] == out1_in6_Lo)){ this.setRoutingState(1, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingState(2, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out1_in7_Hi) && (arrResponse[5] == out1_in7_Lo)){ this.setRoutingState(1, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in4_Hi) && (arrResponse[5] == out2_in4_Lo)){ this.setRoutingState(2, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingState(2, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in5_Hi) && (arrResponse[5] == out2_in5_Lo)){ this.setRoutingState(2, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingState(2, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in6_Hi) && (arrResponse[5] == out2_in6_Lo)){ this.setRoutingState(2, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingState(2, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out2_in7_Hi) && (arrResponse[5] == out2_in7_Lo)){ this.setRoutingState(2, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingState(2, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingState(3, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in4_Hi) && (arrResponse[5] == out2_in4_Lo)){ this.setRoutingState(2, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingState(3, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in5_Hi) && (arrResponse[5] == out2_in5_Lo)){ this.setRoutingState(2, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in6_Hi) && (arrResponse[5] == out2_in6_Lo)){ this.setRoutingState(2, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out2_in7_Hi) && (arrResponse[5] == out2_in7_Lo)){ this.setRoutingState(2, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in4_Hi) && (arrResponse[5] == out3_in4_Lo)){ this.setRoutingState(3, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingState(3, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in5_Hi) && (arrResponse[5] == out3_in5_Lo)){ this.setRoutingState(3, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingState(3, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in6_Hi) && (arrResponse[5] == out3_in6_Lo)){ this.setRoutingState(3, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out3_in7_Hi) && (arrResponse[5] == out3_in7_Lo)){ this.setRoutingState(3, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in0_Hi) && (arrResponse[5] == out4_in0_Lo)){ this.setRoutingState(4, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in4_Hi) && (arrResponse[5] == out3_in4_Lo)){ this.setRoutingState(3, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in1_Hi) && (arrResponse[5] == out4_in1_Lo)){ this.setRoutingState(4, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in5_Hi) && (arrResponse[5] == out3_in5_Lo)){ this.setRoutingState(3, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in2_Hi) && (arrResponse[5] == out4_in2_Lo)){ this.setRoutingState(4, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in6_Hi) && (arrResponse[5] == out3_in6_Lo)){ this.setRoutingState(3, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in3_Hi) && (arrResponse[5] == out4_in3_Lo)){ this.setRoutingState(4, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out3_in7_Hi) && (arrResponse[5] == out3_in7_Lo)){ this.setRoutingState(3, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in4_Hi) && (arrResponse[5] == out4_in4_Lo)){ this.setRoutingState(4, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in0_Hi) && (arrResponse[5] == out4_in0_Lo)){ this.setRoutingState(4, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in5_Hi) && (arrResponse[5] == out4_in5_Lo)){ this.setRoutingState(4, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in1_Hi) && (arrResponse[5] == out4_in1_Lo)){ this.setRoutingState(4, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in6_Hi) && (arrResponse[5] == out4_in6_Lo)){ this.setRoutingState(4, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in2_Hi) && (arrResponse[5] == out4_in2_Lo)){ this.setRoutingState(4, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out4_in7_Hi) && (arrResponse[5] == out4_in7_Lo)){ this.setRoutingState(4, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in3_Hi) && (arrResponse[5] == out4_in3_Lo)){ this.setRoutingState(4, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in0_Hi) && (arrResponse[5] == out5_in0_Lo)){ this.setRoutingState(5, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in4_Hi) && (arrResponse[5] == out4_in4_Lo)){ this.setRoutingState(4, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in1_Hi) && (arrResponse[5] == out5_in1_Lo)){ this.setRoutingState(5, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in5_Hi) && (arrResponse[5] == out4_in5_Lo)){ this.setRoutingState(4, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in2_Hi) && (arrResponse[5] == out5_in2_Lo)){ this.setRoutingState(5, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in6_Hi) && (arrResponse[5] == out4_in6_Lo)){ this.setRoutingState(4, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in3_Hi) && (arrResponse[5] == out5_in3_Lo)){ this.setRoutingState(5, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out4_in7_Hi) && (arrResponse[5] == out4_in7_Lo)){ this.setRoutingState(4, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in4_Hi) && (arrResponse[5] == out5_in4_Lo)){ this.setRoutingState(5, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in0_Hi) && (arrResponse[5] == out5_in0_Lo)){ this.setRoutingState(5, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in5_Hi) && (arrResponse[5] == out5_in5_Lo)){ this.setRoutingState(5, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in1_Hi) && (arrResponse[5] == out5_in1_Lo)){ this.setRoutingState(5, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in6_Hi) && (arrResponse[5] == out5_in6_Lo)){ this.setRoutingState(5, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in2_Hi) && (arrResponse[5] == out5_in2_Lo)){ this.setRoutingState(5, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out5_in7_Hi) && (arrResponse[5] == out5_in7_Lo)){ this.setRoutingState(5, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in3_Hi) && (arrResponse[5] == out5_in3_Lo)){ this.setRoutingState(5, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in0_Hi) && (arrResponse[5] == out6_in0_Lo)){ this.setRoutingState(6, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in4_Hi) && (arrResponse[5] == out5_in4_Lo)){ this.setRoutingState(5, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in1_Hi) && (arrResponse[5] == out6_in1_Lo)){ this.setRoutingState(6, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in5_Hi) && (arrResponse[5] == out5_in5_Lo)){ this.setRoutingState(5, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in2_Hi) && (arrResponse[5] == out6_in2_Lo)){ this.setRoutingState(6, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in6_Hi) && (arrResponse[5] == out5_in6_Lo)){ this.setRoutingState(5, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in3_Hi) && (arrResponse[5] == out6_in3_Lo)){ this.setRoutingState(6, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out5_in7_Hi) && (arrResponse[5] == out5_in7_Lo)){ this.setRoutingState(5, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in4_Hi) && (arrResponse[5] == out6_in4_Lo)){ this.setRoutingState(6, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in0_Hi) && (arrResponse[5] == out6_in0_Lo)){ this.setRoutingState(6, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in5_Hi) && (arrResponse[5] == out6_in5_Lo)){ this.setRoutingState(6, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in1_Hi) && (arrResponse[5] == out6_in1_Lo)){ this.setRoutingState(6, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in6_Hi) && (arrResponse[5] == out6_in6_Lo)){ this.setRoutingState(6, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in2_Hi) && (arrResponse[5] == out6_in2_Lo)){ this.setRoutingState(6, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out6_in7_Hi) && (arrResponse[5] == out6_in7_Lo)){ this.setRoutingState(6, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in3_Hi) && (arrResponse[5] == out6_in3_Lo)){ this.setRoutingState(6, 3, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in0_Hi) && (arrResponse[5] == out7_in0_Lo)){ this.setRoutingState(7, 0, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in4_Hi) && (arrResponse[5] == out6_in4_Lo)){ this.setRoutingState(6, 4, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in1_Hi) && (arrResponse[5] == out7_in1_Lo)){ this.setRoutingState(7, 1, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in5_Hi) && (arrResponse[5] == out6_in5_Lo)){ this.setRoutingState(6, 5, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in2_Hi) && (arrResponse[5] == out7_in2_Lo)){ this.setRoutingState(7, 2, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in6_Hi) && (arrResponse[5] == out6_in6_Lo)){ this.setRoutingState(6, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in3_Hi) && (arrResponse[5] == out7_in3_Lo)){ this.setRoutingState(7, 3, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out6_in7_Hi) && (arrResponse[5] == out6_in7_Lo)){ this.setRoutingState(6, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in4_Hi) && (arrResponse[5] == out7_in4_Lo)){ this.setRoutingState(7, 4, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out7_in0_Hi) && (arrResponse[5] == out7_in0_Lo)){ this.setRoutingState(7, 0, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in5_Hi) && (arrResponse[5] == out7_in5_Lo)){ this.setRoutingState(7, 5, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out7_in1_Hi) && (arrResponse[5] == out7_in1_Lo)){ this.setRoutingState(7, 1, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in6_Hi) && (arrResponse[5] == out7_in6_Lo)){ this.setRoutingState(7, 6, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out7_in2_Hi) && (arrResponse[5] == out7_in2_Lo)){ this.setRoutingState(7, 2, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == out7_in7_Hi) && (arrResponse[5] == out7_in7_Lo)){ this.setRoutingState(7, 7, (arrResponse[8]==0x1E)); }
+                       if((arrResponse[4] == out7_in3_Hi) && (arrResponse[5] == out7_in3_Lo)){ this.setRoutingState(7, 3, (arrResponse[8]==0x1E)); }
 
+                       if((arrResponse[4] == out7_in4_Hi) && (arrResponse[5] == out7_in4_Lo)){ this.setRoutingState(7, 4, (arrResponse[8]==0x1E)); }
 
+                       if((arrResponse[4] == out7_in5_Hi) && (arrResponse[5] == out7_in5_Lo)){ this.setRoutingState(7, 5, (arrResponse[8]==0x1E)); }
 
-                                               //----Input Gain
+                       if((arrResponse[4] == out7_in6_Hi) && (arrResponse[5] == out7_in6_Lo)){ this.setRoutingState(7, 6, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
+                       if((arrResponse[4] == out7_in7_Hi) && (arrResponse[5] == out7_in7_Lo)){ this.setRoutingState(7, 7, (arrResponse[8]==0x1E)); }
 
-                                               if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
 
-                                               if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[1][0] = arrResponse[8]; this.setInputGain(1)}
 
-                                               if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[1][1] = arrResponse[8]; this.setInputGain(1)}                                                  
+                       //----Input Gain
 
-                                               if((arrResponse[4] == inGain_2_HiVal_Hi) && (arrResponse[5] == inGain_2_HiVal_Lo)){ inGain[2][0] = arrResponse[8]; this.setInputGain(2)}
+                       if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
 
-                                               if((arrResponse[4] == inGain_2_LoVal_Hi) && (arrResponse[5] == inGain_2_LoVal_Lo)){ inGain[2][1] = arrResponse[8]; this.setInputGain(2)}
+                       if((arrResponse[4] == inGain_0_LoVal_Hi) && (arrResponse[5] == inGain_0_LoVal_Lo)){ inGain[0][1] = arrResponse[8]; this.setInputGain(0)}
 
-                                               if((arrResponse[4] == inGain_3_HiVal_Hi) && (arrResponse[5] == inGain_3_HiVal_Lo)){ inGain[3][0] = arrResponse[8]; this.setInputGain(3)}
+                       if((arrResponse[4] == inGain_1_HiVal_Hi) && (arrResponse[5] == inGain_1_HiVal_Lo)){ inGain[1][0] = arrResponse[8]; this.setInputGain(1)}
 
-                                               if((arrResponse[4] == inGain_3_LoVal_Hi) && (arrResponse[5] == inGain_3_LoVal_Lo)){ inGain[3][1] = arrResponse[8]; this.setInputGain(3)}
+                       if((arrResponse[4] == inGain_1_LoVal_Hi) && (arrResponse[5] == inGain_1_LoVal_Lo)){ inGain[1][1] = arrResponse[8]; this.setInputGain(1)}                                                  
 
-                                               if((arrResponse[4] == inGain_4_HiVal_Hi) && (arrResponse[5] == inGain_4_HiVal_Lo)){ inGain[4][0] = arrResponse[8]; this.setInputGain(4)}
+                       if((arrResponse[4] == inGain_2_HiVal_Hi) && (arrResponse[5] == inGain_2_HiVal_Lo)){ inGain[2][0] = arrResponse[8]; this.setInputGain(2)}
 
-                                               if((arrResponse[4] == inGain_4_LoVal_Hi) && (arrResponse[5] == inGain_4_LoVal_Lo)){ inGain[4][1] = arrResponse[8]; this.setInputGain(4)}
+                       if((arrResponse[4] == inGain_2_LoVal_Hi) && (arrResponse[5] == inGain_2_LoVal_Lo)){ inGain[2][1] = arrResponse[8]; this.setInputGain(2)}
 
-                                               if((arrResponse[4] == inGain_5_HiVal_Hi) && (arrResponse[5] == inGain_5_HiVal_Lo)){ inGain[5][0] = arrResponse[8]; this.setInputGain(5)}
+                       if((arrResponse[4] == inGain_3_HiVal_Hi) && (arrResponse[5] == inGain_3_HiVal_Lo)){ inGain[3][0] = arrResponse[8]; this.setInputGain(3)}
 
-                                               if((arrResponse[4] == inGain_5_LoVal_Hi) && (arrResponse[5] == inGain_5_LoVal_Lo)){ inGain[5][1] = arrResponse[8]; this.setInputGain(5)}
+                       if((arrResponse[4] == inGain_3_LoVal_Hi) && (arrResponse[5] == inGain_3_LoVal_Lo)){ inGain[3][1] = arrResponse[8]; this.setInputGain(3)}
 
-                                               if((arrResponse[4] == inGain_6_HiVal_Hi) && (arrResponse[5] == inGain_6_HiVal_Lo)){ inGain[6][0] = arrResponse[8]; this.setInputGain(6)}
+                       if((arrResponse[4] == inGain_4_HiVal_Hi) && (arrResponse[5] == inGain_4_HiVal_Lo)){ inGain[4][0] = arrResponse[8]; this.setInputGain(4)}
 
-                                               if((arrResponse[4] == inGain_6_LoVal_Hi) && (arrResponse[5] == inGain_6_LoVal_Lo)){ inGain[6][1] = arrResponse[8]; this.setInputGain(6)}
+                       if((arrResponse[4] == inGain_4_LoVal_Hi) && (arrResponse[5] == inGain_4_LoVal_Lo)){ inGain[4][1] = arrResponse[8]; this.setInputGain(4)}
 
-                                               if((arrResponse[4] == inGain_7_HiVal_Hi) && (arrResponse[5] == inGain_7_HiVal_Lo)){ inGain[7][0] = arrResponse[8]; this.setInputGain(7)}
+                       if((arrResponse[4] == inGain_5_HiVal_Hi) && (arrResponse[5] == inGain_5_HiVal_Lo)){ inGain[5][0] = arrResponse[8]; this.setInputGain(5)}
 
-                                               if((arrResponse[4] == inGain_7_LoVal_Hi) && (arrResponse[5] == inGain_7_LoVal_Lo)){ inGain[7][1] = arrResponse[8]; this.setInputGain(7)}
+                       if((arrResponse[4] == inGain_5_LoVal_Hi) && (arrResponse[5] == inGain_5_LoVal_Lo)){ inGain[5][1] = arrResponse[8]; this.setInputGain(5)}
 
-                                              
+                       if((arrResponse[4] == inGain_6_HiVal_Hi) && (arrResponse[5] == inGain_6_HiVal_Lo)){ inGain[6][0] = arrResponse[8]; this.setInputGain(6)}
 
-                                               //----Volume
+                       if((arrResponse[4] == inGain_6_LoVal_Hi) && (arrResponse[5] == inGain_6_LoVal_Lo)){ inGain[6][1] = arrResponse[8]; this.setInputGain(6)}
 
-                                               if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
+                       if((arrResponse[4] == inGain_7_HiVal_Hi) && (arrResponse[5] == inGain_7_HiVal_Lo)){ inGain[7][0] = arrResponse[8]; this.setInputGain(7)}
 
-                                               if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
+                       if((arrResponse[4] == inGain_7_LoVal_Hi) && (arrResponse[5] == inGain_7_LoVal_Lo)){ inGain[7][1] = arrResponse[8]; this.setInputGain(7)}
 
-                                               if((arrResponse[4] == vol_1_HiVal_Hi) && (arrResponse[5] == vol_1_HiVal_Lo)){ volume[1][0] = arrResponse[8]; this.setVolume(1)}
+                      
 
-                                               if((arrResponse[4] == vol_1_LoVal_Hi) && (arrResponse[5] == vol_1_LoVal_Lo)){ volume[1][1] = arrResponse[8]; this.setVolume(1)}
+                       //----Volume
 
-                                               if((arrResponse[4] == vol_2_HiVal_Hi) && (arrResponse[5] == vol_2_HiVal_Lo)){ volume[2][0] = arrResponse[8]; this.setVolume(2)}
+                       if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
 
-                                               if((arrResponse[4] == vol_2_LoVal_Hi) && (arrResponse[5] == vol_2_LoVal_Lo)){ volume[2][1] = arrResponse[8]; this.setVolume(2)}
+                       if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 
-                                               if((arrResponse[4] == vol_3_HiVal_Hi) && (arrResponse[5] == vol_3_HiVal_Lo)){ volume[3][0] = arrResponse[8]; this.setVolume(3)}
+                       if((arrResponse[4] == vol_1_HiVal_Hi) && (arrResponse[5] == vol_1_HiVal_Lo)){ volume[1][0] = arrResponse[8]; this.setVolume(1)}
 
-                                               if((arrResponse[4] == vol_3_LoVal_Hi) && (arrResponse[5] == vol_3_LoVal_Lo)){ volume[3][1] = arrResponse[8]; this.setVolume(3)}
+                       if((arrResponse[4] == vol_1_LoVal_Hi) && (arrResponse[5] == vol_1_LoVal_Lo)){ volume[1][1] = arrResponse[8]; this.setVolume(1)}
 
-                                               if((arrResponse[4] == vol_4_HiVal_Hi) && (arrResponse[5] == vol_4_HiVal_Lo)){ volume[4][0] = arrResponse[8]; this.setVolume(4)}
+                       if((arrResponse[4] == vol_2_HiVal_Hi) && (arrResponse[5] == vol_2_HiVal_Lo)){ volume[2][0] = arrResponse[8]; this.setVolume(2)}
 
-                                               if((arrResponse[4] == vol_4_LoVal_Hi) && (arrResponse[5] == vol_4_LoVal_Lo)){ volume[4][1] = arrResponse[8]; this.setVolume(4)}
+                       if((arrResponse[4] == vol_2_LoVal_Hi) && (arrResponse[5] == vol_2_LoVal_Lo)){ volume[2][1] = arrResponse[8]; this.setVolume(2)}
 
-                                               if((arrResponse[4] == vol_5_HiVal_Hi) && (arrResponse[5] == vol_5_HiVal_Lo)){ volume[5][0] = arrResponse[8]; this.setVolume(5)}
+                       if((arrResponse[4] == vol_3_HiVal_Hi) && (arrResponse[5] == vol_3_HiVal_Lo)){ volume[3][0] = arrResponse[8]; this.setVolume(3)}
 
-                                               if((arrResponse[4] == vol_5_LoVal_Hi) && (arrResponse[5] == vol_5_LoVal_Lo)){ volume[5][1] = arrResponse[8]; this.setVolume(5)}
+                       if((arrResponse[4] == vol_3_LoVal_Hi) && (arrResponse[5] == vol_3_LoVal_Lo)){ volume[3][1] = arrResponse[8]; this.setVolume(3)}
 
-                                               if((arrResponse[4] == vol_6_HiVal_Hi) && (arrResponse[5] == vol_6_HiVal_Lo)){ volume[6][0] = arrResponse[8]; this.setVolume(6)}
+                       if((arrResponse[4] == vol_4_HiVal_Hi) && (arrResponse[5] == vol_4_HiVal_Lo)){ volume[4][0] = arrResponse[8]; this.setVolume(4)}
 
-                                               if((arrResponse[4] == vol_6_LoVal_Hi) && (arrResponse[5] == vol_6_LoVal_Lo)){ volume[6][1] = arrResponse[8]; this.setVolume(6)}
+                       if((arrResponse[4] == vol_4_LoVal_Hi) && (arrResponse[5] == vol_4_LoVal_Lo)){ volume[4][1] = arrResponse[8]; this.setVolume(4)}
 
-                                               if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
+                       if((arrResponse[4] == vol_5_HiVal_Hi) && (arrResponse[5] == vol_5_HiVal_Lo)){ volume[5][0] = arrResponse[8]; this.setVolume(5)}
 
-                                               if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
+                       if((arrResponse[4] == vol_5_LoVal_Hi) && (arrResponse[5] == vol_5_LoVal_Lo)){ volume[5][1] = arrResponse[8]; this.setVolume(5)}
 
+                       if((arrResponse[4] == vol_6_HiVal_Hi) && (arrResponse[5] == vol_6_HiVal_Lo)){ volume[6][0] = arrResponse[8]; this.setVolume(6)}
 
+                       if((arrResponse[4] == vol_6_LoVal_Hi) && (arrResponse[5] == vol_6_LoVal_Lo)){ volume[6][1] = arrResponse[8]; this.setVolume(6)}
 
+                       if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
 
+                       if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
 
-                                               //if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 
-                               } else {
 
-                                               this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
 
-                               }
 
-                              
+                       //if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
 
-                               tabu = false;
+       } else {
 
-               }
+                       this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
 
-              
+       }
 
-                                              
+      
 
-               //----Ein State wurde veraendert
+       tabu = false;
 
-               matrixchanged(id, val, ack){
+}
 
-                              
 
-                               if (connection && val && !val.ack) {
 
-                                               //this.log.info('matrixChanged: tabu=TRUE' );
+                      
 
-                                               //tabu = true;
+//----Ein State wurde veraendert
 
-                               }
+matrixchanged(id, val, ack){
 
-                               if(ack==false){
+      
 
-                                               if(id.toString().includes('.outputgain')){
+       if (connection && val && !val.ack) {
 
-                                                              //this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
+                       //this.log.info('matrixChanged: tabu=TRUE' );
 
-                                                              var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+                       //tabu = true;
 
-                                                              //this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
+       }
 
-                                                              channelID-=1;
+       if(ack==false){
 
+                       if(id.toString().includes('.outputgain')){
 
+                                      //this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
 
-                                                              channelID+=8;  //
+                                      var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
 
-                                                              cmdGain[4] = channelID;
+                                      //this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
 
-                                                                                             
+                                      channelID-=1;
 
-                                                              val*=13.9;
 
-                                                              var loByte = val & 0xFF;
 
-                                                              var hiByte = (val >> 8) & 0xFF;
+                                      channelID+=8;  //
 
+                                      cmdGain[4] = channelID;
 
+                                                                     
 
-                                                              cmdGain[7] = loByte;
+                                      val*=13.9;
 
-                                                              cmdGain[11] = hiByte;
+                                      var loByte = val & 0xFF;
 
+                                      var hiByte = (val >> 8) & 0xFF;
 
 
-                                                              //this.log.info('matrixChanged: killing arrQuery before sending' );
 
-                                                              //this.arrQuery = [];       //----Query stoppen
+                                      cmdGain[7] = loByte;
 
-                                                              //this.send(cmdGain, 5);
+                                      cmdGain[11] = hiByte;
 
-                                                              arrCMD.push(cmdGain);
 
-                                                              this.processCMD();
 
-                                                             
+                                      //this.log.info('matrixChanged: killing arrQuery before sending' );
 
-                                               }
+                                      //this.arrQuery = [];       //----Query stoppen
 
+                                      //this.send(cmdGain, 5);
 
+                                      arrCMD.push(cmdGain);
 
-                                               if(id.toString().includes('.inputgain')){
+                                      this.processCMD();
 
-                                                              //this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
+                                     
 
-                                                              var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
+                       }
 
-                                                              //this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 
-                                                              channelID-=1;   //
 
+                       if(id.toString().includes('.inputgain')){
 
+                                      //this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
 
-                                                             
+                                      var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
 
+                                      //this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
 
+                                      channelID-=1;   //
 
-                                                              cmdGain[4] = channelID;
 
-                                                                                             
 
-                                                              val*=13.9;
+                                     
 
-                                                              var loByte = val & 0xFF;
 
-                                                              var hiByte = (val >> 8) & 0xFF;
 
+                                      cmdGain[4] = channelID;
 
+                                                                     
 
-                                                              cmdGain[7] = loByte;
+                                      val*=13.9;
 
-                                                              cmdGain[11] = hiByte;
+                                      var loByte = val & 0xFF;
 
-                                                             
+                                      var hiByte = (val >> 8) & 0xFF;
 
-                                                              //this.send(cmdGain, 5);
 
-                                                              arrCMD.push(cmdGain);
 
-                                                              this.processCMD();
+                                      cmdGain[7] = loByte;
 
-                                               }
+                                      cmdGain[11] = hiByte;
 
+                                     
 
+                                      //this.send(cmdGain, 5);
 
-                                              
+                                      arrCMD.push(cmdGain);
 
-                                               if(id.toString().includes('.outputroutestate_')){
+                                      this.processCMD();
 
-                                                              //this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
+                       }
 
-                                                              //this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
 
-                                                              var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1))-1;
 
-                                                              //this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
+                      
 
-                                                             
+                       if(id.toString().includes('.outputroutestate_')){
 
-                                                              var iAusgang = channelID % 8;
+                                      //this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
 
-                                                              var iEingang = (channelID-iAusgang)/8;
+                                      //this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
 
-                                                             
+                                      var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1))-1;
 
-                                                               cmdRoute[4] = iAusgang + 8;
+                                      //this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
 
-                                                              cmdRoute[10] = iEingang;
+                                     
 
-                                                              if(val==true){
+                                      var iAusgang = channelID % 8;
 
-                                                                              this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
+                                      var iEingang = (channelID-iAusgang)/8;
 
-                                                                              cmdRoute[11] = 30;
+                                     
 
-                                                              }else{
+                                       cmdRoute[4] = iAusgang + 8;
 
-                                                                              this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
+                                      cmdRoute[10] = iEingang;
 
-                                                                              cmdRoute[11] = 128;
+                                      if(val==true){
 
-                                                              }
+                                                      this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
 
+                                                      cmdRoute[11] = 30;
 
+                                      }else{
 
-                                                              //this.send(cmdRoute, 5);
+                                                      this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
 
-                                                              arrCMD.push(cmdRoute);
+                                                      cmdRoute[11] = 128;
 
-                                                              this.processCMD();
+                                      }
 
-                                                             
 
-                                               }
 
+                                      //this.send(cmdRoute, 5);
 
+                                      arrCMD.push(cmdRoute);
 
-                               }//----ack==FALSE                         
+                                      this.processCMD();
 
+                                     
 
+                       }
 
-               }
 
-              
 
-                               /**
+       }//----ack==FALSE                         
 
-               * Is called when databases are connected and adapter received configuration.
 
-               */
 
-               async onReady() {
+}
 
-                               // Initialize your adapter here
 
 
+       /**
 
-                               // Reset the connection indicator during startup
+* Is called when databases are connected and adapter received configuration.
 
-                               //this.setState('info.connection_net', false, true);
+*/
 
-                               //this.setState('info.connection_hardware', false, true);
+async onReady() {
 
-                               this.setState('info.connection', false, true);
+       // Initialize your adapter here
 
 
 
-                               // The adapters config (in the instance object everything under the attribute "native") is accessible via
+       // Reset the connection indicator during startup
 
-                               // this.config:
+       //this.setState('info.connection_net', false, true);
 
-                               //this.log.info('config option1: ' + this.config.option1);
+       //this.setState('info.connection_hardware', false, true);
 
-                               //this.log.info('config option2: ' + this.config.option2);
+       this.setState('info.connection', false, true);
 
-                               this.log.info('AudioMatrix: config Host: ' + this.config.host);
 
-                               this.log.info('AudioMatrix: config Port: ' + this.config.port);
 
-                               this.log.info('AudioMatrix: config Firmware: ' + this.config.firmware);
+       // The adapters config (in the instance object everything under the attribute "native") is accessible via
 
+       // this.config:
 
+       //this.log.info('config option1: ' + this.config.option1);
 
-                               /*
+       //this.log.info('config option2: ' + this.config.option2);
 
-                               For every state in the system there has to be also an object of type state
+       this.log.info('AudioMatrix: config Host: ' + this.config.host);
 
-                               Here a simple template for a boolean variable named "testVariable"
+       this.log.info('AudioMatrix: config Port: ' + this.config.port);
 
-                               Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
+       this.log.info('AudioMatrix: config Firmware: ' + this.config.firmware);
 
-                               */
 
-                               /*
 
-                               await this.setObjectAsync('testVariable', {
+       /*
 
-                                               type: 'state',
+       For every state in the system there has to be also an object of type state
 
-                                               common: {
+       Here a simple template for a boolean variable named "testVariable"
 
-                                                              name: 'testVariable',
+       Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 
-                                                              type: 'boolean',
+       */
 
-                                                              role: 'indicator',
+       /*
 
-                                                              read: true,
+       await this.setObjectAsync('testVariable', {
 
-                                                              write: true,
+                       type: 'state',
 
-                                               },
+                       common: {
 
-                                               native: {},
+                                      name: 'testVariable',
 
-                               });
+                                      type: 'boolean',
 
-                               */
+                                      role: 'indicator',
 
-                              
+                                      read: true,
 
-                              
+                                      write: true,
 
-                               //----Anlegen der Eingaenge
+                       },
 
-                               for (var i = 1; i < 9; i++) {
+                       native: {},
 
-                                               arrStateQuery_Input.push(false);
+       });
 
-                                               await this.setObjectAsync('inputgain_' + i.toString(), {
+       */
 
-                                                              type: 'state',
+      
 
-                                                              common: {
+      
 
-                                                                              name: 'Input ' + i.toString() + " Gain",
+       //----Anlegen der Eingaenge
 
-                                                                              type: 'number',
+       for (var i = 1; i < 9; i++) {
 
-                                                                              role: 'level.volume',
+                       arrStateQuery_Input.push(false);
 
-                                                                              read: true,
+                       await this.setObjectAsync('inputgain_' + i.toString(), {
 
-                                                                              write: true,
+                                      type: 'state',
 
-                                                                              min: 0,
+                                      common: {
 
-                                                                              max: 100,
+                                                      name: 'Input ' + i.toString() + " Gain",
 
-                                                                              desc: 'Ausgang UKU'
+                                                      type: 'number',
 
-                                                              },
+                                                      role: 'level.volume',
 
-                                                              native: {},
+                                                      read: true,
 
-                                               });
+                                                      write: true,
 
-                               }
+                                                      min: 0,
 
+                                                      max: 100,
 
+                                                      desc: 'Ausgang UKU'
 
-                               //----Anlegen der Ausgaenge
+                                      },
 
-                               for (var i = 1; i < 9; i++) {
+                                      native: {},
 
-                                               arrStateQuery_Output.push(false);
+                       });
 
-                                               await this.setObjectAsync('outputgain_' + i.toString(), {
+       }
 
-                                                              type: 'state',
 
-                                                              common: {
 
-                                                                              name: 'Output ' + i.toString() + " Gain",
+       //----Anlegen der Ausgaenge
 
-                                                                              type: 'number',
+       for (var i = 1; i < 9; i++) {
 
-                                                                              role: 'level.volume',
+                       arrStateQuery_Output.push(false);
 
-                                                                              read: true,
+                       await this.setObjectAsync('outputgain_' + i.toString(), {
 
-                                                                              write: true,
+                                      type: 'state',
 
-                                                                              min: 0,
+                                      common: {
 
-                                                                              max: 100
+                                                      name: 'Output ' + i.toString() + " Gain",
 
-                                                              },
+                                                      type: 'number',
 
-                                                              native: {},
+                                                      role: 'level.volume',
 
-                                               });
+                                                      read: true,
 
-                               }
+                                                      write: true,
 
+                                                      min: 0,
 
+                                                      max: 100
 
+                                      },
 
+                                      native: {},
 
-                               //----Routing via Buttons; 0-indiziert, aber Anzeige beginnt bei '1'
+                       });
 
-                               for (var i = 0; i < 8; i++) {
+       }
 
-                                               for (var j = 0; j < 8; j++) {
 
-                                                              arrStateQuery_Routing.push(false);
 
-                                                              //await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
 
-                                                              await this.setObjectAsync('outputroutestate_' + ((i*8 + j)+1).toString(), {
 
-                                                                              type: 'state',
+       //----Routing via Buttons; 0-indiziert, aber Anzeige beginnt bei '1'
 
-                                                                              common: {
+       for (var i = 0; i < 8; i++) {
 
-                                                                                              name: 'outputrouting',
+                       for (var j = 0; j < 8; j++) {
 
-                                                                                              type: 'boolean',
+                                      arrStateQuery_Routing.push(false);
 
-                                                                                              role: 'indicator',
+                                      //await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
 
-                                                                                              read: true,
+                                      await this.setObjectAsync('outputroutestate_' + ((i*8 + j)+1).toString(), {
 
-                                                                                              write: true,
+                                                      type: 'state',
 
-                                                                              },
+                                                      common: {
 
-                                                                              native: {},
+                                                                      name: 'outputrouting',
 
-                                                              });
+                                                                      type: 'boolean',
 
-                                               }
+                                                                      role: 'indicator',
 
-                               }
+                                                                      read: true,
 
+                                                                      write: true,
 
+                                                      },
 
+                                                      native: {},
 
+                                      });
 
-                               //----Preset
+                       }
 
-                               await this.setObjectAsync('preset', {
+       }
 
-                                               type: 'state',
 
-                                               common: {
 
-                                                              name: 'Preset Selection',
 
-                                                              type: 'number',
 
-                                                              role: 'level',
+       //----Preset
 
-                                                              read: true,
+       await this.setObjectAsync('preset', {
 
-                                                              write: true,
+                       type: 'state',
 
-                                                              min: 1,
+                       common: {
 
-                                                              max: 6
+                                      name: 'Preset Selection',
 
-                                               },
+                                      type: 'number',
 
-                                               native: {},
+                                      role: 'level',
 
-                               });
+                                      read: true,
 
+                                      write: true,
 
+                                      min: 1,
 
-                               //----Laenge von arrCMD; der Command-Queue
+                                      max: 6
 
-                               await this.setObjectAsync('queuelength', {
+                       },
 
-                                               type: 'state',
+                       native: {},
 
-                                               common: {
+       });
 
-                                                              name: 'Length of Command-Queue',
 
-                                                              type: 'number',
 
-                                                              role: 'level',
+       //----Laenge von arrCMD; der Command-Queue
 
-                                                              read: true,
+       await this.setObjectAsync('queuelength', {
 
-                                                               write: false
+                       type: 'state',
 
-                                                              //min: 1,
+                       common: {
 
-                                                              //max: 6
+                                      name: 'Length of Command-Queue',
 
-                                               },
+                                      type: 'number',
 
-                                               native: {},
+                                      role: 'level',
 
-                               });
+                                      read: true,
 
-                              
+                                       write: false
 
-                              
+                                      //min: 1,
 
-                               // in this template all states changes inside the adapters namespace are subscribed
+                                      //max: 6
 
-                               this.subscribeStates('*');
+                       },
 
+                       native: {},
 
+       });
 
-                               /*
+      
 
-                               setState examples
+      
 
-                               you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
+       // in this template all states changes inside the adapters namespace are subscribed
 
-                               */
+       this.subscribeStates('*');
 
-                               // the variable testVariable is set to true as command (ack=false)
+
+
+       /*
+
+       setState examples
+
+       you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
+
+       */
+
+       // the variable testVariable is set to true as command (ack=false)
 
 //                           await this.setStateAsync('testVariable', true);
 
 
 
-                               // same thing, but the value is flagged "ack"
+       // same thing, but the value is flagged "ack"
 
-                               // ack should be always set to true if the value is received from or acknowledged from the target system
+       // ack should be always set to true if the value is received from or acknowledged from the target system
 
 //                           await this.setStateAsync('testVariable', { val: true, ack: true });
 
 
 
-                               // same thing, but the state is deleted after 30s (getState will return null afterwards)
+       // same thing, but the state is deleted after 30s (getState will return null afterwards)
 
 //                           await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
 
 
 
-                               // examples for the checkPassword/checkGroup functions
+       // examples for the checkPassword/checkGroup functions
 
 //                           let result = await this.checkPasswordAsync('admin', 'iobroker');
 
@@ -1947,158 +1944,158 @@ class Audiomatrix880 extends utils.Adapter {
 
 
 
-                               //----
+       //----
 
-                               this.initmatrix();
+       this.initmatrix();
 
-               }
+}
 
-              
 
-               /**
 
-               * Is called when adapter shuts down - callback has to be called under any circumstances!
+/**
 
-               * @param {() => void} callback
+* Is called when adapter shuts down - callback has to be called under any circumstances!
 
-               */
+* @param {() => void} callback
 
-               onUnload(callback) {
+*/
 
-                               try {
+onUnload(callback) {
 
-                                               this.log.info('AudioMatrix: cleaned everything up...');
+       try {
 
-                                               callback();
+                       this.log.info('AudioMatrix: cleaned everything up...');
 
-                               } catch (e) {
+                       callback();
 
-                                               callback();
+       } catch (e) {
 
-                               }
+                       callback();
 
-               }
+       }
 
+}
 
 
-               /**
 
-               * Is called if a subscribed object changes
+/**
 
-               * @param {string} id
+* Is called if a subscribed object changes
 
-               * @param {ioBroker.Object | null | undefined} obj
+* @param {string} id
 
-               */
+* @param {ioBroker.Object | null | undefined} obj
 
-               onObjectChange(id, obj) {
+*/
 
-                               if (obj) {
+onObjectChange(id, obj) {
 
-                                               // The object was changed
+       if (obj) {
 
-                                               this.log.info(`AudioMatrix: object ${id} changed: ${JSON.stringify(obj)}`);
+                       // The object was changed
 
-                               } else {
+                       this.log.info(`AudioMatrix: object ${id} changed: ${JSON.stringify(obj)}`);
 
-                                               // The object was deleted
+       } else {
 
-                                               this.log.info(`AudioMatrix: object ${id} deleted`);
+                       // The object was deleted
 
-                               }
+                       this.log.info(`AudioMatrix: object ${id} deleted`);
 
-               }
+       }
 
+}
 
 
-               /**
 
-               * Is called if a subscribed state changes
+/**
 
-               * @param {string} id
+* Is called if a subscribed state changes
 
-               * @param {ioBroker.State | null | undefined} state
+* @param {string} id
 
-               */
+* @param {ioBroker.State | null | undefined} state
 
-               onStateChange(id, state) {
+*/
 
-                               if (state) {
+onStateChange(id, state) {
 
-                                               // The state was changed
+       if (state) {
 
-                                               if(state.ack==false){
+                       // The state was changed
 
-                                                              //----Aenderung per GUI
+                       if(state.ack==false){
 
-                                                              this.log.info(`AudioMatrix: state ${id} changed: ${state.val} (ack = ${state.ack})`);
+                                      //----Aenderung per GUI
 
-                                               }
+                                      this.log.info(`AudioMatrix: state ${id} changed: ${state.val} (ack = ${state.ack})`);
 
-                                               this.matrixchanged(id, state.val, state.ack);
+                       }
 
-                                              
+                       this.matrixchanged(id, state.val, state.ack);
 
-                               } else {
+                      
 
-                                               // The state was deleted
+       } else {
 
-                                               this.log.info(`AudioMatrix: state ${id} deleted`);
+                       // The state was deleted
 
-                               }
+                       this.log.info(`AudioMatrix: state ${id} deleted`);
 
-               }
+       }
 
+}
 
 
-               // /**
 
-               //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
+// /**
 
-               //  * Using this method requires "common.message" property to be set to true in io-package.json
+//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
 
-               //  * @param {ioBroker.Message} obj
+//  * Using this method requires "common.message" property to be set to true in io-package.json
 
-               //  */
+//  * @param {ioBroker.Message} obj
 
-               // onMessage(obj) {
+//  */
 
-               //            if (typeof obj === "object" && obj.message) {
+// onMessage(obj) {
 
-               //                           if (obj.command === "send") {
+//            if (typeof obj === "object" && obj.message) {
 
-               //                                           // e.g. send email or pushover or whatever
+//                           if (obj.command === "send") {
 
-               //                                           this.log.info("send command");
+//                                           // e.g. send email or pushover or whatever
 
+//                                           this.log.info("send command");
 
 
-               //                                           // Send response in callback if required
 
-               //                                           if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
+//                                           // Send response in callback if required
 
-               //                           }
+//                                           if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
 
-               //            }
+//                           }
 
-               // }
+//            }
+
+// }
 
 
 
 }
 
- 
+
 
 if (module.parent) {
-                // Export the constructor in compact mode
-                /**
-                * @param {Partial<ioBroker.AdapterOptions>} [options={}]
-                */
-                module.exports = (options) => new Audiomatrix880(options);
+// Export the constructor in compact mode
+/**
+* @param {Partial<ioBroker.AdapterOptions>} [options={}]
+*/
+module.exports = (options) => new Audiomatrix880(options);
 
 } else {
-                // otherwise start the instance directly
+// otherwise start the instance directly
 
-                new Audiomatrix880();
+new Audiomatrix880();
 
 }
