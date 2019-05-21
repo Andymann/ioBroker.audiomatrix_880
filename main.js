@@ -834,7 +834,7 @@ var arrQuery =[
 
                                                                                                               }else{
 
-                                                                                                                             parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE');
+                                                                                                                             parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
 
                                                                                                               }
 
@@ -848,7 +848,7 @@ var arrQuery =[
 
                                                                                                               //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
 
-                                                                                                              parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
+                                                                                                              //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
 
                                                                                                               tabu = false;
 
@@ -903,7 +903,7 @@ var arrQuery =[
 
                                                                               if((in_msg.length >= 26) && (in_msg.includes('f0'))){
 
-                                                                                              parentThis.log.info('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
+                                                                                              parentThis.log.debug('AudioMatrix: matrix.on data(); in_msg ist lang genug und enthaelt f0:' + in_msg);
 
                                                                                               var iStartPos = in_msg.indexOf('f0');
 
@@ -913,7 +913,7 @@ var arrQuery =[
 
                                                                                                               var tmpMSG = in_msg.toLowerCase().substring(iStartPos,iStartPos+26);
 
-                                                                                                              parentThis.log.info('AudioMatrix: matrix.on data(); filtered:' + tmpMSG);
+                                                                                                              parentThis.log.debug('AudioMatrix: matrix.on data(); filtered:' + tmpMSG);
 
                                                                                                               parentThis.bWaitingForResponse = false;
 
@@ -1049,7 +1049,7 @@ var arrQuery =[
 
                                                                               var tmp = arrCMD.shift();
 
-                                                                              this.log.info('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp));
+                                                                              this.log.info('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length=' +arrCMD.length.toString());
 
                                                                               //this.send(tmp);
 
