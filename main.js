@@ -705,7 +705,7 @@ class Audiomatrix880 extends utils.Adapter {
             this.log.info('checkQueryDone(): Abfrage auf OutputVolume bereits komplett.');
         }
         
-        bQueryDone = bTMP_Routing && bTMP_Input && bTMP_Output;
+        bQueryDone = bQueryComplete_Routing && bQueryComplete_Input && bQueryComplete_Output;
     }
 
     setRoutingState(outIndex, inIndex, onoff){
