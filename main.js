@@ -18,12 +18,17 @@ var tabu = false;
 var query = null;
 var in_msg = '';
 var iMaxTryCounter = 0;
+var iMaxTimeoutCounter = 0;
 var lastCMD;
 var parentThis;
 var arrCMD = [];
 var arrStateQuery_Input = [];
 var arrStateQuery_Output = [];
 var arrStateQuery_Routing = [];
+
+var bQueryComplete_Routing;
+var bQueryComplete_Input;
+var bQueryComplete_Output;
 
 var idDevice = 0x01;
 var firmware = 0x45;
@@ -453,7 +458,11 @@ class Audiomatrix880 extends utils.Adapter {
         var port = this.config.port;
         var tmpFirmware = this.config.firmware;                           
         var tmpFirmwareName;
+        
         bQueryDone = false;
+        bQueryComplete_Routing = false;
+        bQueryComplete_Input = false;
+        bQueryComplete_Output = false;
 
         if(tmpFirmware=='v14'){
             //this.reconfigureCMD(0x45);
@@ -487,36 +496,56 @@ class Audiomatrix880 extends utils.Adapter {
                         }                                                                                           
                     }
 
-                    //----kleines Intervall fuer Befehle
+                    //----Intervall fuer Befehle, Timeouts, etc
                     setTimeout(function(){
                         //parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout');
                         if(bWaitingForResponse==true){
                             if(iMaxTryCounter>0){
-                                parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
-                                parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD));
-                                iMaxTryCounter--;
-                                //send(lastCMD);
+                                //----Es kann passieren, dass man direkt NACH dem Senden eines Befehls an die Matrix und VOR der Antwort hier landet.
+                                //----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
+                                //----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
+                                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
+                                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
+                                iMaxTryCounter--;                                
+                                /*
                                 if(lastCMD !== undefined){
                                     setTimeout(function() {
                                         matrix.write(lastCMD);            
                                     }, 100);
                                 }
+                                */
                             }else{
-                                tabu = false;     
-                                parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
-                                parentThis.log.info('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
-                                bWaitingForResponse=false;
-                                lastCMD = '';
-                                in_msg = '';
+                                if(iMaxTimeoutCounter<3){
+                                    parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD));
+                                    iMaxTimeoutCounter++;
+                                    if(lastCMD !== undefined){
+                                        setTimeout(function() {
+                                        matrix.write(lastCMD);            
+                                        }, 100);
+                                    }                                    
+                                }else{
+                                    parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD) + 'schlug mehrfach fehl');
+                                    iMaxTimeoutCounter=0;
+                                    tabu = false;     
+                                    parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
+                                    parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
+                                    bWaitingForResponse=false;
+                                    tabu=false;
+                                    lastCMD = '';
+                                    in_msg = '';
+                                    arrCMD = [];
+                                    parentThis.reconnect();
+                                }
                             }
                         }else{
-                            parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
+                            //parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
                         }
-                    }, 200/*kleinesIntervall*/);
+                    }, 333/*kleinesIntervall*/);
 
-                    //----grosses Intervall zur Bestitmmung genereller Timeouts.
+                    /*
+                    //----grosses Intervall zur Bestimmung genereller Timeouts.
                     setTimeout(function(){
-                        //----Nach der Zeit sollt irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
+                        //----Nach dieser Zeit sollte irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
                         //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
                         if(bWaitingForResponse==true){
                             if(arrCMD.length==0){
@@ -531,10 +560,10 @@ class Audiomatrix880 extends utils.Adapter {
                                 parentThis.log.debug('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, aber arrCMD.length>0. Kein Problem');
                             }
                         }                                                                                           
-                    }, 5000/*grossesIntervall*/);
-
+                    }, 5000);
+                    */
                 }else{
-                    parentThis.log.debug('AudioMatrix: connectMatrix().In Interval aber tabu==TRUE');
+                    parentThis.log.debug('AudioMatrix: connectMatrix().Im Ping-Intervall aber tabu==TRUE. Nichts machen.');
                 }
             }, 10000);
 
@@ -559,6 +588,7 @@ class Audiomatrix880 extends utils.Adapter {
                         in_msg = '';
                         lastCMD = '';
                         iMaxTryCounter = 3;
+                        iMaxTimeoutCounter = 0;
                         parentThis.processCMD();
                         //tabu = false; 
                     }else{
@@ -612,7 +642,7 @@ class Audiomatrix880 extends utils.Adapter {
         });
     }
 
-
+    //----Befehle an die Hardware werden in einer Queue geparkt und hier verarbeitet.
     processCMD(){
         if(!tabu){
             if(arrCMD.length>0){
@@ -620,7 +650,6 @@ class Audiomatrix880 extends utils.Adapter {
                 tabu=true;
                 var tmp = arrCMD.shift();
                 this.log.debug('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length rest=' +arrCMD.length.toString());
-                //this.send(tmp);
                 lastCMD = tmp;
                 bWaitingForResponse=true;
                 setTimeout(function() {
@@ -640,24 +669,41 @@ class Audiomatrix880 extends utils.Adapter {
 
     //----stellt fest, ob das Abfragen der Werte vollstaendig ist.
     checkQueryDone(){                     
-
-        var bTMP_Routing = true;
-        arrStateQuery_Routing.forEach(function(item, index, array) {                
-            bTMP_Routing = bTMP_Routing && item;
-        });
-        this.log.info('checkQueryDone(): Routing:' + bTMP_Routing);
+        //----Routing
+        if(bQueryComplete_Routing==false){
+            var bTMP_Routing = true;
+            arrStateQuery_Routing.forEach(function(item, index, array) {                
+                bTMP_Routing = bTMP_Routing && item;
+            });
+            bQueryComplete_Routing = bTMP_Routing;
+            this.log.info('checkQueryDone(): Routing:' + bQueryComplete_Routing);
+        }else{
+            this.log.info('checkQueryDone(): Abfrage auf Routing bereits komplett.');
+        }
         
-        var bTMP_Input = true;
-        arrStateQuery_Input.forEach(function(item, index, array) {                    
-            bTMP_Input = bTMP_Input && item;
-        });
-        this.log.info('checkQueryDone(): Input:' + bTMP_Input);
-
-        var bTMP_Output = true;
-        arrStateQuery_Output.forEach(function(item, index, array) {                 
-            bTMP_Output = bTMP_Output && item;
-        });
-        this.log.info('checkQueryDone(): Output:' + bTMP_Output);
+        //----Input Gain
+        if(bQueryComplete_Input==false){
+            var bTMP_Input = true;
+            arrStateQuery_Input.forEach(function(item, index, array) {                    
+                bTMP_Input = bTMP_Input && item;
+            });
+            bQueryComplete_Input = bTMP_Input;
+            this.log.info('checkQueryDone(): Input:' + bQueryComplete_Input);
+        }else{
+            this.log.info('checkQueryDone(): Abfrage auf InputGain bereits komplett.');
+        }
+        
+        //----Output Volume
+        if(bQueryComplete_Output==false){
+            var bTMP_Output = true;
+            arrStateQuery_Output.forEach(function(item, index, array) {                 
+                bTMP_Output = bTMP_Output && item;
+            });
+            bQueryComplete_Output = bTMP_Output;
+            this.log.info('checkQueryDone(): Output:' + bQueryComplete_Output);
+        }else{
+            this.log.info('checkQueryDone(): Abfrage auf OutputVolume bereits komplett.');
+        }
         
         bQueryDone = bTMP_Routing && bTMP_Input && bTMP_Output;
     }
@@ -821,8 +867,6 @@ class Audiomatrix880 extends utils.Adapter {
             if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
             if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
 
-
-            //if((arrResponse[4] == 0x01) && (arrResponse[5] == 0xD8)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
         } else {
             this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
         }
