@@ -592,7 +592,7 @@ class Audiomatrix880 extends utils.Adapter {
                         parentThis.parseMsg(tmpMSG);
                         in_msg = '';
                         lastCMD = '';
-                        iMaxTryCounter = 3;
+                        //iMaxTryCounter = 3;
                         iMaxTimeoutCounter = 0;
                         parentThis.processCMD();
                         //tabu = false; 
