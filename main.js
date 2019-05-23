@@ -488,8 +488,12 @@ class Audiomatrix880 extends utils.Adapter {
                         parentThis.processCMD();
                     }else{
                         if(bQueryDone==true){
-                            parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
-                            parentThis.pingMatrix();                                                                                                          
+                            if(arrCMD.length==0){
+	                        parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
+        	                parentThis.pingMatrix();                                                                                                          
+                            }else{
+                                parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==TRUE, arrCMD.length>0; idle, aber KEIN ping auf Matrix');
+                            }
                         }else{
                             parentThis.log.debug('AudioMatrix: connectMatrix().connection==true, bQueryDone==FALSE, idle, query Matrix');                            
                             parentThis.queryMatrix();
@@ -506,7 +510,8 @@ class Audiomatrix880 extends utils.Adapter {
                                 //----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
                                 parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
                                 parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
-                                iMaxTryCounter--;                                
+                                iMaxTryCounter--;   
+				tabu=false;                             
                                 /*
                                 if(lastCMD !== undefined){
                                     setTimeout(function() {
