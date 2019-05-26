@@ -14,7 +14,6 @@ var net = require('net');
 var matrix;
 var recnt;
 var connection = false;
-var tabu = false;
 var query = null;
 var in_msg = '';
 var iMaxTryCounter = 0;
@@ -480,7 +479,7 @@ class Audiomatrix880 extends utils.Adapter {
         matrix.connect(this.config.port, this.config.host, function() {
             clearInterval(query);
             query = setInterval(function() {
-                if(!tabu){             //----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
+//                if(!tabu){             //----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
                     if(connection==false){
 			if(bWaitingForResponse==false){
 	                        parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
@@ -529,17 +528,15 @@ class Audiomatrix880 extends utils.Adapter {
                                     iMaxTimeoutCounter++;
                                     if(lastCMD !== undefined){
                                         setTimeout(function() {
-                                        matrix.write(lastCMD);            
+                                            matrix.write(lastCMD);            
                                         }, 100);
-                                    }                                    
+                                    }
                                 }else{
                                     parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD) + 'schlug mehrfach fehl');
                                     iMaxTimeoutCounter=0;
-                                    tabu = false;     
                                     parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
                                     parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
                                     bWaitingForResponse=false;
-                                    tabu=false;
                                     lastCMD = '';
                                     in_msg = '';
                                     arrCMD = [];
@@ -551,29 +548,9 @@ class Audiomatrix880 extends utils.Adapter {
                         }
                     }, 333/*kleinesIntervall*/);
 
-                    /*
-                    //----grosses Intervall zur Bestimmung genereller Timeouts.
-                    setTimeout(function(){
-                        //----Nach dieser Zeit sollte irgendetwas angekommen sein, ansonsten gibt es ein Kommunikationsproblem mit der Hardware
-                        //parentThis.log.info('AudioMatrix: connectMatrix(): grosses Timeout');
-                        if(bWaitingForResponse==true){
-                            if(arrCMD.length==0){
-                                parentThis.log.error('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, arrCMD.length==0, trigger RECONNECT');
-                                bWaitingForResponse=false;
-                                tabu=false;
-                                in_msg = '';
-                                arrCMD = [];
-                                lastCMD = '';
-                                parentThis.reconnect();
-                            }else{
-                                parentThis.log.debug('AudioMatrix: connectMatrix(): grosses Timeout, bWaitingForResponse==TRUE, aber arrCMD.length>0. Kein Problem');
-                            }
-                        }                                                                                           
-                    }, 5000);
-                    */
-                }else{
-                    parentThis.log.debug('AudioMatrix: connectMatrix().Im Ping-Intervall aber tabu==TRUE. Nichts machen.');
-                }
+//                }else{
+//                    parentThis.log.debug('AudioMatrix: connectMatrix().Im Ping-Intervall aber tabu==TRUE. Nichts machen.');
+//                }
             }, 5000);
 
             if(cb){
@@ -598,8 +575,7 @@ class Audiomatrix880 extends utils.Adapter {
                         lastCMD = '';
                         //iMaxTryCounter = 3;
                         iMaxTimeoutCounter = 0;
-                        parentThis.processCMD();
-                        //tabu = false; 
+                        parentThis.processCMD();                        
                     }else{
                         //----Irgendwie vergniesgnaddelt
                         parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);                                                                                                   
@@ -653,23 +629,21 @@ class Audiomatrix880 extends utils.Adapter {
 
     //----Befehle an die Hardware werden in einer Queue geparkt und hier verarbeitet.
     processCMD(){
-        if(!tabu){
+        if(!bWaitingForResponse){
             if(arrCMD.length>0){
-                this.log.info('AudioMatrix: processCMD: tabu==FALSE, arrCMD.length=' +arrCMD.length.toString());
-                tabu=true;
+                this.log.info('AudioMatrix: processCMD: bWaitingForResponse==FALSE, arrCMD.length=' +arrCMD.length.toString());
+                bWaitingForResponse=true;
                 var tmp = arrCMD.shift();
                 this.log.debug('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length rest=' +arrCMD.length.toString());
                 lastCMD = tmp;
-                bWaitingForResponse=true;
                 setTimeout(function() {
                     matrix.write(tmp);           
                 }, 100);
             }else{
-                this.log.debug('AudioMatrix: processCMD: tabu==FALSE, arrCMD ist leer. Kein Problem');
-                //tabu=false;
+                this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
             }
         }else{
-            this.log.debug('AudioMatrix: processCMD: tabu==TRUE. Nichts machen');
+            this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
         }
 
         //----Anzeige der Quelength auf der Oberflaeche
@@ -880,7 +854,7 @@ class Audiomatrix880 extends utils.Adapter {
             this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
         }
 
-        tabu = false;
+        bWaitingForResponse = false;
     }
 
 
