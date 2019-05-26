@@ -526,6 +526,7 @@ class Audiomatrix880 extends utils.Adapter {
                                 if(iMaxTimeoutCounter<3){
                                     parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD));
                                     iMaxTimeoutCounter++;
+                                    iMaxTryCounter=3;
                                     if(lastCMD !== undefined){
                                         setTimeout(function() {
                                             matrix.write(lastCMD);            
