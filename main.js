@@ -445,6 +445,7 @@ class Audiomatrix880 extends utils.Adapter {
     queryMatrix(){                
         this.log.info('AudioMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());                      
         bQueryInProgress  = true;
+	this.setState('queryState', true, true);
         arrQuery.forEach(function(item, index, array) {                             
             //parentThis.log.info('AudioMatrix: queryMatrix(). pushing:' + parentThis.toHexString(item));
             arrCMD.push(item);
@@ -701,6 +702,7 @@ class Audiomatrix880 extends utils.Adapter {
 
         if(bQueryDone){
             bQueryInProgress=false;
+            this.setState('queryState', false, true);
         }
     }
 
@@ -990,6 +992,17 @@ class Audiomatrix880 extends utils.Adapter {
         });
         */
 
+	wait this.setObjectAsync('queryState', {
+		type: 'state',
+		common: {
+			name: 'QueryState',
+			type: 'boolean',
+			role: 'indicator',
+			read: true,
+			write: false,
+		},
+		native: {},
+        });
 
         //----Anlegen der Eingaenge
         for (var i = 1; i < 9; i++) {
