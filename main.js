@@ -482,10 +482,14 @@ class Audiomatrix880 extends utils.Adapter {
             query = setInterval(function() {
                 if(!tabu){             //----Damit nicht gepolled wird, wenn gerade etwas anderes stattfindet.
                     if(connection==false){
-                        parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
-                        arrCMD.push(cmdConnect);
-                        iMaxTryCounter = 3;
-                        parentThis.processCMD();
+			if(bWaitingForResponse==false){
+	                        parentThis.log.info('AudioMatrix: connectMatrix().connection==false, sending CMDCONNECT:' + parentThis.toHexString(cmdConnect));
+        	                arrCMD.push(cmdConnect);
+        	                iMaxTryCounter = 3;
+        	                parentThis.processCMD();
+			}else{
+				parentThis.log.info('AudioMatrix: connectMatrix().connection==false, bWaitingForResponse==false; nichts machen');
+			}
                     }else{
                         if(bQueryDone==true){
                             if(arrCMD.length==0){
@@ -511,7 +515,7 @@ class Audiomatrix880 extends utils.Adapter {
                                 parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
                                 parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
                                 iMaxTryCounter--;   
-				tabu=false;                             
+				//tabu=false;                             
                                 /*
                                 if(lastCMD !== undefined){
                                     setTimeout(function() {
@@ -570,7 +574,7 @@ class Audiomatrix880 extends utils.Adapter {
                 }else{
                     parentThis.log.debug('AudioMatrix: connectMatrix().Im Ping-Intervall aber tabu==TRUE. Nichts machen.');
                 }
-            }, 10000);
+            }, 5000);
 
             if(cb){
                 cb();
