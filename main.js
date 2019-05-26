@@ -992,17 +992,7 @@ class Audiomatrix880 extends utils.Adapter {
         });
         */
 
-	wait this.setObjectAsync('queryState', {
-		type: 'state',
-		common: {
-			name: 'QueryState',
-			type: 'boolean',
-			role: 'indicator',
-			read: true,
-			write: false,
-		},
-		native: {},
-        });
+	
 
         //----Anlegen der Eingaenge
         for (var i = 1; i < 9; i++) {
@@ -1090,6 +1080,18 @@ class Audiomatrix880 extends utils.Adapter {
                 //max: 6
             },
             native: {},
+        });
+
+	await this.setObjectAsync('queryState', {
+		type: 'state',
+		common: {
+			name: 'True: Hardware is being queried after Connection',
+			type: 'boolean',
+			role: 'indicator',
+			read: true,
+			write: false,
+		},
+		native: {},
         });
 
 
