@@ -539,6 +539,7 @@ class Audiomatrix880 extends utils.Adapter {
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
 			                iMaxTryCounter--;   
+					this.setState('minorProblem', true, true);
 			            }else{
 			                if(iMaxTimeoutCounter<3){
 			                    parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD));
@@ -562,12 +563,13 @@ class Audiomatrix880 extends utils.Adapter {
 			                }
 			            }
                             }else{
+				this.setState('minorProblem', true, true);
 				if(connection==true){
                                     parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString() );
                                 }else{
                                     //----Fuer den Fall, dass der Verbindungsversuch fehlschlaegt
                                     parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString() );
-                                    bWaitingForResponse=false;
+				    bWaitingForResponse=false;
                                     iMaxTryCounter--;
                                 }
                             }
@@ -779,6 +781,7 @@ class Audiomatrix880 extends utils.Adapter {
             this.log.info('parseMsg() Response = CONNECTION' );
             connection = true;
             this.setState('info.connection', true, true);
+	    this.setState('minorProblem', false, true);
             //this.queryMatrix();
         }else if (arrResponse[3] == 0x10 ){
             //this.log.info('parseMsg() Response = ReadMemory' );
@@ -1015,7 +1018,7 @@ class Audiomatrix880 extends utils.Adapter {
 
         //----Anlegen der Eingaenge
         for (var i = 1; i < 9; i++) {
-            arrStateQuery_Input.push(false);
+            //arrStateQuery_Input.push(false);
             await this.setObjectAsync('inputgain_' + i.toString(), {
                 type: 'state',
                 common: {
@@ -1034,7 +1037,7 @@ class Audiomatrix880 extends utils.Adapter {
 
         //----Anlegen der Ausgaenge
         for (var i = 1; i < 9; i++) {
-            arrStateQuery_Output.push(false);
+            //arrStateQuery_Output.push(false);
             await this.setObjectAsync('outputgain_' + i.toString(), {
                 type: 'state',
                 common: {
@@ -1054,7 +1057,7 @@ class Audiomatrix880 extends utils.Adapter {
         //----Routing via Buttons; 0-indiziert, aber Anzeige beginnt bei '1'
         for (var i = 0; i < 8; i++) {
             for (var j = 0; j < 8; j++) {
-                arrStateQuery_Routing.push(false);
+                //arrStateQuery_Routing.push(false);
                 //await this.setObjectAsync('outputroutestate_' + i.toString() + '-' + j.toString(), {
                 await this.setObjectAsync('outputroutestate_' + ((i*8 + j)+1).toString(), {
                     type: 'state',
@@ -1112,6 +1115,19 @@ class Audiomatrix880 extends utils.Adapter {
 		},
 		native: {},
         });
+
+	await this.setObjectAsync('minorProblem', {
+		type: 'state',
+		common: {
+			name: 'True: Hardware did not resond instantly. Reconnect will be triggered if happens 3 times in a row.',
+			type: 'boolean',
+			role: 'indicator',
+			read: true,
+			write: false,
+		},
+		native: {},
+        });
+
 
 
         // in this template all states changes inside the adapters namespace are subscribed
