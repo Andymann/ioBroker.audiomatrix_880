@@ -468,6 +468,23 @@ class Audiomatrix880 extends utils.Adapter {
         bQueryComplete_Input = false;
         bQueryComplete_Output = false;
 
+	arrStateQuery_Input = [];
+	for (var i = 1; i < 9; i++) {
+            arrStateQuery_Input.push(false);
+	}
+
+	arrStateQuery_Output = [];
+	for (var i = 1; i < 9; i++) {
+            arrStateQuery_Output.push(false);
+	}
+
+	arrStateQuery_Routing = [];
+	for (var i = 0; i < 8; i++) {
+            for (var j = 0; j < 8; j++) {
+                arrStateQuery_Routing.push(false);
+	    }
+        }
+
         if(tmpFirmware=='v14'){
             //this.reconfigureCMD(0x45);
             tmpFirmwareName = 'v1.4';
