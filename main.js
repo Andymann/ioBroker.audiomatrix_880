@@ -520,14 +520,6 @@ class Audiomatrix880 extends utils.Adapter {
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
 			                iMaxTryCounter--;   
-					//tabu=false;                             
-			                /*
-			                if(lastCMD !== undefined){
-			                    setTimeout(function() {
-			                        matrix.write(lastCMD);            
-			                    }, 100);
-			                }
-			                */
 			            }else{
 			                if(iMaxTimeoutCounter<3){
 			                    parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD));
@@ -551,7 +543,13 @@ class Audiomatrix880 extends utils.Adapter {
 			                }
 			            }
                             }else{
-                                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString() );
+				if(connection==true){
+                                    parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString() );
+                                }else{
+                                    parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString() );
+                                    bWaitingForResponse=false;
+                                    iMaxTryCounter--;
+                                }
                             }
                         }else{
                             //parentThis.log.debug('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
@@ -699,6 +697,7 @@ class Audiomatrix880 extends utils.Adapter {
         }
         
         bQueryDone = bQueryComplete_Routing && bQueryComplete_Input && bQueryComplete_Output;
+	//this.setState('info.connection', bQueryDone, true);
 
         if(bQueryDone){
             bQueryInProgress=false;
@@ -1085,7 +1084,7 @@ class Audiomatrix880 extends utils.Adapter {
 	await this.setObjectAsync('queryState', {
 		type: 'state',
 		common: {
-			name: 'True: Hardware is being queried after Connection',
+			name: 'True: Hardware is being queried after Connection. False: Done',
 			type: 'boolean',
 			role: 'indicator',
 			read: true,
