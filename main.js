@@ -539,7 +539,7 @@ class Audiomatrix880 extends utils.Adapter {
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString() );
 			                parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.toHexString(lastCMD) + ' nichts tun, noch warten');
 			                iMaxTryCounter--;   
-					this.setState('minorProblem', true, true);
+					parentThis.setState('minorProblem', true, true);
 			            }else{
 			                if(iMaxTimeoutCounter<3){
 			                    parentThis.log.info('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD));
@@ -563,7 +563,7 @@ class Audiomatrix880 extends utils.Adapter {
 			                }
 			            }
                             }else{
-				this.setState('minorProblem', true, true);
+				parentThis.setState('minorProblem', true, true);
 				if(connection==true){
                                     parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString() );
                                 }else{
