@@ -462,6 +462,8 @@ class Audiomatrix880 extends utils.Adapter {
         var tmpFirmwareName;
         
         bQueryDone = false;
+        bQueryInProgress=false;
+
         bQueryComplete_Routing = false;
         bQueryComplete_Input = false;
         bQueryComplete_Output = false;
@@ -534,7 +536,7 @@ class Audiomatrix880 extends utils.Adapter {
 			                    parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.toHexString(lastCMD) + 'schlug mehrfach fehl');
 			                    iMaxTimeoutCounter=0;
 			                    parentThis.log.error('AudioMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
-			                    parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
+			                    //parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
 			                    bWaitingForResponse=false;
 			                    lastCMD = '';
 			                    in_msg = '';
@@ -546,6 +548,7 @@ class Audiomatrix880 extends utils.Adapter {
 				if(connection==true){
                                     parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString() );
                                 }else{
+                                    //----Fuer den Fall, dass der Verbindungsversuch fehlschlaegt
                                     parentThis.log.info('AudioMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString() );
                                     bWaitingForResponse=false;
                                     iMaxTryCounter--;
