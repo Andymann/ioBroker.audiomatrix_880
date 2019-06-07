@@ -643,7 +643,7 @@ class Audiomatrix880 extends utils.Adapter {
             if(connection){
                 parentThis.log.error('AudioMatrix closed');
             }
-            parentThis.reconnect();
+            //parentThis.reconnect();
         });
 
         matrix.on('disconnect', function(e) {
