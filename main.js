@@ -1038,7 +1038,7 @@ class Audiomatrix880 extends utils.Adapter {
 
                 if(arrOutputRoutingState[iAusgang]==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
-		    for(var i = 0; i < 1; i++) {
+		    for(var i = 0; i < 2; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
 			cmdRoute[10] = i;
@@ -1048,7 +1048,7 @@ class Audiomatrix880 extends utils.Adapter {
 		    }
                 }else{
 		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
-		    for(var i = 0; i < 1; i++) {
+		    for(var i = 0; i < 2; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
 			cmdRoute[10] = i;
