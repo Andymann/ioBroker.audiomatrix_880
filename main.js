@@ -672,7 +672,7 @@ class Audiomatrix880 extends utils.Adapter {
     processCMD(){
         if(!bWaitingForResponse){
             if(arrCMD.length>0){
-                this.log.info('AudioMatrix: processCMD: bWaitingForResponse==FALSE, arrCMD.length=' +arrCMD.length.toString());
+                this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==FALSE, arrCMD.length=' +arrCMD.length.toString());
                 bWaitingForResponse=true;
                 var tmp = arrCMD.shift();
                 this.log.debug('AudioMatrix: processCMD: next CMD=' + this.toHexString(tmp) + ' arrCMD.length rest=' +arrCMD.length.toString());
@@ -1038,7 +1038,7 @@ class Audiomatrix880 extends utils.Adapter {
 
                 if(arrOutputRoutingState[iAusgang]==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
-		    for(var i = 0; i < 8; i++) {
+		    for(var i = 0; i < 1; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
 			cmdRoute[10] = i;
@@ -1048,7 +1048,7 @@ class Audiomatrix880 extends utils.Adapter {
 		    }
                 }else{
 		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
-		    for(var i = 0; i < 8; i++) {
+		    for(var i = 0; i < 1; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
 			cmdRoute[10] = i;
