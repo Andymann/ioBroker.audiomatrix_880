@@ -759,7 +759,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 	//----Die Guete des Knotens
 	this.setStateAsync('outputgainpostrouting_' + (outIndex+1).toString(), { val, ack: true });
-	PostRoutingVolume[outIndex] = val;
+	PostRoutingVolume[outIndex] = val*100/30;
         
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
