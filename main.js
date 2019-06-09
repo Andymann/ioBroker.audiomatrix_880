@@ -382,8 +382,8 @@ var volume = [
 //----Das VOlume eines Ausgangs NACH dem Rounting.
 //----Hiermit lassen sich Anforderungen realisieren: 'Theke lauter'.
 //----Technisch bildet dieser Wert die Guete des Routing-Knotens ab.
-var OutputRoutingState = [false, false, false, false, false, false, false, false ];
-var PostRoutingVolume = [0, 0, 0, 0, 0, 0, 0, 0];
+var arrOutputRoutingState = [false, false, false, false, false, false, false, false ];
+var arrPostRoutingVolume = [0, 0, 0, 0, 0, 0, 0, 0];
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -490,6 +490,11 @@ class Audiomatrix880 extends utils.Adapter {
                 arrStateQuery_Routing.push(false);
 	    }
         }
+
+	arrOutputRoutingState = [];
+	for (var i = 0; i < 8; i++) {
+            arrOutputRoutingState.push(false);
+	}
 
         if(tmpFirmware=='v14'){
             //this.reconfigureCMD(0x45);
@@ -740,7 +745,7 @@ class Audiomatrix880 extends utils.Adapter {
         //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
         //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
         this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
-	OutputRoutingState[outIndex] = onoff; 
+	arrOutputRoutingState[outIndex] = onoff; 
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
     }
@@ -753,13 +758,25 @@ class Audiomatrix880 extends utils.Adapter {
 	//----Obacht: Es ist moeglich, dass der Knoten aktiv ist, aber die Guete des Knotens auf 0 heruntergeregelt ist.
 	if(val<128){
 	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: true, ack: true });
+	    //----es wird aktiv nur TRUE gesetzt.
+	    arrOutputRoutingState[outIndex] = true;
 	}else{
 	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: false, ack: true });
+	    //Der Array wird auf FALSE initialisiert.
+	    //arrOutputRoutingState[outIndex] = false;
 	}
+	
 
 	//----Die Guete des Knotens
+	//----Theoretisch gibt es hier 64 Moeglichkeiten, wir regeln aber ALLE Inputs fuer jeden Ausgang gemeinsam.
+	//----Damit nimmt man sich einerseits die Moeglichkeit fuer differenzierte Einstellungen,
+	//----Andererseits kann man damit aber eben unabhaengig vom Routing mit einem Fader z.B. "Theke lauter" einstellen.
+	//----
+	//----Es werden hier beim Einlesen nur die Inputs fuer den letzten Ausgang hinterlegt. Das ist eigentlich falsch.
+	//----Weil wir aber eh alle Werte fuer einen Ausgang identisch behandeln, ist das okay und mit dem ersten Setzen eines Ausgangs wieder korrekt.
+	val = val*100/30;
 	this.setStateAsync('outputgainpostrouting_' + (outIndex+1).toString(), { val, ack: true });
-	PostRoutingVolume[outIndex] = val*100/30;
+	arrPostRoutingVolume[outIndex] = val;
         
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
@@ -991,11 +1008,11 @@ class Audiomatrix880 extends utils.Adapter {
                 if(val==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
                     cmdRoute[11] = 30; //----Voll AN
-		    OutputRoutingState[iAusgang] = true;
+		    arrOutputRoutingState[iAusgang] = true;
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
                     cmdRoute[11] = 128; //----Voll AUS
-		    OutputRoutingState[iAusgang] = false;
+		    arrOutputRoutingState[iAusgang] = false;
                 }
 
                arrCMD.push(cmdRoute);
@@ -1012,22 +1029,33 @@ class Audiomatrix880 extends utils.Adapter {
                 var iEingang = (channelID-iAusgang)/8;
 
                 cmdRoute[4] = iAusgang + 8;
-                cmdRoute[10] = iEingang;
+                //cmdRoute[10] = iEingang;
 
 		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
 		PostRoutingValue[iAusgang] = val;
 		this.log.info('matrixChanged: outputgainpostrouting changed. PostRoutingValue[' + iAusgang.toString() + ']=' + val.toString() );
 
-                if(OutputRoutingState[iAusgang]==true){
+                if(arrOutputRoutingState[iAusgang]==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
-                    cmdRoute[11] = val;
-		    
+		    for(var i = 0; i < 8; i++) {{
+			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
+			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
+			cmdRoute[10] = i;
+			cmdRoute[11] = val;
+			arrCMD.push(cmdRoute);    
+		    }
                 }else{
 		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
-		    cmdRoute[11] = val+128;
+		    for(var i = 0; i < 8; i++) {{
+			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
+			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
+			cmdRoute[10] = i;
+			cmdRoute[11] = val+128;
+			arrCMD.push(cmdRoute);    
+		    }
                 }
 
-               arrCMD.push(cmdRoute);
+               
                this.processCMD();
             }
 
