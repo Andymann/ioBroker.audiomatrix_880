@@ -1053,7 +1053,7 @@ class Audiomatrix880 extends utils.Adapter {
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
 			cmdRoute[10] = i;
 			cmdRoute[11] = val+128;
-			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute);
+			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
 			arrCMD.push(cmdRoute);    
 		    }
                 }
