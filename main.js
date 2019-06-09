@@ -739,9 +739,7 @@ class Audiomatrix880 extends utils.Adapter {
     }
 
     //----Schaltet das Routing binaer: Voll AN, voll AUS
-    setRoutingState(outIndex, inIndex, onoff){
-
-	
+    setRoutingState(outIndex, inIndex, onoff){	
         //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
         //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
         this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
@@ -774,6 +772,9 @@ class Audiomatrix880 extends utils.Adapter {
 	//----
 	//----Es werden hier beim Einlesen nur die Inputs fuer den letzten Ausgang hinterlegt. Das ist eigentlich falsch.
 	//----Weil wir aber eh alle Werte fuer einen Ausgang identisch behandeln, ist das okay und mit dem ersten Setzen eines Ausgangs wieder korrekt.
+	if(val>=128){
+	    val -= 128;
+	}
 	val = val*100/30;
 	this.setStateAsync('outputgainpostrouting_' + (outIndex+1).toString(), { val, ack: true });
 	arrPostRoutingVolume[outIndex] = val;
@@ -1012,7 +1013,7 @@ class Audiomatrix880 extends utils.Adapter {
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
                     cmdRoute[11] = 128; //----Voll AUS
-		    arrOutputRoutingState[iAusgang] = false;
+		    //arrOutputRoutingState[iAusgang] = false;
                 }
 
                arrCMD.push(cmdRoute);
@@ -1032,8 +1033,8 @@ class Audiomatrix880 extends utils.Adapter {
                 //cmdRoute[10] = iEingang;
 
 		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
-		PostRoutingValue[iAusgang] = val;
-		this.log.info('matrixChanged: outputgainpostrouting changed. PostRoutingValue[' + iAusgang.toString() + ']=' + val.toString() );
+		arrPostRoutingVolume[iAusgang] = val;
+		this.log.info('matrixChanged: outputgainpostrouting changed. arrPostRoutingVolume[' + iAusgang.toString() + ']=' + val.toString() );
 
                 if(arrOutputRoutingState[iAusgang]==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
