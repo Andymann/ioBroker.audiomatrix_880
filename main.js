@@ -1044,7 +1044,8 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdRoute[10] = i;
 			cmdRoute[11] = val;
 			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
-			arrCMD.concat(cmdRoute);    
+			var tmpArr = jQuery.extend(true, {}, cmdRoute);
+			arrCMD.push(tmpArr);    
 		    }
                 }else{
 		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
@@ -1054,7 +1055,8 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdRoute[10] = i;
 			cmdRoute[11] = val+128;
 			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
-			arrCMD.concat(cmdRoute);    
+			var tmpArr = jQuery.extend(true, {}, cmdRoute);
+			arrCMD.push(tmpArr);
 		    }
                 }
 
