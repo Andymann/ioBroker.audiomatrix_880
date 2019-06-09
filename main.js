@@ -973,7 +973,10 @@ class Audiomatrix880 extends utils.Adapter {
                 //this.log.info('matrixChanged: killing arrQuery before sending' );
                 //this.arrQuery = [];       //----Query stoppen
                 //this.send(cmdGain, 5);
-                arrCMD.push(cmdGain);
+
+
+		arrCMD = arrCMD.concat(new Buffer(cmdGain));
+                //arrCMD.push(cmdGain);
                 this.processCMD();
 
             }
@@ -992,8 +995,8 @@ class Audiomatrix880 extends utils.Adapter {
                 cmdGain[7] = loByte;
                 cmdGain[11] = hiByte;
 
-                //this.send(cmdGain, 5);
-                arrCMD.push(cmdGain);
+                //arrCMD.push(cmdGain);
+		arrCMD = arrCMD.concat(new Buffer(cmdGain));
                 this.processCMD();
             }
 
@@ -1016,7 +1019,8 @@ class Audiomatrix880 extends utils.Adapter {
 		    //arrOutputRoutingState[iAusgang] = false;
                 }
 
-               arrCMD.push(cmdRoute);
+               	//arrCMD.push(cmdRoute);
+		arrCMD = arrCMD.concat(new Buffer(cmdRoute));
                 this.processCMD();
             }
 
@@ -1045,8 +1049,9 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdRoute[11] = val;
 			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
 			//arrCMD.push(tmpArr);    
-			var tmp = new Buffer(cmdRoute);
-			arrCMD = arrCMD.concat(tmp);
+			//var tmp = new Buffer(cmdRoute);
+			arrCMD = arrCMD.concat(new Buffer(cmdRoute));
+
 		    }
                 }else{
 		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
@@ -1057,8 +1062,8 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdRoute[11] = val+128;
 			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
 			//arrCMD = arrCMD.concat(cmdRoute);
-			var tmp = new Buffer(cmdRoute);
-			arrCMD = arrCMD.concat(tmp);
+			//var tmp = new Buffer(cmdRoute);
+			arrCMD = arrCMD.concat(new Buffer(cmdRoute));
 		    }
                 }
 
