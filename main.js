@@ -36,7 +36,7 @@ var cmdConnect =    new Buffer([0xf0, firmware, idDevice, 0x00, 0x00, 0x00, 0x00
 var cmdDisconnect = new Buffer([0xf0, firmware, idDevice, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdGain =       new Buffer([0xf0, firmware, idDevice, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdRoute =      new Buffer([0xf0, firmware, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
-var cmdPreset =     new Buffer([0xf0, firmware, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+//var cmdPreset =     new Buffer([0xf0, firmware, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdReadmemory=  new Buffer([0xf0, firmware, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 var bWaitingForResponse = false;
@@ -367,6 +367,7 @@ var inGain = [
 [-1, -1]
 ];
 
+//----Das Volume, BEVOR es inst Routing geht. 
 var volume = [
 [-1, -1],
 [-1, -1],
@@ -378,6 +379,11 @@ var volume = [
 [-1, -1]
 ];
 
+//----Das VOlume eines Ausgangs NACH dem Rounting.
+//----Hiermit lassen sich Anforderungen realisieren: 'Theke lauter'.
+//----Technisch bildet dieser Wert die Guete des Routing-Knotens ab.
+var OutputRoutingState = [false, false, false, false, false, false, false, false ];
+var PostRoutingVolume = [0, 0, 0, 0, 0, 0, 0, 0];
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -727,10 +733,34 @@ class Audiomatrix880 extends utils.Adapter {
         }
     }
 
+    //----Schaltet das Routing binaer: Voll AN, voll AUS
     setRoutingState(outIndex, inIndex, onoff){
+
+	
         //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
         //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
         this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
+	OutputRoutingState[outIndex] = onoff; 
+        arrStateQuery_Routing[inIndex*8 + outIndex] = true;
+        this.checkQueryDone();
+    }
+
+
+    //----Routing mit Angabe der 'Guete' des Routing-Knotens
+    setRoutingStateValue(outIndex, inIndex, val){
+	
+	//----Zuerst das grundsetzliche Routing: Knoten aktiv/ inaktiv.
+	//----Obacht: Es ist moeglich, dass der Knoten aktiv ist, aber die Guete des Knotens auf 0 heruntergeregelt ist.
+	if(val<128){
+	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: true, ack: true });
+	}else{
+	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: false, ack: true });
+	}
+
+	//----Die Guete des Knotens
+	this.setStateAsync('outputgainpostrouting_' + (outIndex+1).toString(), { val, ack: true });
+	PostRoutingVolume[outIndex] = val;
+        
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
     }
@@ -754,6 +784,8 @@ class Audiomatrix880 extends utils.Adapter {
         }
     }
 
+    //----Das ist das Volume fuer das Signal, BEVOR es ins Routing geht. 
+    //----setVolume(volumeIndoex eignet sich nicht fuer 'Theke lauter')
     setVolume(volumeIndex){
         //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() + ' Hi:' + volume[volumeIndex][0].toString() + ' Lo:' + volume[volumeIndex][1].toString() );
         if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
@@ -784,72 +816,73 @@ class Audiomatrix880 extends utils.Adapter {
 	    this.setState('minorProblem', false, true);
             //this.queryMatrix();
         }else if (arrResponse[3] == 0x10 ){
-            //this.log.info('parseMsg() Response = ReadMemory' );
+            
             //----Routing
-            if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingState(0, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingState(0, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingState(0, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in4_Hi) && (arrResponse[5] == out0_in4_Lo)){ this.setRoutingState(0, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in5_Hi) && (arrResponse[5] == out0_in5_Lo)){ this.setRoutingState(0, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in6_Hi) && (arrResponse[5] == out0_in6_Lo)){ this.setRoutingState(0, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in7_Hi) && (arrResponse[5] == out0_in7_Lo)){ this.setRoutingState(0, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingState(1, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingState(1, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingState(1, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingState(1, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in4_Hi) && (arrResponse[5] == out1_in4_Lo)){ this.setRoutingState(1, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in5_Hi) && (arrResponse[5] == out1_in5_Lo)){ this.setRoutingState(1, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in6_Hi) && (arrResponse[5] == out1_in6_Lo)){ this.setRoutingState(1, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out1_in7_Hi) && (arrResponse[5] == out1_in7_Lo)){ this.setRoutingState(1, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingState(2, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingState(2, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingState(2, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingState(2, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in4_Hi) && (arrResponse[5] == out2_in4_Lo)){ this.setRoutingState(2, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in5_Hi) && (arrResponse[5] == out2_in5_Lo)){ this.setRoutingState(2, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in6_Hi) && (arrResponse[5] == out2_in6_Lo)){ this.setRoutingState(2, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out2_in7_Hi) && (arrResponse[5] == out2_in7_Lo)){ this.setRoutingState(2, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingState(3, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingState(3, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingState(3, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingState(3, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in4_Hi) && (arrResponse[5] == out3_in4_Lo)){ this.setRoutingState(3, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in5_Hi) && (arrResponse[5] == out3_in5_Lo)){ this.setRoutingState(3, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in6_Hi) && (arrResponse[5] == out3_in6_Lo)){ this.setRoutingState(3, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out3_in7_Hi) && (arrResponse[5] == out3_in7_Lo)){ this.setRoutingState(3, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in0_Hi) && (arrResponse[5] == out4_in0_Lo)){ this.setRoutingState(4, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in1_Hi) && (arrResponse[5] == out4_in1_Lo)){ this.setRoutingState(4, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in2_Hi) && (arrResponse[5] == out4_in2_Lo)){ this.setRoutingState(4, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in3_Hi) && (arrResponse[5] == out4_in3_Lo)){ this.setRoutingState(4, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in4_Hi) && (arrResponse[5] == out4_in4_Lo)){ this.setRoutingState(4, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in5_Hi) && (arrResponse[5] == out4_in5_Lo)){ this.setRoutingState(4, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in6_Hi) && (arrResponse[5] == out4_in6_Lo)){ this.setRoutingState(4, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out4_in7_Hi) && (arrResponse[5] == out4_in7_Lo)){ this.setRoutingState(4, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in0_Hi) && (arrResponse[5] == out5_in0_Lo)){ this.setRoutingState(5, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in1_Hi) && (arrResponse[5] == out5_in1_Lo)){ this.setRoutingState(5, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in2_Hi) && (arrResponse[5] == out5_in2_Lo)){ this.setRoutingState(5, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in3_Hi) && (arrResponse[5] == out5_in3_Lo)){ this.setRoutingState(5, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in4_Hi) && (arrResponse[5] == out5_in4_Lo)){ this.setRoutingState(5, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in5_Hi) && (arrResponse[5] == out5_in5_Lo)){ this.setRoutingState(5, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in6_Hi) && (arrResponse[5] == out5_in6_Lo)){ this.setRoutingState(5, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out5_in7_Hi) && (arrResponse[5] == out5_in7_Lo)){ this.setRoutingState(5, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in0_Hi) && (arrResponse[5] == out6_in0_Lo)){ this.setRoutingState(6, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in1_Hi) && (arrResponse[5] == out6_in1_Lo)){ this.setRoutingState(6, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in2_Hi) && (arrResponse[5] == out6_in2_Lo)){ this.setRoutingState(6, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in3_Hi) && (arrResponse[5] == out6_in3_Lo)){ this.setRoutingState(6, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in4_Hi) && (arrResponse[5] == out6_in4_Lo)){ this.setRoutingState(6, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in5_Hi) && (arrResponse[5] == out6_in5_Lo)){ this.setRoutingState(6, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in6_Hi) && (arrResponse[5] == out6_in6_Lo)){ this.setRoutingState(6, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out6_in7_Hi) && (arrResponse[5] == out6_in7_Lo)){ this.setRoutingState(6, 7, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in0_Hi) && (arrResponse[5] == out7_in0_Lo)){ this.setRoutingState(7, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in1_Hi) && (arrResponse[5] == out7_in1_Lo)){ this.setRoutingState(7, 1, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in2_Hi) && (arrResponse[5] == out7_in2_Lo)){ this.setRoutingState(7, 2, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in3_Hi) && (arrResponse[5] == out7_in3_Lo)){ this.setRoutingState(7, 3, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in4_Hi) && (arrResponse[5] == out7_in4_Lo)){ this.setRoutingState(7, 4, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in5_Hi) && (arrResponse[5] == out7_in5_Lo)){ this.setRoutingState(7, 5, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in6_Hi) && (arrResponse[5] == out7_in6_Lo)){ this.setRoutingState(7, 6, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out7_in7_Hi) && (arrResponse[5] == out7_in7_Lo)){ this.setRoutingState(7, 7, (arrResponse[8]==0x1E)); }
+	    //if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
+            if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingStateValue(0, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingStateValue(0, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingStateValue(0, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingStateValue(0, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in4_Hi) && (arrResponse[5] == out0_in4_Lo)){ this.setRoutingStateValue(0, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in5_Hi) && (arrResponse[5] == out0_in5_Lo)){ this.setRoutingStateValue(0, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in6_Hi) && (arrResponse[5] == out0_in6_Lo)){ this.setRoutingStateValue(0, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out0_in7_Hi) && (arrResponse[5] == out0_in7_Lo)){ this.setRoutingStateValue(0, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in0_Hi) && (arrResponse[5] == out1_in0_Lo)){ this.setRoutingStateValue(1, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in1_Hi) && (arrResponse[5] == out1_in1_Lo)){ this.setRoutingStateValue(1, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in2_Hi) && (arrResponse[5] == out1_in2_Lo)){ this.setRoutingStateValue(1, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in3_Hi) && (arrResponse[5] == out1_in3_Lo)){ this.setRoutingStateValue(1, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in4_Hi) && (arrResponse[5] == out1_in4_Lo)){ this.setRoutingStateValue(1, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in5_Hi) && (arrResponse[5] == out1_in5_Lo)){ this.setRoutingStateValue(1, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in6_Hi) && (arrResponse[5] == out1_in6_Lo)){ this.setRoutingStateValue(1, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out1_in7_Hi) && (arrResponse[5] == out1_in7_Lo)){ this.setRoutingStateValue(1, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in0_Hi) && (arrResponse[5] == out2_in0_Lo)){ this.setRoutingStateValue(2, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in1_Hi) && (arrResponse[5] == out2_in1_Lo)){ this.setRoutingStateValue(2, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in2_Hi) && (arrResponse[5] == out2_in2_Lo)){ this.setRoutingStateValue(2, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in3_Hi) && (arrResponse[5] == out2_in3_Lo)){ this.setRoutingStateValue(2, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in4_Hi) && (arrResponse[5] == out2_in4_Lo)){ this.setRoutingStateValue(2, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in5_Hi) && (arrResponse[5] == out2_in5_Lo)){ this.setRoutingStateValue(2, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in6_Hi) && (arrResponse[5] == out2_in6_Lo)){ this.setRoutingStateValue(2, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out2_in7_Hi) && (arrResponse[5] == out2_in7_Lo)){ this.setRoutingStateValue(2, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in0_Hi) && (arrResponse[5] == out3_in0_Lo)){ this.setRoutingStateValue(3, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in1_Hi) && (arrResponse[5] == out3_in1_Lo)){ this.setRoutingStateValue(3, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in2_Hi) && (arrResponse[5] == out3_in2_Lo)){ this.setRoutingStateValue(3, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in3_Hi) && (arrResponse[5] == out3_in3_Lo)){ this.setRoutingStateValue(3, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in4_Hi) && (arrResponse[5] == out3_in4_Lo)){ this.setRoutingStateValue(3, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in5_Hi) && (arrResponse[5] == out3_in5_Lo)){ this.setRoutingStateValue(3, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in6_Hi) && (arrResponse[5] == out3_in6_Lo)){ this.setRoutingStateValue(3, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out3_in7_Hi) && (arrResponse[5] == out3_in7_Lo)){ this.setRoutingStateValue(3, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in0_Hi) && (arrResponse[5] == out4_in0_Lo)){ this.setRoutingStateValue(4, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in1_Hi) && (arrResponse[5] == out4_in1_Lo)){ this.setRoutingStateValue(4, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in2_Hi) && (arrResponse[5] == out4_in2_Lo)){ this.setRoutingStateValue(4, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in3_Hi) && (arrResponse[5] == out4_in3_Lo)){ this.setRoutingStateValue(4, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in4_Hi) && (arrResponse[5] == out4_in4_Lo)){ this.setRoutingStateValue(4, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in5_Hi) && (arrResponse[5] == out4_in5_Lo)){ this.setRoutingStateValue(4, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in6_Hi) && (arrResponse[5] == out4_in6_Lo)){ this.setRoutingStateValue(4, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out4_in7_Hi) && (arrResponse[5] == out4_in7_Lo)){ this.setRoutingStateValue(4, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in0_Hi) && (arrResponse[5] == out5_in0_Lo)){ this.setRoutingStateValue(5, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in1_Hi) && (arrResponse[5] == out5_in1_Lo)){ this.setRoutingStateValue(5, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in2_Hi) && (arrResponse[5] == out5_in2_Lo)){ this.setRoutingStateValue(5, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in3_Hi) && (arrResponse[5] == out5_in3_Lo)){ this.setRoutingStateValue(5, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in4_Hi) && (arrResponse[5] == out5_in4_Lo)){ this.setRoutingStateValue(5, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in5_Hi) && (arrResponse[5] == out5_in5_Lo)){ this.setRoutingStateValue(5, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in6_Hi) && (arrResponse[5] == out5_in6_Lo)){ this.setRoutingStateValue(5, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out5_in7_Hi) && (arrResponse[5] == out5_in7_Lo)){ this.setRoutingStateValue(5, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in0_Hi) && (arrResponse[5] == out6_in0_Lo)){ this.setRoutingStateValue(6, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in1_Hi) && (arrResponse[5] == out6_in1_Lo)){ this.setRoutingStateValue(6, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in2_Hi) && (arrResponse[5] == out6_in2_Lo)){ this.setRoutingStateValue(6, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in3_Hi) && (arrResponse[5] == out6_in3_Lo)){ this.setRoutingStateValue(6, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in4_Hi) && (arrResponse[5] == out6_in4_Lo)){ this.setRoutingStateValue(6, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in5_Hi) && (arrResponse[5] == out6_in5_Lo)){ this.setRoutingStateValue(6, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in6_Hi) && (arrResponse[5] == out6_in6_Lo)){ this.setRoutingStateValue(6, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out6_in7_Hi) && (arrResponse[5] == out6_in7_Lo)){ this.setRoutingStateValue(6, 7, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in0_Hi) && (arrResponse[5] == out7_in0_Lo)){ this.setRoutingStateValue(7, 0, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in1_Hi) && (arrResponse[5] == out7_in1_Lo)){ this.setRoutingStateValue(7, 1, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in2_Hi) && (arrResponse[5] == out7_in2_Lo)){ this.setRoutingStateValue(7, 2, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in3_Hi) && (arrResponse[5] == out7_in3_Lo)){ this.setRoutingStateValue(7, 3, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in4_Hi) && (arrResponse[5] == out7_in4_Lo)){ this.setRoutingStateValue(7, 4, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in5_Hi) && (arrResponse[5] == out7_in5_Lo)){ this.setRoutingStateValue(7, 5, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in6_Hi) && (arrResponse[5] == out7_in6_Lo)){ this.setRoutingStateValue(7, 6, (arrResponse[8])); }
+            if((arrResponse[4] == out7_in7_Hi) && (arrResponse[5] == out7_in7_Lo)){ this.setRoutingStateValue(7, 7, (arrResponse[8])); }
 
             //----Input Gain
             if((arrResponse[4] == inGain_0_HiVal_Hi) && (arrResponse[5] == inGain_0_HiVal_Lo)){ inGain[0][0] = arrResponse[8]; this.setInputGain(0)}
@@ -869,7 +902,7 @@ class Audiomatrix880 extends utils.Adapter {
             if((arrResponse[4] == inGain_7_HiVal_Hi) && (arrResponse[5] == inGain_7_HiVal_Lo)){ inGain[7][0] = arrResponse[8]; this.setInputGain(7)}
             if((arrResponse[4] == inGain_7_LoVal_Hi) && (arrResponse[5] == inGain_7_LoVal_Lo)){ inGain[7][1] = arrResponse[8]; this.setInputGain(7)}
 
-            //----Volume
+            //----Volume VOR Routing
             if((arrResponse[4] == vol_0_HiVal_Hi) && (arrResponse[5] == vol_0_HiVal_Lo)){ volume[0][0] = arrResponse[8]; this.setVolume(0)}
             if((arrResponse[4] == vol_0_LoVal_Hi) && (arrResponse[5] == vol_0_LoVal_Lo)){ volume[0][1] = arrResponse[8]; this.setVolume(0)}
             if((arrResponse[4] == vol_1_HiVal_Hi) && (arrResponse[5] == vol_1_HiVal_Lo)){ volume[1][0] = arrResponse[8]; this.setVolume(1)}
@@ -902,8 +935,8 @@ class Audiomatrix880 extends utils.Adapter {
             //this.log.info('matrixChanged: tabu=TRUE' );
             //tabu = true;
         }
-        if(ack==false){
-            if(id.toString().includes('.outputgain')){
+        if(ack==false){	//----Aenderung ueber die GUI
+            if(id.toString().includes('.outputgain_')){
                 //this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
                 var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
                 //this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
@@ -948,11 +981,8 @@ class Audiomatrix880 extends utils.Adapter {
 
 
             if(id.toString().includes('.outputroutestate_')){
-                //this.log.info('matrixChanged: outputroutestate changed. ID:' + id.toString());
-                //this.log.info('matrixChanged: outputroute changed via Button. ID:' + id.toString() + ' val:' + val.toString());
                 var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1))-1;
-                //this.log.info('matrixChanged: outputroutestate changed. channelID:' + channelID.toString() + ' val:' + val.toString() );
-
+                
                 var iAusgang = channelID % 8;
                 var iEingang = (channelID-iAusgang)/8;
 
@@ -960,16 +990,45 @@ class Audiomatrix880 extends utils.Adapter {
                 cmdRoute[10] = iEingang;
                 if(val==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
-                    cmdRoute[11] = 30;
+                    cmdRoute[11] = 30; //----Voll AN
+		    OutputRoutingState[iAusgang] = true;
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
-                    cmdRoute[11] = 128;
+                    cmdRoute[11] = 128; //----Voll AUS
+		    OutputRoutingState[iAusgang] = false;
                 }
 
-                //this.send(cmdRoute, 5);
-                arrCMD.push(cmdRoute);
+               arrCMD.push(cmdRoute);
                 this.processCMD();
+            }
 
+	    //----"Ausgang Theke lauter"
+	    if(id.toString().includes('.outputgainpostrouting_')){
+
+                this.log.info('matrixChanged: outputgainpostrouting changed. ID:' + id.toString() );
+		var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1))-1;
+                
+                var iAusgang = channelID % 8;
+                var iEingang = (channelID-iAusgang)/8;
+
+                cmdRoute[4] = iAusgang + 8;
+                cmdRoute[10] = iEingang;
+
+		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
+		PostRoutingValue[iAusgang] = val;
+		this.log.info('matrixChanged: outputgainpostrouting changed. PostRoutingValue[' + iAusgang.toString() + ']=' + val.toString() );
+
+                if(OutputRoutingState[iAusgang]==true){
+                    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
+                    cmdRoute[11] = val;
+		    
+                }else{
+		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
+		    cmdRoute[11] = val+128;
+                }
+
+               arrCMD.push(cmdRoute);
+               this.processCMD();
             }
 
         }//----ack==FALSE                         
@@ -1029,7 +1088,7 @@ class Audiomatrix880 extends utils.Adapter {
                 write: true,
                 min: 0,
                 max: 100,
-                desc: 'Ausgang UKU'
+                desc: 'Eingang ' + i.toString()
             },
             native: {},
             });
@@ -1046,6 +1105,25 @@ class Audiomatrix880 extends utils.Adapter {
                 role: 'level.volume',
                 read: true,
                 write: true,
+		desc: 'Ausgang VOR Routing' + i.toString(),
+                min: 0,
+                max: 100
+            },
+            native: {},
+            });
+        }
+
+	//----Veraendert die Guete der Routing-Knoten fuer den Ausgang
+        for (var i = 1; i < 9; i++) {
+            await this.setObjectAsync('outputgainpostrouting_' + i.toString(), {
+                type: 'state',
+                common: {
+                name: 'Output post Routing ' + i.toString() + " Gain",
+                type: 'number',
+                role: 'level.volume',
+                read: true,
+                write: true,
+		desc: 'Ausgang NACH Routing' + i.toString(),
                 min: 0,
                 max: 100
             },
@@ -1073,7 +1151,7 @@ class Audiomatrix880 extends utils.Adapter {
             }
         }
 
-
+/*
         //----Preset
         await this.setObjectAsync('preset', {
             type: 'state',
@@ -1088,6 +1166,7 @@ class Audiomatrix880 extends utils.Adapter {
             },
             native: {},
         });
+*/
 
         //----Laenge von arrCMD; der Command-Queue
         await this.setObjectAsync('queuelength', {
