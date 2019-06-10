@@ -1042,22 +1042,20 @@ class Audiomatrix880 extends utils.Adapter {
 		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
 		arrPostRoutingVolume[iAusgang] = val;
 		this.log.info('matrixChanged: outputgainpostrouting changed. arrPostRoutingVolume[' + iAusgang.toString() + ']=' + val.toString() );
+		var tmpEingang = 0;
 		for(var i=1; i<65; i+=8){
 		    this.log.info('matrixChanged: Routing laut arrOutputRoutingState[' + (iAusgang+i-1) + ']:' + arrOutputRoutingState[(iAusgang+i-1)].toString() ) ;
-		}
-		/*
-		    this.adapter.getState('outputroutestate_' + (iAusgang*8 +i).toString(), function (err, state) {
-    
-			    adapter.log.info(
-				  'State ' + adapter.namespace + '.myState -' + 
-				  '  Value: '        + state.val + 
-				  ', ack: '          + state.ack + 
-				  ', time stamp: '   + state.ts  + 
-				  ', last changed: ' + state.lc
-			    ); 
+		    cmdRoute[10] = tmpEingang;
+		    tmpEingang++;
 
-			}); 
-		*/
+		    if(arrOutputRoutingState[(iAusgang+i-1)]==true){
+			cmdRoute[11] = val;
+		    }else{
+			cmdRoute[11] = val+128;
+		    }
+		    arrCMD = arrCMD.concat(new Buffer(cmdRoute));
+		}
+		
 		/*
 		    this.log.info('matrixChanged: getState: outputroutestate_' + (iAusgang*8 +i).toString() ) ;
 		    var bRoutingActive = this.getState('outputroutestate_' + (iAusgang*8 +i).toString()).val;
