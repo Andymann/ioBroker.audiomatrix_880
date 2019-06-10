@@ -1013,11 +1013,14 @@ class Audiomatrix880 extends utils.Adapter {
                 cmdRoute[10] = iEingang;
                 if(val==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
-                    cmdRoute[11] = 30; //----Voll AN
+                    //cmdRoute[11] = 30; //----Voll AN
+		    cmdRoute[11]=arrPostRoutingVolume[iAusgang];
+
 		    arrOutputRoutingState[iEingang*8+iAusgang] = true;
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
-                    cmdRoute[11] = 128; //----Voll AUS
+                    //cmdRoute[11] = 128; //----Voll AUS
+		    cmdRoute[11]=arrPostRoutingVolume[iAusgang] + 128;
 		    arrOutputRoutingState[iEingang*8+iAusgang] = false;
 		    //arrOutputRoutingState[iAusgang] = false;
                 }
