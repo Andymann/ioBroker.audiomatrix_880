@@ -1040,9 +1040,22 @@ class Audiomatrix880 extends utils.Adapter {
 		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
 		arrPostRoutingVolume[iAusgang] = val;
 		this.log.info('matrixChanged: outputgainpostrouting changed. arrPostRoutingVolume[' + iAusgang.toString() + ']=' + val.toString() );
+		for(var i=1; i<65; i+=8){
+		    var bRoutingActive = getState('outputroutestate_' + (iAusgang*8 +i).toString()).val;
+		    this.log.info('outputroutestate_' + i.toString() + ': Routing ist:' + bRoutingActive );
+		    cmdRoute[10]=iAusgang*8 +i-1;
+		    if(bRoutingActive){
+			cmdRoute[11] = val;
+		    }else{
+			cmdRoute[11] = val+128;
+		    }
+		    arrCMD = arrCMD.concat(new Buffer(cmdRoute));
+		}
 
+
+		/*
                 if(arrOutputRoutingState[iAusgang]==true){
-                    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + val.toString() );
+                    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + ' ' + val.toString() );
 		    for(var i = 0; i < 8; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
@@ -1055,7 +1068,7 @@ class Audiomatrix880 extends utils.Adapter {
 
 		    }
                 }else{
-		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + val.toString() + ' setze Wert totzdem.' );
+		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + ' ' + val.toString() + ' setze Wert totzdem.' );
 		    for(var i = 0; i < 8; i++) {
 			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
 			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
@@ -1067,7 +1080,7 @@ class Audiomatrix880 extends utils.Adapter {
 			arrCMD = arrCMD.concat(new Buffer(cmdRoute));
 		    }
                 }
-
+		*/
                
                this.processCMD();
             }
