@@ -760,6 +760,7 @@ class Audiomatrix880 extends utils.Adapter {
 	    arrOutputRoutingState[outIndex] = true;
 	}else{
 	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: false, ack: true });
+	    arrOutputRoutingState[outIndex] = true;
 	    //Der Array wird auf FALSE initialisiert.
 	    //arrOutputRoutingState[outIndex] = false;
 	}
