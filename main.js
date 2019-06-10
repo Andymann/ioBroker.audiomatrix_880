@@ -1041,7 +1041,7 @@ class Audiomatrix880 extends utils.Adapter {
 		arrPostRoutingVolume[iAusgang] = val;
 		this.log.info('matrixChanged: outputgainpostrouting changed. arrPostRoutingVolume[' + iAusgang.toString() + ']=' + val.toString() );
 		for(var i=1; i<65; i+=8){
-		    var bRoutingActive = getState('outputroutestate_' + (iAusgang*8 +i).toString()).val;
+		    var bRoutingActive = this.getState('outputroutestate_' + (iAusgang*8 +i).toString()).val;
 		    this.log.info('outputroutestate_' + i.toString() + ': Routing ist:' + bRoutingActive );
 		    cmdRoute[10]=iAusgang*8 +i-1;
 		    if(bRoutingActive){
