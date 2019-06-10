@@ -382,7 +382,7 @@ var volume = [
 //----Das VOlume eines Ausgangs NACH dem Rounting.
 //----Hiermit lassen sich Anforderungen realisieren: 'Theke lauter'.
 //----Technisch bildet dieser Wert die Guete des Routing-Knotens ab.
-var arrOutputRoutingState = [false, false, false, false, false, false, false, false ];
+var arrOutputRoutingState = [];
 var arrPostRoutingVolume = [0, 0, 0, 0, 0, 0, 0, 0];
 
 class Audiomatrix880 extends utils.Adapter {
@@ -474,6 +474,11 @@ class Audiomatrix880 extends utils.Adapter {
         bQueryComplete_Input = false;
         bQueryComplete_Output = false;
 
+	arrOutputRoutingState = [];
+	for (var i = 0; i < 64; i++) {
+            arrOutputRoutingState.push(false);
+	}
+
 	arrStateQuery_Input = [];
 	for (var i = 1; i < 9; i++) {
             arrStateQuery_Input.push(false);
@@ -491,10 +496,6 @@ class Audiomatrix880 extends utils.Adapter {
 	    }
         }
 
-	arrOutputRoutingState = [];
-	for (var i = 0; i < 8; i++) {
-            arrOutputRoutingState.push(false);
-	}
 
         if(tmpFirmware=='v14'){
             //this.reconfigureCMD(0x45);
@@ -743,7 +744,7 @@ class Audiomatrix880 extends utils.Adapter {
         //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
         //this.log.info('setRoutingState() outputroutestate_' + (inIndex*8 + outIndex).toString());
         this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: onoff, ack: true });
-	arrOutputRoutingState[outIndex] = onoff; 
+	arrOutputRoutingState[inIndex*8 + outIndex] = onoff; 
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
     }
@@ -757,10 +758,10 @@ class Audiomatrix880 extends utils.Adapter {
 	if(val<128){
 	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: true, ack: true });
 	    //----es wird aktiv nur TRUE gesetzt.
-	    arrOutputRoutingState[outIndex] = true;
+	    arrOutputRoutingState[inIndex*8 + outIndex] = true;
 	}else{
 	    this.setStateAsync('outputroutestate_' + (inIndex*8 + outIndex+1).toString(), { val: false, ack: true });
-	    arrOutputRoutingState[outIndex] = true;
+	    arrOutputRoutingState[inIndex*8 + outIndex] = false;
 	    //Der Array wird auf FALSE initialisiert.
 	    //arrOutputRoutingState[outIndex] = false;
 	}
@@ -1013,10 +1014,11 @@ class Audiomatrix880 extends utils.Adapter {
                 if(val==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
                     cmdRoute[11] = 30; //----Voll AN
-		    arrOutputRoutingState[iAusgang] = true;
+		    arrOutputRoutingState[iEingang*8+iAusgang] = true;
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
                     cmdRoute[11] = 128; //----Voll AUS
+		    arrOutputRoutingState[iEingang*8+iAusgang] = false;
 		    //arrOutputRoutingState[iAusgang] = false;
                 }
 
@@ -1041,7 +1043,8 @@ class Audiomatrix880 extends utils.Adapter {
 		arrPostRoutingVolume[iAusgang] = val;
 		this.log.info('matrixChanged: outputgainpostrouting changed. arrPostRoutingVolume[' + iAusgang.toString() + ']=' + val.toString() );
 		for(var i=1; i<65; i+=8){
-		    this.log.info('matrixChanged: getState: outputroutestate_' + (iAusgang*8 +i).toString() ) ;
+		    this.log.info('matrixChanged: Routing laut arrOutputRoutingState[' + i-1 + ']:' + arrOutputRoutingState[i-1].toString()) ;
+		}
 		/*
 		    this.adapter.getState('outputroutestate_' + (iAusgang*8 +i).toString(), function (err, state) {
     
@@ -1067,7 +1070,7 @@ class Audiomatrix880 extends utils.Adapter {
 		    }
 		    arrCMD = arrCMD.concat(new Buffer(cmdRoute));
 		*/
-		}
+		
 
 
 		/*
