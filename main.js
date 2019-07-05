@@ -348,6 +348,7 @@ new Buffer([0xf0, firmware, idDevice, 0x10, vol_7_LoVal_Hi, vol_7_LoVal_Lo, 0x00
 
 
 //----Caching der Gain-Werte: Hi, Lo
+/*
 var inGain_0 = [-1, -1];
 var inGain_1 = [-1, -1];
 var inGain_2 = [-1, -1];
@@ -356,6 +357,7 @@ var inGain_4 = [-1, -1];
 var inGain_5 = [-1, -1];
 var inGain_6 = [-1, -1];
 var inGain_7 = [-1, -1];
+*/
 
 var inGain = [
 [-1, -1],
@@ -367,6 +369,8 @@ var inGain = [
 [-1, -1],
 [-1, -1]
 ];
+
+
 
 //----Das Volume, BEVOR es inst Routing geht. 
 var volume = [
@@ -380,11 +384,18 @@ var volume = [
 [-1, -1]
 ];
 
-//----Das VOlume eines Ausgangs NACH dem Rounting.
+
+//----Das Volume eines Ausgangs NACH dem Rounting.
 //----Hiermit lassen sich Anforderungen realisieren: 'Theke lauter'.
 //----Technisch bildet dieser Wert die Guete des Routing-Knotens ab.
 var arrOutputRoutingState = [];
+
+//----Die Guete der Knoten: Eine Spalte in der Mixing-Matrix
 var arrPostRoutingVolume = [0, 0, 0, 0, 0, 0, 0, 0];
+
+//----Cahing zum spateren Speichern
+var arrInputGain = [0, 0, 0, 0, 0, 0, 0, 0];
+var arrOutputGain = [0, 0, 0, 0, 0, 0, 0, 0];
 
 class Audiomatrix880 extends utils.Adapter {
 
@@ -793,6 +804,8 @@ class Audiomatrix880 extends utils.Adapter {
             var gainVal = inGain[gainIndex][0]*256 + inGain[gainIndex][1];
             //this.log.info('setInputGain() gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
 
+	    arrInputGain[gainIndex] = gainVal;	//Caching, damit der Wert ohne getState(...) griffbereit ist
+
             //----Normalisieren auf 0..100                 
             gainVal /=13.9;
             //this.log.info('setInputGain() NORMALIZED gainValue' + gainIndex.toString() + ':' + gainVal.toString() );
@@ -812,6 +825,8 @@ class Audiomatrix880 extends utils.Adapter {
         if((volume[volumeIndex][0]>-1) && (volume[volumeIndex][1]>-1)){
             var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
             //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );                           
+
+	    arrOutputGain[volumeIndex] = valVal;	//Caching, damit der Wert ohne getState(...) griffbereit ist
 
             //----Normalisieren auf 0..100                 
             volVal /=13.9;
@@ -964,25 +979,23 @@ class Audiomatrix880 extends utils.Adapter {
                 //this.log.info('matrixChanged: outputgain changed. ID:' + id.toString() );
                 var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
                 //this.log.info('matrixChanged: outputgain changed. ID:' + channelID.toString() );
+		val*=13.9;
+                var loByte = val & 0xFF;
+                var hiByte = (val >> 8) & 0xFF;
+
+
                 channelID-=1;
+		arrOutputGain[channelID] =val;	//Caching, damit der Wert ohne getState(...) griffbereit ist
 
                 channelID+=8;  //
                 cmdGain[4] = channelID;
 
-                val*=13.9;
-                var loByte = val & 0xFF;
-                var hiByte = (val >> 8) & 0xFF;
-
+                
                 cmdGain[7] = loByte;
                 cmdGain[11] = hiByte;
 
-                //this.log.info('matrixChanged: killing arrQuery before sending' );
-                //this.arrQuery = [];       //----Query stoppen
-                //this.send(cmdGain, 5);
-
 
 		arrCMD = arrCMD.concat(new Buffer(cmdGain));
-                //arrCMD.push(cmdGain);
                 this.processCMD();
 
             }
@@ -991,12 +1004,15 @@ class Audiomatrix880 extends utils.Adapter {
                 //this.log.info('matrixChanged: inputgain changed. ID:' + id.toString());
                 var channelID = parseInt(id.toLowerCase().substring(id.lastIndexOf('_')+1));
                 //this.log.info('matrixChanged: inputgain changed. ID:' + channelID.toString() );
-                channelID-=1;   //
-                cmdGain[4] = channelID;
-
-                val*=13.9;
+		val*=13.9;
                 var loByte = val & 0xFF;
                 var hiByte = (val >> 8) & 0xFF;
+
+                channelID-=1;   //
+		arrInputGain[channelID] = val;	//Caching, damit der Wert ohne getState(...) griffbereit ist
+                cmdGain[4] = channelID;
+
+                
 
                 cmdGain[7] = loByte;
                 cmdGain[11] = hiByte;
@@ -1072,6 +1088,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//Wir holen alles, was wir in arrQuery[] haben und schreiben Byte[3] um. 
 		//----Damit speichern wir alles, was wir abfragen
 		this.log.info('matrixChanged: saveToPreset()');
+/*
 		arrQuery.forEach(function(item, index, array) {                             
 		    var tmpCMD = new Buffer(item);
 		    tmpCMD[3] = 0x11;
@@ -1079,7 +1096,55 @@ class Audiomatrix880 extends utils.Adapter {
 		    //arrCMD = arrCMD.concat(new Buffer(cmdGain));
 		    //arrCMD.push(item);
 		});
+*/
 
+
+		//var loByte = arrInputGain[0] & 0xFF;
+                //var hiByte = ((arrInputGain[0] >> 8) & 0xFF);
+		//----InGain
+
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[0].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[1].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[2].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[3].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[4].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[5].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[6].toString() );
+		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[7].toString() );
+
+		var tmpCMD;
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
+		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
 	    }
 
 
