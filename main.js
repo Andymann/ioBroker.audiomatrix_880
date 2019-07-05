@@ -1136,7 +1136,7 @@ class Audiomatrix880 extends utils.Adapter {
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
