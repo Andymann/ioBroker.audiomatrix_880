@@ -38,6 +38,7 @@ var cmdGain =       new Buffer([0xf0, firmware, idDevice, 0x01, 0x00, 0x00, 0x00
 var cmdRoute =      new Buffer([0xf0, firmware, idDevice, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 //var cmdPreset =     new Buffer([0xf0, firmware, idDevice, 0x1B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 var cmdReadmemory=  new Buffer([0xf0, firmware, idDevice, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
+var cmdWritememory= new Buffer([0xf0, firmware, idDevice, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf7]);
 
 var bWaitingForResponse = false;
 var bQueryDone;
@@ -940,6 +941,9 @@ class Audiomatrix880 extends utils.Adapter {
             if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
             if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
 
+	}else if (arrResponse[3] == 0x10 ){
+	    this.log.debug('AudioMatrix: parseMsg() Response= WriteMemory:' + msg );
+
         } else {
             this.log.debug('AudioMatrix: parseMsg() Response unhandled:' + msg );
         }
@@ -1014,12 +1018,15 @@ class Audiomatrix880 extends utils.Adapter {
                 if(val==true){
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AN' );
                     //cmdRoute[11] = 30; //----Voll AN
+		    //Es gibt eine gemeinsame Volume-Regelung fuer alle Inputs eines Ausgangs. Wir schalten eben NICHT auf FULL ON, sondern gleichen
+		    //Die Giuete des Routing-Knotens dem eingestellten Wert des Ausgangs an. 
 		    cmdRoute[11]=arrPostRoutingVolume[iAusgang];
 
 		    arrOutputRoutingState[iEingang*8+iAusgang] = true;
                 }else{
                     this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang ' + iAusgang.toString() + ' AUS');
                     //cmdRoute[11] = 128; //----Voll AUS
+		    //
 		    cmdRoute[11]=arrPostRoutingVolume[iAusgang] + 128;
 		    arrOutputRoutingState[iEingang*8+iAusgang] = false;
 		    //arrOutputRoutingState[iAusgang] = false;
@@ -1057,54 +1064,24 @@ class Audiomatrix880 extends utils.Adapter {
 			cmdRoute[11] = val+128;
 		    }
 		    arrCMD = arrCMD.concat(new Buffer(cmdRoute));
-		}
-		
-		/*
-		    this.log.info('matrixChanged: getState: outputroutestate_' + (iAusgang*8 +i).toString() ) ;
-		    var bRoutingActive = this.getState('outputroutestate_' + (iAusgang*8 +i).toString()).val;
-		    this.log.info('outputroutestate_' + i.toString() + ': Routing ist:' + bRoutingActive );
-		    cmdRoute[10]=iAusgang*8 +i-1;
-		    if(bRoutingActive){
-			cmdRoute[11] = val;
-		    }else{
-			cmdRoute[11] = val+128;
-		    }
-		    arrCMD = arrCMD.concat(new Buffer(cmdRoute));
-		*/
-		
-
-
-		/*
-                if(arrOutputRoutingState[iAusgang]==true){
-                    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing AKTIV: ' + iAusgang.toString() + ' ' + val.toString() );
-		    for(var i = 0; i < 8; i++) {
-			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
-			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
-			cmdRoute[10] = i;
-			cmdRoute[11] = val;
-			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
-			//arrCMD.push(tmpArr);    
-			//var tmp = new Buffer(cmdRoute);
-			arrCMD = arrCMD.concat(new Buffer(cmdRoute));
-
-		    }
-                }else{
-		    this.log.info('AudioMatrix: matrixChanged: Eingang ' + iEingang.toString() + ' Ausgang POST Routing NICHT AKTIV: ' + iAusgang.toString() + ' ' + val.toString() + ' setze Wert totzdem.' );
-		    for(var i = 0; i < 8; i++) {
-			//----Fuer den konstanten AUSGANG muessen nun die Werte der Guete der Eingangsknoten gesetzt werden.
-			//----Das ist so und bedingt durch die Organistaion innerhalb der Hardware
-			cmdRoute[10] = i;
-			cmdRoute[11] = val+128;
-			this.log.info('matrixChanged: outputgainpostrouting. Pushing CMD:' + this.toHexString(cmdRoute));
-			//arrCMD = arrCMD.concat(cmdRoute);
-			//var tmp = new Buffer(cmdRoute);
-			arrCMD = arrCMD.concat(new Buffer(cmdRoute));
-		    }
-                }
-		*/
-               
+		}	
                this.processCMD();
             }
+
+	    if(id.toString().includes('.savetopreset')){
+		//Wir holen alles, was wir in arrQuery[] haben und schreiben Byte[3] um. 
+		//----Damit speichern wir alles, was wir abfragen
+		this.log.info('matrixChanged: saveToPreset()');
+		arrQuery.forEach(function(item, index, array) {                             
+		    var tmpCMD = new Buffer(item);
+		    tmpCMD[3] = 0x11;
+		    parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		    //arrCMD = arrCMD.concat(new Buffer(cmdGain));
+		    //arrCMD.push(item);
+		});
+
+	    }
+
 
         }//----ack==FALSE                         
 
@@ -1282,7 +1259,19 @@ class Audiomatrix880 extends utils.Adapter {
 		native: {},
         });
 
-
+	await this.setObjectAsync('savetopreset', {
+            type: 'state',
+            common: {
+                name: 'saveToPreset',
+		def:  false,
+                type: 'boolean',
+                role: 'indicator',
+                read: true,
+                write: true,
+            },
+            native: {},
+        });
+	 
 
         // in this template all states changes inside the adapters namespace are subscribed
         this.subscribeStates('*');
