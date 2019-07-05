@@ -956,7 +956,7 @@ class Audiomatrix880 extends utils.Adapter {
             if((arrResponse[4] == vol_7_HiVal_Hi) && (arrResponse[5] == vol_7_HiVal_Lo)){ volume[7][0] = arrResponse[8]; this.setVolume(7)}
             if((arrResponse[4] == vol_7_LoVal_Hi) && (arrResponse[5] == vol_7_LoVal_Lo)){ volume[7][1] = arrResponse[8]; this.setVolume(7)}
 
-	}else if (arrResponse[3] == 0x10 ){
+	}else if (arrResponse[3] == 0x11 ){
 	    this.log.debug('AudioMatrix: parseMsg() Response= WriteMemory:' + msg );
 
         } else {
@@ -1114,37 +1114,41 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[7].toString() );
 		*/
 		var tmpCMD;
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		var offsetPreset1 = 960; //0x400 - 0x40
+			
+		//----Wir speichern nicht in den RAM-Bereich des geladenen Presets (startet bei 0x40),
+		//----sondern in den Bereich, in dem das Preset gespeichert ist (startet bei 0x400);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_HiVal_Hi + offsetPreset1, inGain_0_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_LoVal_Hi+ offsetPreset1, inGain_0_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_HiVal_Hi + offsetPreset1, inGain_1_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_LoVal_Hi + offsetPreset1, inGain_1_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_HiVal_Hi + offsetPreset1, inGain_2_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_LoVal_Hi + offsetPreset1, inGain_2_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_HiVal_Hi + offsetPreset1, inGain_3_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_LoVal_Hi + offsetPreset1, inGain_3_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_HiVal_Hi + offsetPreset1, inGain_4_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_LoVal_Hi + offsetPreset1, inGain_4_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi + offsetPreset1, inGain_5_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi + offsetPreset1, inGain_5_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi + offsetPreset1, inGain_6_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_LoVal_Hi + offsetPreset1, inGain_6_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_HiVal_Hi + offsetPreset1, inGain_7_HiVal_Lo + offsetPreset1, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_LoVal_Hi + offsetPreset1, inGain_7_LoVal_Lo + offsetPreset1, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
 		this.processCMD();
