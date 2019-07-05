@@ -826,7 +826,7 @@ class Audiomatrix880 extends utils.Adapter {
             var volVal = volume[volumeIndex][0]*256 + volume[volumeIndex][1];
             //this.log.info('setVolume() volumeIndex:' + volumeIndex.toString() +': ' + volVal.toString() );                           
 
-	    arrOutputGain[volumeIndex] = valVal;	//Caching, damit der Wert ohne getState(...) griffbereit ist
+	    arrOutputGain[volumeIndex] = volVal;	//Caching, damit der Wert ohne getState(...) griffbereit ist
 
             //----Normalisieren auf 0..100                 
             volVal /=13.9;
