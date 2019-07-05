@@ -1102,6 +1102,7 @@ class Audiomatrix880 extends utils.Adapter {
 		//var loByte = arrInputGain[0] & 0xFF;
                 //var hiByte = ((arrInputGain[0] >> 8) & 0xFF);
 		//----InGain
+		/*
 
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[0].toString() );
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[1].toString() );
@@ -1111,40 +1112,42 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[5].toString() );
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[6].toString() );
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[7].toString() );
-
+		*/
 		var tmpCMD;
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
-		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]),
-		parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_HiVal_Hi, inGain_0_HiVal_Lo, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_0_LoVal_Hi, inGain_0_LoVal_Lo, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_HiVal_Hi, inGain_1_HiVal_Lo, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_1_LoVal_Hi, inGain_1_LoVal_Lo, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_HiVal_Hi, inGain_2_HiVal_Lo, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_2_LoVal_Hi, inGain_2_LoVal_Lo, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_HiVal_Hi, inGain_3_HiVal_Lo, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_3_LoVal_Hi, inGain_3_LoVal_Lo, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_HiVal_Hi, inGain_4_HiVal_Lo, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_4_LoVal_Hi, inGain_4_LoVal_Lo, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_HiVal_Hi, inGain_5_HiVal_Lo, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_5_LoVal_Hi, inGain_5_LoVal_Lo, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_HiVal_Hi, inGain_6_HiVal_Lo, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_6_LoVal_Hi, inGain_6_LoVal_Lo, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_HiVal_Hi, inGain_7_HiVal_Lo, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, inGain_7_LoVal_Hi, inGain_7_LoVal_Lo, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
+		this.processCMD();
 	    }
 
 
