@@ -1085,10 +1085,10 @@ class Audiomatrix880 extends utils.Adapter {
                this.processCMD();
             }
 
-	    if(id.toString().includes('.savetopreset')){
+	    if(id.toString().includes('.savetopreset_1')){
 		//Wir holen alles, was wir in arrQuery[] haben und schreiben Byte[3] um. 
 		//----Damit speichern wir alles, was wir abfragen
-		this.log.info('matrixChanged: saveToPreset()');
+		this.log.info('matrixChanged: saveToPreset_1()');
 /*
 		arrQuery.forEach(function(item, index, array) {                             
 		    var tmpCMD = new Buffer(item);
@@ -1125,42 +1125,49 @@ class Audiomatrix880 extends utils.Adapter {
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xD8, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
 	
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x01, 0x00, 0x00, ((arrInputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 	
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xD9, 0x00, 0x00, (arrInputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
-
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x02, 0x00, 0x00, ((arrInputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDA, 0x00, 0x00, (arrInputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x03, 0x00, 0x00, ((arrInputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDB, 0x00, 0x00, (arrInputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x04, 0x00, 0x00, ((arrInputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDC, 0x00, 0x00, (arrInputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x05, 0x00, 0x00, ((arrInputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDD, 0x00, 0x00, (arrInputGain[5] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x06, 0x00, 0x00, ((arrInputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDE, 0x00, 0x00, (arrInputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x07, 0x00, 0x00, ((arrInputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDF, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
 		this.processCMD();
 	    }
@@ -1342,10 +1349,10 @@ class Audiomatrix880 extends utils.Adapter {
 		native: {},
         });
 
-	await this.setObjectAsync('savetopreset', {
+	await this.setObjectAsync('savetopreset_1', {
             type: 'state',
             common: {
-                name: 'saveToPreset',
+                name: 'saveToPreset_1',
 		def:  false,
                 type: 'boolean',
                 role: 'indicator',
