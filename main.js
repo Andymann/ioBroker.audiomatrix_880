@@ -1114,7 +1114,7 @@ class Audiomatrix880 extends utils.Adapter {
 		parentThis.log.info('AudioMatrix: saveToPreset(). Inputgain[...] =' + arrInputGain[7].toString() );
 		*/
 		var tmpCMD;
-		var offsetPreset1 = 960; //0x400 - 0x40
+		var offsetPreset1 = 1024; //0x400
 		
 			
 		//----Wir speichern nicht in den RAM-Bereich des geladenen Presets (startet bei 0x40),
