@@ -752,6 +752,7 @@ class Audiomatrix880 extends utils.Adapter {
         }
     }
 
+/*
     //----Schaltet das Routing binaer: Voll AN, voll AUS
     setRoutingState(outIndex, inIndex, onoff){	
         //this.log.info('setRoutingState() Out:' + outIndex.toString() + ' In:' + inIndex.toString() + ' Val:' + onoff.toString() );
@@ -761,7 +762,7 @@ class Audiomatrix880 extends utils.Adapter {
         arrStateQuery_Routing[inIndex*8 + outIndex] = true;
         this.checkQueryDone();
     }
-
+*/
 
     //----Routing mit Angabe der 'Guete' des Routing-Knotens
     setRoutingStateValue(outIndex, inIndex, val){
@@ -855,8 +856,7 @@ class Audiomatrix880 extends utils.Adapter {
         }else if (arrResponse[3] == 0x10 ){
             
             //----Routing
-	    //if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingState(0, 0, (arrResponse[8]==0x1E)); }
-            if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingStateValue(0, 0, (arrResponse[8])); }
+	    if((arrResponse[4] == out0_in0_Hi) && (arrResponse[5] == out0_in0_Lo)){ this.setRoutingStateValue(0, 0, (arrResponse[8])); }
             if((arrResponse[4] == out0_in1_Hi) && (arrResponse[5] == out0_in1_Lo)){ this.setRoutingStateValue(0, 1, (arrResponse[8])); }
             if((arrResponse[4] == out0_in2_Hi) && (arrResponse[5] == out0_in2_Lo)){ this.setRoutingStateValue(0, 2, (arrResponse[8])); }
             if((arrResponse[4] == out0_in3_Hi) && (arrResponse[5] == out0_in3_Lo)){ this.setRoutingStateValue(0, 3, (arrResponse[8])); }
@@ -1064,7 +1064,6 @@ class Audiomatrix880 extends utils.Adapter {
                 var iEingang = (channelID-iAusgang)/8;
 
                 cmdRoute[4] = iAusgang + 8;
-                //cmdRoute[10] = iEingang;
 
 		val = parseInt(val*30/100);	//Fader: 0..100, intern: 0..30
 		arrPostRoutingVolume[iAusgang] = val;
@@ -1121,7 +1120,6 @@ class Audiomatrix880 extends utils.Adapter {
 		//----Wir speichern nicht in den RAM-Bereich des geladenen Presets (startet bei 0x40),
 		//----sondern in den Bereich, in dem das Preset gespeichert ist (startet bei 0x400);
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x00, 0x00, 0x00, ((arrInputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
-		//parentThis.log.info('AudioMatrix: saveToPreset(). CMD:' + parentThis.toHexString(tmpCMD));
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xD8, 0x00, 0x00, (arrInputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
@@ -1169,6 +1167,313 @@ class Audiomatrix880 extends utils.Adapter {
 		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xDF, 0x00, 0x00, (arrInputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]);
 		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
 		
+		//----Outputgain
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x3B, 0x00, 0x00, ((arrOutputGain[0] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xC7, 0x00, 0x00, (arrOutputGain[0] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x6F, 0x00, 0x00, ((arrOutputGain[1] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xC8, 0x00, 0x00, (arrOutputGain[1] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA4, 0x00, 0x00, ((arrOutputGain[2] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xC9, 0x00, 0x00, (arrOutputGain[2] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xD7, 0x00, 0x00, ((arrOutputGain[3] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xCA, 0x00, 0x00, (arrOutputGain[3] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x0B, 0x00, 0x00, ((arrOutputGain[4] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xCB, 0x00, 0x00, (arrOutputGain[4] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x3F, 0x00, 0x00, ((arrOutputGain[5] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xCC, 0x00, 0x00, (arrOutputGain[5] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x73, 0x00, 0x00, ((arrOutputGain[6] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xCD, 0x00, 0x00, (arrOutputGain[6] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xA7, 0x00, 0x00, ((arrOutputGain[7] >> 8) & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //HI
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0xCE, 0x00, 0x00, (arrOutputGain[7] & 0xFF), 0x00, 0x00, 0x00, 0xf7]); //LO
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		//----Routing.
+		var val;
+		val = !arrOutputRoutingState[0] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x08, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 0 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[8] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x09, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 0 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[16] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0A, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 0 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[24] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0B, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[32] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0C, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[40] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0D, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[48] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0E, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[56] * 0x80 + arrPostRoutingVolume[0];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x0F, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+
+		val = !arrOutputRoutingState[1] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x3C, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 1 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[9] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x3D, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 1 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[17] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x3E, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 1 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[25] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x3F, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[33] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x40, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[41] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x41, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[49] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x42, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[57] * 0x80 + arrPostRoutingVolume[1];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x43, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));
+
+
+		val = !arrOutputRoutingState[2] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x70, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 2 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[10] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x71, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 2 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[18] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x72, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 2 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[26] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x73, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[34] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x74, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[42] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x75, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[50] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x76, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[58] * 0x80 + arrPostRoutingVolume[2];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0x77, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+
+		val = !arrOutputRoutingState[3] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA4, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 3 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[11] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xa5, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 3 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[19] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA6, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 3 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[27] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA7, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[35] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA8, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[43] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xA9, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[51] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xAA, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[59] * 0x80 + arrPostRoutingVolume[3];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xAB, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));	
+
+
+		val = !arrOutputRoutingState[4] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xD8, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 4 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[12] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xD9, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 4 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[20] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDA, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 4 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[28] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDB, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[36] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDC, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[44] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDD, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[52] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDE, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[60] * 0x80 + arrPostRoutingVolume[4];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x04, 0xDF, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+	
+		val = !arrOutputRoutingState[5] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x0C, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 5 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[13] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x0D, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 5 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[21] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x0E, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 5 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[29] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x0F, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[37] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x10, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[45] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x11, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[53] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x12, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[61] * 0x80 + arrPostRoutingVolume[5];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x13, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));	
+
+
+		val = !arrOutputRoutingState[6] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x40, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 6 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[14] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x41, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 6 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[22] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x42, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 6 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[30] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x43, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[38] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x44, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[46] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x45, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[54] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x46, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[62] * 0x80 + arrPostRoutingVolume[6];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x47, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));	
+
+
+		val = !arrOutputRoutingState[7] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x74, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 7 In 0 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+		
+		val = !arrOutputRoutingState[15] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x75, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 7 In 1 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[23] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x76, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); // Out 7 In 2 
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[31] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x77, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]); //...
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[39] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x78, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[47] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x79, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[55] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x7A, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));		
+
+		val = !arrOutputRoutingState[63] * 0x80 + arrPostRoutingVolume[7];
+		tmpCMD = new Buffer([0xf0, firmware, idDevice, 0x11, 0x05, 0x7B, 0x00, 0x00, val, 0x00, 0x00, 0x00, 0xf7]);
+		arrCMD = arrCMD.concat(new Buffer(tmpCMD));	
+
+	
 		this.processCMD();
 	    }
 
